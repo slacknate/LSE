@@ -2,8 +2,6 @@
 #include "prism.h"
 #include "cam.h"
 
-// engine name -> Lucent Shards Engine
-
 /*
 Initialize our scene.
 */

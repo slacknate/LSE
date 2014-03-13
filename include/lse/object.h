@@ -5,6 +5,9 @@
 
 /*
 Base class for all Lucent Shards Engine objects.
+TODO: refactor Dispatch to return an int instead of a bool.
+      returning real result codes would probably be a nice feature
+      for an event handler.
 */
 class LSE_Object {
     

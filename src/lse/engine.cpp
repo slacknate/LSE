@@ -171,7 +171,7 @@ void* LSE_Engine::Execute() {
         switch(event->type) {
                 
             case LSE_KEYBOARD:
-                keyFocus->Dispatch(this, LSE_KEYBOARD, LSE_ANY, event);
+                //keyFocus->Dispatch(this, LSE_KEYBOARD, LSE_ANY, event);
                 break;
             case LSE_MOUSE:
                 break;

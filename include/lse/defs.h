@@ -163,8 +163,7 @@ Event handler implementation.
 const int classname::mapSize = (sizeof(map)/sizeof(map[0])); \
 bool classname::Dispatch(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr) { \
 for(int i = 0; i < mapSize; ++i) { if((map[i].type == type && map[i].id == id) || (map[i].type == LSE_ANY && map[i].id == LSE_ANY)) \
-{ return (this->*(map[i].func))(sender, type, id, ptr); } } return false; \
-}
+{ int result = (this->*(map[i].func))(sender, type, id, ptr); if(result != 0) { return result; } continue; } } return false; }
 
 /*
 Logging level constants.
