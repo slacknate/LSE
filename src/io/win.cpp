@@ -4,6 +4,173 @@
 /*
 
 */
+unsigned int vkey_to_lkey(unsigned int vkey) {
+    
+    unsigned int lkey = LSE_KEY_INVALID;
+    
+    switch(vkey) {
+        
+        case VK_BACK:
+            lkey = LSE_KEY_BACKSPACE; break;
+        case VK_TAB:
+            lkey = LSE_KEY_TAB; break;
+        case VK_RETURN:
+            lkey = LSE_KEY_RETURN; break;
+        case VK_PAUSE:
+            lkey = LSE_KEY_PAUSE; break;
+        case VK_ESCAPE:
+            lkey = LSE_KEY_ESCAPE; break;
+        case VK_SPACE:
+            lkey = LSE_KEY_SPACE; break;
+        case VK_PRIOR: // page up
+            lkey = LSE_KEY_PAGEUP; break;
+        case VK_NEXT: // page down
+            lkey = LSE_KEY_PAGEDOWN; break;
+        case VK_END:
+            lkey = LSE_KEY_END; break;
+        case VK_HOME:
+            lkey = LSE_KEY_HOME; break;
+        case VK_LEFT:
+            lkey = LSE_KEY_LEFT; break;
+        case VK_UP:
+            lkey = LSE_KEY_UP; break;
+        case VK_RIGHT:
+            lkey = LSE_KEY_RIGHT; break;
+        case VK_DOWN:
+            lkey = LSE_KEY_DOWN; break;
+        case VK_SNAPSHOT: // print screen
+            lkey = LSE_KEY_PRNTSCRN; break;
+        case VK_INSERT:
+            lkey = LSE_KEY_INSERT; break;
+        case VK_DELETE:
+            lkey = LSE_KEY_DELETE; break;
+        case VK_LWIN: // left windows key
+            lkey = LSE_KEY_LSUPER; break;
+        case VK_RWIN: // right windows key
+            lkey = LSE_KEY_RSUPER; break;
+        case VK_APPS: // menu key
+            lkey = LSE_KEY_MENU; break;
+        case VK_NUMPAD0:
+            lkey = LSE_KEY_NUM0; break;
+        case VK_NUMPAD1:
+            lkey = LSE_KEY_NUM1; break;
+        case VK_NUMPAD2:
+            lkey = LSE_KEY_NUM2; break;
+        case VK_NUMPAD3:
+            lkey = LSE_KEY_NUM3; break;
+        case VK_NUMPAD4:
+            lkey = LSE_KEY_NUM4; break;
+        case VK_NUMPAD5:
+            lkey = LSE_KEY_NUM5; break;
+        case VK_NUMPAD6:
+            lkey = LSE_KEY_NUM6; break;
+        case VK_NUMPAD7:
+            lkey = LSE_KEY_NUM7; break;
+        case VK_NUMPAD8:
+            lkey = LSE_KEY_NUM8; break;
+        case VK_NUMPAD9:
+            lkey = LSE_KEY_NUM9; break;
+        case VK_MULTIPLY:
+            lkey = LSE_KEY_MULT; break;
+        case VK_ADD:
+            lkey = LSE_KEY_ADD; break;
+        case VK_SUBTRACT:
+            lkey = LSE_KEY_SUB; break;
+        case VK_DECIMAL:
+            lkey = LSE_KEY_DECIMAL; break;
+        case VK_DIVIDE:
+            lkey = LSE_KEY_DIV; break;
+        case VK_F1:
+            lkey = LSE_KEY_F1; break;
+        case VK_F2:
+            lkey = LSE_KEY_F2; break;
+        case VK_F3:
+            lkey = LSE_KEY_F3; break;
+        case VK_F4:
+            lkey = LSE_KEY_F4; break;
+        case VK_F5:
+            lkey = LSE_KEY_F5; break;
+        case VK_F6:
+            lkey = LSE_KEY_F6; break;
+        case VK_F7:
+            lkey = LSE_KEY_F7; break;
+        case VK_F8:
+            lkey = LSE_KEY_F8; break;
+        case VK_F9:
+            lkey = LSE_KEY_F9; break;
+        case VK_F10:
+            lkey = LSE_KEY_F10; break;
+        case VK_F11:
+            lkey = LSE_KEY_F11; break;
+        case VK_F12:
+            lkey = LSE_KEY_F12; break;
+        case VK_NUMLOCK:
+            lkey = LSE_KEY_NUMLOCK; break;
+        case VK_SCROLL:
+            lkey = LSE_KEY_SCROLLOCK; break;
+        case VK_CAPITAL:
+            lkey = LSE_KEY_CAPSLOCK; break;
+        case VK_LSHIFT:
+            lkey = LSE_KEY_LSHIFT; break;
+        case VK_RSHIFT:
+            lkey = LSE_KEY_RSHIFT; break;
+        case VK_LCONTROL:
+            lkey = LSE_KEY_LCTRL; break;
+        case VK_RCONTROL:
+            lkey = LSE_KEY_RCTRL; break;
+        case VK_LMENU: // left alt
+            lkey = LSE_KEY_LALT; break;
+        case VK_RMENU: // right alt
+            lkey = LSE_KEY_RALT; break;
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+        case 'A':
+        case 'B':
+        case 'C':
+        case 'D':
+        case 'E':
+        case 'F':
+        case 'G':
+        case 'H':
+        case 'I':
+        case 'J':
+        case 'K':
+        case 'L':
+        case 'M':
+        case 'N':
+        case 'O':
+        case 'P':
+        case 'Q':
+        case 'R':
+        case 'S':
+        case 'T':
+        case 'U':
+        case 'V':
+        case 'W':
+        case 'X':
+        case 'Y':
+        case 'Z':    
+            lkey = vkey;
+        default:
+            LSE_MESSG_LOG("Unhandled vkey code: 0x%.2X", vkey);
+    }
+    
+    LSE_MESSG_LOG("Returning lkey code: 0x%.2X", lkey);
+    
+    return lkey;
+}
+
+/*
+
+*/
 LSE_IOHandler_Win::LSE_IOHandler_Win(LSE_Object *e) : LSE_IOHandler_Base(e) { }
 
 /*
@@ -75,7 +242,7 @@ LRESULT CALLBACK LSE_IOHandler_Win::WindowHandler(HWND hwnd, unsigned int messag
                     key_state = LSE_KEY_STATE_DOWN;
                 
                 LSE_KeyEvent *key_event = new LSE_KeyEvent;
-                key_event->key = 0;
+                key_event->key = vkey_to_lkey(r_keyboard->VKey);
                 key_event->state = key_state;
                 
                 LSE_IOHandler_Base::HandleEvent(NULL, LSE_ANY, LSE_ANY, key_event);
