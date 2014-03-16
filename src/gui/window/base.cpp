@@ -130,7 +130,7 @@ void LSE_GLWindow_Base::GLInit() {
     if(glewStatus != GLEW_OK)
         LSE_THROW(LSE_GL_INIT_FAIL/*, (const char *)glewGetErrorString(glewStatus)*/);
           
-    LSE_MESSG_LOG("GL_VERSION: %s\nGL_SHADING_LANGUAGE_VERSION: %s", LSE_GL_VENDOR_VERSION, LSE_SL_VENDOR_VERSION);
+    LSE_MESSG_LOG(LOG_LEVEL_INFO, "GL_VERSION: %s\nGL_SHADING_LANGUAGE_VERSION: %s", LSE_GL_VENDOR_VERSION, LSE_SL_VENDOR_VERSION);
     
     // get the OpenGL version as an integer
     int glMajor = 0, glMinor = 0;
@@ -187,7 +187,7 @@ void LSE_GLWindow_Base::GLInit() {
     
     int glStatus = LSE_GL_VERSION >= LSE_MIN_GL_VERSION && LSE_GL_MAX_VERT_ATTRIB >= LSE_GL_MIN_VERT_ATTRIB && LSE_GL_MAX_COLOR_ATTACH >= LSE_GL_MIN_COLOR_ATTACH;
     if(!glStatus)
-        LSE_THROW(LSE_GL_INIT_FAIL/*, "OpenGL failed to meet certain requirements."*/);
+        LSE_THROW(LSE_GL_INIT_FAIL);
 
     // compute and bind viewing matrix
     PlaceCamera();

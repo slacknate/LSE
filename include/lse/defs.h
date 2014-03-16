@@ -2,50 +2,6 @@
 #define LSE_DEFS_H
 
 /*
-Platform specific includes.
-*/
-#if defined(_WIN32) || defined(_WIN64) // windows
-// defining these constants as 0x0501 tells the compiler we are at least Windows XP
-// super hack inc
-#ifdef WINVER
-#undef WINVER
-#endif
-
-#ifdef _WIN32_WINNT
-#undef _WIN32_WINNT
-#endif
-
-#define WINVER       0x0501
-#define _WIN32_WINNT 0x0501
-#include <windows.h>
-#elif defined(__unix__) && !defined(__APPLE__) // all unix variants, non-mac
-
-#elif defined(__APPLE__) && !defined(__MACH__) // mac osx, non-ios
-
-#endif
-
-/*
-C++ includes.
-*/
-#include <new>
-#include <cmath>
-#include <ctime>
-#include <cstdio>
-#include <cerrno>
-#include <cstdarg>
-#include <cassert>
-#include <cstdlib>
-#include <cstring>
-#include <typeinfo>
-#include <iostream>
-
-/*
-Standard C++ exception includes.
-*/
-#include <stdexcept>
-#include <exception>
-
-/*
 OpenGL and Extension Wrangler includes.
 */
 #include <gl/glew.h>
@@ -55,36 +11,17 @@ OpenGL and Extension Wrangler includes.
 LSE includes.
 */
 #include "lse/event.h"
+#include "lse/logger.h"
 #include "lse/exception.h"
-
-/*
-Exception function macros.
-*/
-#define LSE_TRY()               try { try {
-#define LSE_THROW(X)            throw LSE_Exception(__FILE__, __LINE__, X);
-#define LSE_CATCH()             } catch(const std::bad_alloc& ba) { throw LSE_Exception(__FILE__, __LINE__, LSE_BAD_ALLOC); } \
-                                catch(const std::bad_cast& bc) { throw LSE_Exception(__FILE__, __LINE__, LSE_BAD_CAST); } \
-                                catch(const std::bad_typeid& bc) { throw LSE_Exception(__FILE__, __LINE__, LSE_BAD_TYPE_ID); } \
-                                catch(const std::bad_exception& be) { throw LSE_Exception(__FILE__, __LINE__, LSE_BAD_EXCEPTION); } \
-                                catch(const std::ios_base::failure& iof) { throw LSE_Exception(__FILE__, __LINE__, LSE_IOS_FAIL); } \
-                                catch(const std::runtime_error& re) { throw LSE_Exception(__FILE__, __LINE__, LSE_RUNTIME_ERR); } \
-                                catch(const std::logic_error& le) { throw LSE_Exception(__FILE__, __LINE__, LSE_LOGIC_ERR); } \
-                                } catch(const LSE_Exception& e) { LSE_WriteLog(stderr, "%s", e.what()); LSE_ErrorStatus(e.code()); }
-
-
-/*
-Logging function macros.
-*/
-#define LSE_MESSG_LOG(...)      LSE_WriteLog(stdout, __VA_ARGS__)
-#define LSE_ERROR_LOG(...)      LSE_WriteLog(stderr, __VA_ARGS__)
-#define LSE_ERRNO_LOG(X)        LSE_WriteLog(stderr, "%s: %s", X, strerror(errno))
 
 /*
 Extended error code macros.
 */
 #if defined(_WIN32) || defined(_WIN64)
 #define LSE_EXT_ERR_CODE        (GetLastError())
-#else
+#elif defined(__unix__) && !defined(__APPLE__) // all unix variants, non-mac
+#define LSE_EXT_ERR_CODE        ??? // FIXME
+#elif defined(__APPLE__) && !defined(__MACH__) // mac osx, non-ios
 #define LSE_EXT_ERR_CODE        ??? // FIXME
 #endif
 
@@ -94,17 +31,6 @@ LSE Engine status macros.
 #define LSE_STATUS              (LSE_ErrorStatus())
 #define LSE_ERROR_STRING        (LSE_ErrorString())
 #define LSE_ERROR_ID_STRING     (LSE_ErrorIDString())
-
-/*  
-Directory structure character/string.
-*/
-#if defined(_WIN32) || defined(_WIN64)
-#define DIR_CHR                 '\\'
-#define DIR_STR                 "\\"
-#else
-#define DIR_CHR                 '/'
-#define DIR_STR                 "/"
-#endif
 
 /*
 OpenGL function macros.
@@ -134,52 +60,6 @@ LSE Shader type validation function macro.
 */
 #define LSE_VIEW_MATRIX         (LSE_GetViewingMatrix())
 #define LSE_PROJ_MATRIX         (LSE_GetProjectionMatrix())
-
-/*
-Class event map type declaration.
-*/
-#define \
-LSE_DECLARE(classname) \
-public: \
-typedef struct { unsigned int type; unsigned int id; bool (classname::*func)(LSE_Object *, unsigned int, unsigned int, void *); } LSE_MapKey; \
-virtual bool Dispatch(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr); \
-private: \
-static const int mapSize;
-
-/*
-Event map declaration.
-*/
-#define LSE_EVTMAP(classname) static const classname::LSE_MapKey 
-
-/*
-Event map entry.
-*/
-#define LSE_EVTFUNC(type, id, handler) {type, id, &handler}
-
-/*
-Event handler implementation.
-*/
-#define LSE_EVTIMP(classname, map) \
-const int classname::mapSize = (sizeof(map)/sizeof(map[0])); \
-bool classname::Dispatch(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr) { \
-for(int i = 0; i < mapSize; ++i) { if((map[i].type == type && map[i].id == id) || (map[i].type == LSE_ANY && map[i].id == LSE_ANY)) \
-{ int result = (this->*(map[i].func))(sender, type, id, ptr); if(result != 0) { return result; } continue; } } return false; }
-
-/*
-Logging level constants.
-*/
-#define INFO     0
-#define DEBUG    1
-#define CRITICAL 2
-#define VERBOSE  3
-#define RAW      4
-
-/*
-Physics constants.
-*/
-#define PHY_UPD_TIME            1
-#define PHY_UPD_MULT            0.001
-#define PI                      3.14159265359
 
 /*
 Keyboard event constants.
@@ -356,7 +236,6 @@ const char* LSE_ShaderString(LSE_ShaderType s);
 int LSE_ErrorStatus(int c=-1);
 const char* LSE_ErrorString(int c=-1);
 const char* LSE_ErrorIDString(int c=-1);
-void LSE_WriteLog(FILE *stream, ...);
 
 /*
 

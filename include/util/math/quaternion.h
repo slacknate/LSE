@@ -1,6 +1,7 @@
 #ifndef LSE_QUATERNION_H
 #define LSE_QUATERNION_H
 
+#include <cmath>
 #include "util/math/vector.h"
 #include "gl/vertex.h"
 

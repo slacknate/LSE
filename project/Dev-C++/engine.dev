@@ -1,7 +1,7 @@
 [Project]
 FileName=engine.dev
 Name=engine
-UnitCount=89
+UnitCount=91
 Type=1
 Ver=1
 ObjFiles=
@@ -941,6 +941,16 @@ BuildCmd=
 FileName=..\..\include\lse\logger.h
 CompileCpp=1
 Folder=include/lse
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit90]
+FileName=..\..\src\lse\logger.cpp
+CompileCpp=1
+Folder=src/lse
 Compile=1
 Link=1
 Priority=1000

@@ -1,6 +1,7 @@
 #ifndef LSE_MATRIX_H
 #define LSE_MATRIX_H
 
+#include <cmath>
 #include "lse/defs.h"
 
 /*

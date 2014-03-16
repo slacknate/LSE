@@ -1,6 +1,8 @@
 #ifndef LSE_VECTOR_H
 #define LSE_VECTOR_H
 
+#include <cmath>
+
 /*
 
 */

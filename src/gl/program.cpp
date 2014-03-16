@@ -1,3 +1,4 @@
+#include <cstdarg>
 #include "gl/program.h"
 
 /*
@@ -232,7 +233,7 @@ int LSE_GLProgram::AddShader(const char *buffer, LSE_ShaderType lseType) {
                             *newID = shaderID;
                             shaderIDs.PushBack(newID);
                             
-                            LSE_MESSG_LOG("Shader file \"%s\" bound to ID %u and attached to program %u.", buffer, shaderID, progID);
+                            LSE_MESSG_LOG(LOG_LEVEL_DEBUG, "Shader file \"%s\" bound to ID %u and attached to program %u.", buffer, shaderID, progID);
                         }
                         else {
                             
@@ -281,7 +282,7 @@ int LSE_GLProgram::AddShader(const char *buffer, LSE_ShaderType lseType) {
                         *newID = shaderID;
                         shaderIDs.PushBack(newID);
                             
-                        LSE_MESSG_LOG("%s shader loaded from stream bound to ID %u and attached to program %u.", LSE_ShaderString(lseType), shaderID, progID);
+                        LSE_MESSG_LOG(LOG_LEVEL_DEBUG, "%s shader loaded from stream bound to ID %u and attached to program %u.", LSE_ShaderString(lseType), shaderID, progID);
                     }
                     else {
                             
@@ -331,7 +332,7 @@ bool LSE_GLProgram::RemoveShader(unsigned int shaderID) {
         glDetachShader(progID, shaderID);
         glDeleteShader(shaderID);
         
-        LSE_MESSG_LOG("Shader %u was removed from program %u.", shaderID, progID);
+        LSE_MESSG_LOG(LOG_LEVEL_DEBUG, "Shader %u was removed from program %u.", shaderID, progID);
     }
     
     return valid;

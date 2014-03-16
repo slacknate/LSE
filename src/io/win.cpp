@@ -158,12 +158,12 @@ unsigned int vkey_to_lkey(unsigned int vkey) {
         case 'X':
         case 'Y':
         case 'Z':    
-            lkey = vkey;
+            lkey = vkey; break;
         default:
-            LSE_MESSG_LOG("Unhandled vkey code: 0x%.2X", vkey);
+            LSE_ERROR_LOG("Unhandled vkey code: 0x%.2X", vkey);
     }
     
-    LSE_MESSG_LOG("Returning lkey code: 0x%.2X", lkey);
+    LSE_MESSG_LOG(LOG_LEVEL_DEBUG, "Returning lkey code: 0x%.2X", lkey);
     
     return lkey;
 }

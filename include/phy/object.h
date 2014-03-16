@@ -6,6 +6,13 @@
 #include "util/math/quaternion.h"
 
 /*
+Physics constants.
+*/
+#define PHY_UPD_TIME            1
+#define PHY_UPD_MULT            0.001
+#define PI                      3.14159265359
+
+/*
 Class that describes an object which will have physical interaction
 with other objects of the same type.
 */
