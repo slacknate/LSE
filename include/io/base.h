@@ -5,13 +5,13 @@
 
 class LSE_IOHandler_Base : public LSE_Object {
     
-    friend class LSE_Engine; // FIXME: many hacks, such wow
-    
     private:
         
         static LSE_Object *engine;
         
     public:
+        
+        LSE_IOHandler_Base(LSE_Object *e);
         
         static void HandleEvent(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr);
 };

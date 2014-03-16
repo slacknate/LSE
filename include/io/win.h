@@ -5,7 +5,9 @@
 
 class LSE_IOHandler_Win : public LSE_IOHandler_Base {
         
-    public:      
+    public:
+        LSE_IOHandler_Win(LSE_Object *e);
+        
         void Setup(HWND hwnd);
         static LRESULT CALLBACK WindowHandler(HWND hwnd, unsigned int message, WPARAM wParam, LPARAM lParam);
 };

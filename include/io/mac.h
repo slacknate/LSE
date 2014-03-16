@@ -7,6 +7,7 @@ class LSE_IOHandler_Mac : public LSE_IOHandler_Base {
         
     public:
         
+        LSE_IOHandler_Mac(LSE_Object *e);
 };
 
 #define LSE_IOHandler LSE_IOHandler_Mac

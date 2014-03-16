@@ -7,6 +7,7 @@ class LSE_IOHandler_Nix : public LSE_IOHandler_Base {
         
     public:
         
+        LSE_IOHandler_Nix(LSE_Object *e);
 };
 
 #define LSE_IOHandler LSE_IOHandler_Unix

@@ -18,7 +18,7 @@ LSE_EVTIMP(LSE_Engine, EngineMap)
 /*
 
 */
-LSE_Engine::LSE_Engine(LSE_GLInitCB g, LSE_SceneCB s) {
+LSE_Engine::LSE_Engine(LSE_GLInitCB g, LSE_SceneCB s) : handler(this) {
     
     glCB = g;
     scCB = s;
@@ -30,7 +30,6 @@ LSE_Engine::LSE_Engine(LSE_GLInitCB g, LSE_SceneCB s) {
     
 //    CreateLogs();
     
-    LSE_IOHandler::engine = this; // FIXME: super hax
     LSE_Signal::LSE_InitSignals(this);
 }
 

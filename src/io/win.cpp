@@ -4,6 +4,11 @@
 /*
 
 */
+LSE_IOHandler_Win::LSE_IOHandler_Win(LSE_Object *e) : LSE_IOHandler_Base(e) { }
+
+/*
+
+*/
 void LSE_IOHandler_Win::Setup(HWND hwnd) {
     
     RAWINPUTDEVICE raw_io[2];
