@@ -1,5 +1,5 @@
-#ifndef LSE_ENGINE_H
-#define LSE_ENGINE_H
+#ifndef LSE_MANAGER_H
+#define LSE_MANAGER_H
 
 #include "io/handler.h"
 #include "lse/semaphore.h"

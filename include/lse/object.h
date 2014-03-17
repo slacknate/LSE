@@ -2,6 +2,7 @@
 #define LSE_OBJECT_H
 
 #include "lse/defs.h"
+#include "lse/event.h"
 
 /*
 Class event map type declaration.

@@ -10,7 +10,6 @@ OpenGL and Extension Wrangler includes.
 /*
 LSE includes.
 */
-#include "lse/event.h"
 #include "lse/logger.h"
 #include "lse/exception.h"
 
