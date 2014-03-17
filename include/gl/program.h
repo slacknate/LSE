@@ -5,6 +5,11 @@
 #include "lse/list.h"
 
 /*
+LSE Shader type validation function macro.
+*/
+#define VALID_SHADER_TYPE(X)    (X >= 0 && X < 6)
+
+/*
 LSE Shader types.
 */
 typedef enum {

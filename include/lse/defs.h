@@ -50,17 +50,6 @@ OpenGL function macros.
 #define LSE_SL_VENDOR_VERSION   ((const char* const)glGetString(GL_SHADING_LANGUAGE_VERSION))
 
 /*
-LSE Shader type validation function macro.
-*/
-#define VALID_SHADER_TYPE(X)    (X >= 0 && X < 6)
-
-/*
-
-*/
-#define LSE_VIEW_MATRIX         (LSE_GetViewingMatrix())
-#define LSE_PROJ_MATRIX         (LSE_GetProjectionMatrix())
-
-/*
 Keyboard event constants.
 */
 #define LSE_KEY_STATE_DOWN      0
