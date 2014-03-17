@@ -15,19 +15,6 @@ static const char *const GL_ERRORS[] = {
 };
 
 /*
-LSE Shader type strings.
-*/
-static const char *const SHADER_STRINGS[] = {
-    
-    "Invalid",
-    "Vertex",
-    "Tesselation control",
-    "Tesselation evaluation",
-    "Geometry",
-    "Fragment"
-};
-
-/*
 
 */
 static const char *const ERROR_ID_STRINGS[] = {
@@ -98,14 +85,6 @@ const char* LSE_GLErrorString(GLenum e) {
         return GL_ERRORS[i];
     else
         return "Unknown OpenGL error.";
-}
-
-/*
-Return the shader type name as a string.
-*/
-const char* LSE_ShaderString(LSE_ShaderType s) {
-    
-    return SHADER_STRINGS[s];
 }
 
 /*

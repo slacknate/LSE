@@ -130,19 +130,6 @@ Mouse event constants
 // ...lol...
 
 /*
-GLSL Shader attribute constants.
-*/
-enum {
-    
-    VERT_POSITION = 0,
-    VERT_NORMAL,
-    VERT_COLOR,
-    VERT_TEX_COORD,
-    LIGHT_DATA,    
-    MATERIAL_DATA
-};
-
-/*
 LSE engine return types.
 */
 enum {
@@ -165,59 +152,6 @@ enum {
 };
 
 /*
-GLSL uniform type identifiers.
-*/
-enum {
-    
-    LSE_FL1 = 0,
-    LSE_FL2,
-    LSE_FL3,
-    LSE_FL4,
-    LSE_IN1,
-    LSE_IN2,
-    LSE_IN3,
-    LSE_IN4,
-    LSE_UI1,
-    LSE_UI2,
-    LSE_UI3,
-    LSE_UI4,
-    LSE_FLV1,
-    LSE_FLV2,
-    LSE_FLV3,
-    LSE_FLV4,
-    LSE_INV1,
-    LSE_INV2,
-    LSE_INV3,
-    LSE_INV4,
-    LSE_UIV1,
-    LSE_UIV2,
-    LSE_UIV3,
-    LSE_UIV4,
-    LSE_MAT2,
-    LSE_MAT3,
-    LSE_MAT4,
-    LSE_MAT23,
-    LSE_MAT24,
-    LSE_MAT32,
-    LSE_MAT34,
-    LSE_MAT42,
-    LSE_MAT43,
-};
-
-/*
-LSE Shader types.
-*/
-typedef enum {
-    
-    SHADER_INVALID = 0,
-    SHADER_VERT,
-    SHADER_TCON,
-    SHADER_TEVA,
-    SHADER_GEOM,
-    SHADER_FRAG,
-} LSE_ShaderType;
-
-/*
 OpenGL Version and Attribute fetching functions.
 */
 const int LSE_GLVersion();
@@ -231,7 +165,6 @@ const int LSE_MaxFBOColorAttachments();
 Utility functions.
 */
 const char* LSE_GLErrorString(GLenum e);
-const char* LSE_ShaderString(LSE_ShaderType s);
 int LSE_ErrorStatus(int c=-1);
 const char* LSE_ErrorString(int c=-1);
 const char* LSE_ErrorIDString(int c=-1);

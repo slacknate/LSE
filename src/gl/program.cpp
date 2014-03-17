@@ -2,6 +2,27 @@
 #include "gl/program.h"
 
 /*
+LSE Shader type strings.
+*/
+static const char *const SHADER_STRINGS[] = {
+    
+    "Invalid",
+    "Vertex",
+    "Tesselation control",
+    "Tesselation evaluation",
+    "Geometry",
+    "Fragment"
+};
+
+/*
+Return the shader type name as a string.
+*/
+const char* LSE_ShaderString(LSE_ShaderType s) {
+    
+    return SHADER_STRINGS[s];
+}
+
+/*
 Generate out OpenGL program.
 */
 LSE_GLProgram::LSE_GLProgram() {
@@ -341,7 +362,7 @@ bool LSE_GLProgram::RemoveShader(unsigned int shaderID) {
 /*
 Bind a vertex attribute.
 */
-void LSE_GLProgram::BindAttrib(unsigned int position, const char *const name) {
+void LSE_GLProgram::BindAttrib(LSE_AttrPos position, const char *const name) {
     
     glBindAttribLocation(progID, position, name);
 }
@@ -349,7 +370,7 @@ void LSE_GLProgram::BindAttrib(unsigned int position, const char *const name) {
 /*
 Bind a uniform variable.
 */
-void LSE_GLProgram::BindUniform(unsigned int type, const char *const name, ...) {
+void LSE_GLProgram::BindUniform(LSE_UniformType type, const char *const name, ...) {
     
     Bind();
     
