@@ -11,6 +11,7 @@ OpenGL and Extension Wrangler includes.
 LSE includes.
 */
 #include "lse/logger.h"
+#include "lse/globals.h"
 #include "lse/exception.h"
 
 /*
@@ -157,11 +158,5 @@ const char* LSE_GLErrorString(GLenum e);
 int LSE_ErrorStatus(int c=-1);
 const char* LSE_ErrorString(int c=-1);
 const char* LSE_ErrorIDString(int c=-1);
-
-/*
-
-*/
-float* LSE_GetViewingMatrix();
-float* LSE_GetProjectionMatrix();
 
 #endif

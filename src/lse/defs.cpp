@@ -59,17 +59,6 @@ static const char *const ERROR_STRINGS[] = {
 };
 
 /*
-Global viewing and projection matrices.
-They are column major format:
-
-0 4 8  12
-1 5 9  13
-2 6 10 14
-3 7 11 15
-*/
-static float viewing[16], projection[16];
-
-/*
 LSE Error status.
 */
 static int errorStatus = LSE_OK;
@@ -85,22 +74,6 @@ const char* LSE_GLErrorString(GLenum e) {
         return GL_ERRORS[i];
     else
         return "Unknown OpenGL error.";
-}
-
-/*
-Return a pointer to the viewing matrix.
-*/
-float* LSE_GetViewingMatrix() {
-    
-    return &viewing[0];
-}
-
-/*
-Return a pointer to the projection matrix.
-*/
-float* LSE_GetProjectionMatrix() {
-    
-    return &projection[0];
 }
 
 /*
