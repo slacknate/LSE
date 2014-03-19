@@ -181,6 +181,8 @@ void* LSE_Engine::Execute() {
         delete event;
         delete node;
     }
+    
+    return NULL;
 }
 
 /*
@@ -236,7 +238,7 @@ int LSE_Engine::Run() {
 /*
 Post an event to the event queue.
 */
-bool LSE_Engine::OnEvent(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr) {
+bool LSE_Engine::OnEvent(LSE_Object *, unsigned int, unsigned int, void *ptr) {
     
     if(ptr != NULL) {
         
@@ -252,7 +254,7 @@ bool LSE_Engine::OnEvent(LSE_Object *sender, unsigned int type, unsigned int id,
 /*
 Quit the application.
 */
-bool LSE_Engine::OnQuit(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr) {
+bool LSE_Engine::OnQuit(LSE_Object *, unsigned int, unsigned int, void *) {
     
     run = false;
     return true;

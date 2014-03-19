@@ -71,10 +71,18 @@ bool LSE_Thread::Join() {
 }
 
 /*
+
+*/
+void* LSE_Thread::Execute() { 
+    
+    return NULL;
+}
+
+/*
 Give the user the ability to terminate
 a detached thread.
 */
-bool LSE_Thread::OnQuit(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr) {
+bool LSE_Thread::OnQuit(LSE_Object *, unsigned int, unsigned int, void *) {
     
     execute = false;
     return true;

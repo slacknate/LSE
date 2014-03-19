@@ -19,7 +19,7 @@ TestPrism::TestPrism(LSE_GLWindow *win, double x, double y, double z, double w, 
 /*
 
 */
-bool TestPrism::OnMouseMotion(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr) {
+bool TestPrism::OnMouseMotion(LSE_Object *, unsigned int, unsigned int, void *) {
     
     /*SDL_MouseMotionEvent *event = (SDL_MouseMotionEvent *)ptr;
     if(event != NULL) {
@@ -42,7 +42,7 @@ bool TestPrism::OnMouseMotion(LSE_Object *sender, unsigned int type, unsigned in
 /*
 
 */
-bool TestPrism::OnKey(LSE_Object *o, unsigned int type, unsigned int id, void *ptr) {
+bool TestPrism::OnKey(LSE_Object *, unsigned int, unsigned int, void *ptr) {
     
     printf("Key!\n");
     LSE_KeyEvent *event = (LSE_KeyEvent *)ptr;

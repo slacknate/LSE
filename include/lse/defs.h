@@ -53,8 +53,8 @@ OpenGL function macros.
 /*
 Keyboard event constants.
 */
-#define LSE_KEY_STATE_DOWN      0
-#define LSE_KEY_STATE_UP        1
+#define LSE_KEY_STATE_DOWN      0x000
+#define LSE_KEY_STATE_UP        0x001
 
 #define LSE_KEY_LSHIFT          0x100
 #define LSE_KEY_RSHIFT          0x101

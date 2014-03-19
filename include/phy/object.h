@@ -27,7 +27,6 @@ class LSE_PHObject : public LSE_Object {
     public:
         
         LSE_PHObject(double x, double y, double z);
-        ~LSE_PHObject();
         
         void ApplyForce(LSE_Vector& force, LSE_Vector &normal, double x, double y, double z);
         //static unsigned int Update(unsigned int delay, void *arg);

@@ -31,8 +31,8 @@ class LSE_GLObject : public LSE_PHObject {
         
         virtual void Draw() {} // object specific render method
         virtual void RenderNormals() {} // object specific normal render method
-        virtual bool Hit(double x, double y, double z) { return false; } // collision detection method
-        virtual LSE_Vector GetNormalAt(double x, double y, double z) { return LSE_Vector(); } // object specific surface normal algorithm
+        virtual bool Hit(double, double, double) { return false; } // collision detection method
+        virtual LSE_Vector GetNormalAt(double, double, double) { return LSE_Vector(); } // object specific surface normal algorithm
 };
 
 #endif

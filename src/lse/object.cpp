@@ -5,7 +5,7 @@ Event handler method.
 Overridden by classes which
 implement an event table.
 */
-bool LSE_Object::Dispatch(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr) {
+bool LSE_Object::Dispatch(LSE_Object *, unsigned int, unsigned int, void *) {
     
     return false;
 }

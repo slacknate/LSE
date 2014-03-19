@@ -8,8 +8,8 @@ LIBS =  -L"C:/MinGW/lib" -lgdi32 -lanl -lglew32 -lopengl32 -lpthread
 INCS =  -I"C:/MinGW/include"  -I"../../include" 
 CXXINCS =  -I"C:/MinGW/lib/gcc/mingw32/3.4.5/include"  -I"C:/MinGW/include/c++/3.4.5/backward"  -I"C:/MinGW/include/c++/3.4.5/mingw32"  -I"C:/MinGW/include/c++/3.4.5"  -I"C:/MinGW/include"  -I"../../include" 
 BIN  = ../../bin/engine.exe
-CXXFLAGS = $(CXXINCS)  
-CFLAGS = $(INCS)  
+CXXFLAGS = $(CXXINCS) -Wall -Wextra
+CFLAGS = $(INCS) -Wall -Wextra
 RM = rm -f
 
 .PHONY: all all-before all-after clean clean-custom

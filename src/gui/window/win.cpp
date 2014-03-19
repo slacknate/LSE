@@ -99,4 +99,6 @@ void* LSE_GLWindow_Win::Execute() {
     }
 
     LSE_CATCH()
+    
+    return NULL;
 }

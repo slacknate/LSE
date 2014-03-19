@@ -28,7 +28,7 @@ class LSE_Thread : public LSE_Object {
         bool Detach();
         bool Join();
         
-        virtual void* Execute() {}
+        virtual void* Execute();
         
         enum {
             

@@ -44,7 +44,9 @@ class LSE_Object {
     
     public:
         
-        virtual bool Dispatch(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr);
+        virtual ~LSE_Object() {}
+        
+        virtual bool Dispatch(LSE_Object *, unsigned int, unsigned int, void *);
 };
 
 #endif

@@ -103,7 +103,7 @@ GLenum LSE_GLProgram::ShaderType(const char *fileName) {
     int extLength = 0;
         
     // check for the shader file extension
-    int ext;
+    unsigned int ext;
     for(ext = 0; ext < strlen(fileName) && !hasExtension; ++ext) {
         
         if(fileName[ext] == '.')
@@ -484,6 +484,8 @@ void LSE_GLProgram::BindUniform(LSE_UniformType type, const char *const name, ..
                 glUniform3fv(location, count, value); break;
             case LSE_FLV4:
                 glUniform4fv(location, count, value); break;
+            default:
+                break;
         }
     }
     else if(type == LSE_INV1 || type == LSE_INV2 || type == LSE_INV3 || type == LSE_INV4) {
@@ -501,6 +503,8 @@ void LSE_GLProgram::BindUniform(LSE_UniformType type, const char *const name, ..
                 glUniform3iv(location, count, value); break;
             case LSE_FLV4:
                 glUniform4iv(location, count, value); break;
+            default:
+                break;
         }
     }
     else if(type == LSE_UIV1 || type == LSE_UIV2 || type == LSE_UIV3 || type == LSE_UIV4) {
@@ -518,6 +522,8 @@ void LSE_GLProgram::BindUniform(LSE_UniformType type, const char *const name, ..
                 glUniform3uiv(location, count, value); break;
             case LSE_FLV4:
                 glUniform4uiv(location, count, value); break;
+            default:
+                break;
         }
     }
     else if(type == LSE_MAT2 || type == LSE_MAT3 || type == LSE_MAT4 || type == LSE_MAT23 || type == LSE_MAT24 || type == LSE_MAT32 || type == LSE_MAT34 || type == LSE_MAT42 || type == LSE_MAT43) {
@@ -546,6 +552,8 @@ void LSE_GLProgram::BindUniform(LSE_UniformType type, const char *const name, ..
                 glUniformMatrix4x2fv(location, count, transpose, value); break;
             case LSE_MAT43:
                 glUniformMatrix4x3fv(location, count, transpose, value); break;
+            default:
+                break;
         }
     }
     else {

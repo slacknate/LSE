@@ -13,14 +13,6 @@ LSE_PHObject::LSE_PHObject(double x, double y, double z) {
 }
 
 /*
-Free allocated LSE_Vectors.
-*/
-LSE_PHObject::~LSE_PHObject() {
-    
-    
-}
-
-/*
 Apply a force, inducing an acceleration, to this object. test me
 The first vector is the force that hits the object. The provided point
 in 3D space is the impact point of the force.
@@ -30,7 +22,7 @@ fix me -> need to know the center of mass
 void LSE_PHObject::ApplyForce(LSE_Vector &force, LSE_Vector &normal, double x, double y, double z) {
     
     //  get the component of force that is converted to linear velocity
-    LSE_Vector inverseNormal = normal; // does this create a copy of normal even though normal is a reference?
+    LSE_Vector inverseNormal = normal; // does this create a copy of normal even though normal is a reference? - the answer is yes, thanks hbock!
     inverseNormal = inverseNormal * -1;
     double dotProd = force * inverseNormal;
     LSE_Vector linearForce = inverseNormal;

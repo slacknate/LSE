@@ -19,7 +19,8 @@ TestCam::TestCam(LSE_GLWindow *w) : LSE_Object() {
 /*
 
 */
-bool TestCam::OnKey(LSE_Object *o, unsigned int type, unsigned int id, void *ptr) {
+bool TestCam::OnKey(LSE_Object *, unsigned int, unsigned int, void *) {
             
     printf("Key!\n");
+    return true;
 }
