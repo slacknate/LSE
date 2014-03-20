@@ -20,9 +20,6 @@ LSE_EVTIMP(LSE_Engine, EngineMap)
 */
 LSE_Engine::LSE_Engine(int argc, char *argv[]) : handler(this) {
     
-    LSE_MESSG_LOG(LOG_LEVEL_DEBUG, "%d", argc);
-    LSE_MESSG_LOG(LOG_LEVEL_DEBUG, "%p", argv);
-    
     window = NULL;
     messgLog = errorLog = NULL;
     run = false;

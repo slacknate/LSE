@@ -11,7 +11,7 @@ Class event map type declaration.
 LSE_DECLARE(classname) \
 public: \
 typedef struct { unsigned int type; unsigned int id; bool (classname::*func)(LSE_Object *, unsigned int, unsigned int, void *); } LSE_MapKey; \
-virtual bool Dispatch(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr); \
+virtual int Dispatch(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr); \
 private: \
 static const int mapSize;
 
@@ -30,15 +30,12 @@ Event handler implementation.
 */
 #define LSE_EVTIMP(classname, map) \
 const int classname::mapSize = (sizeof(map)/sizeof(map[0])); \
-bool classname::Dispatch(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr) { \
+int classname::Dispatch(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr) { \
 for(int i = 0; i < mapSize; ++i) { if((map[i].type == type && map[i].id == id) || (map[i].type == LSE_ANY && map[i].id == LSE_ANY)) \
 { int result = (this->*(map[i].func))(sender, type, id, ptr); if(result != 0) { return result; } continue; } } return false; }
 
 /*
 Base class for all Lucent Shards Engine objects.
-TODO: refactor Dispatch to return an int instead of a bool.
-      returning real result codes would probably be a nice feature
-      for an event handler.
 */
 class LSE_Object {
     
@@ -46,7 +43,7 @@ class LSE_Object {
         
         virtual ~LSE_Object() {}
         
-        virtual bool Dispatch(LSE_Object *, unsigned int, unsigned int, void *);
+        virtual int Dispatch(LSE_Object *, unsigned int, unsigned int, void *) { return 0; }
 };
 
 #endif
