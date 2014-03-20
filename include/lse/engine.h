@@ -29,6 +29,8 @@ class LSE_Engine : public LSE_Thread {
         
     public:
         
+        static LSE_LogLevel log_level;
+        
         LSE_Engine(int argc, char *argv[]);
         ~LSE_Engine();
         

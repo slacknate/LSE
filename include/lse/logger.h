@@ -22,6 +22,6 @@ typedef enum {
     LOG_LEVEL_RAW
 } LSE_LogLevel;
 
-void LSE_WriteLog(LSE_LogLevel level, FILE *stream, ...);
+void LSE_WriteLog(LSE_LogLevel log_level, FILE *stream, ...);
 
 #endif
