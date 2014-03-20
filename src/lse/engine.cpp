@@ -18,10 +18,11 @@ LSE_EVTIMP(LSE_Engine, EngineMap)
 /*
 
 */
-LSE_Engine::LSE_Engine(LSE_GLInitCB g, LSE_SceneCB s) : handler(this) {
+LSE_Engine::LSE_Engine(int argc, char *argv[]) : handler(this) {
     
-    glCB = g;
-    scCB = s;
+    LSE_MESSG_LOG(LOG_LEVEL_DEBUG, "%d", argc);
+    LSE_MESSG_LOG(LOG_LEVEL_DEBUG, "%p", argv);
+    
     window = NULL;
     messgLog = errorLog = NULL;
     run = false;
@@ -202,10 +203,9 @@ int LSE_Engine::Run() {
         
         if(LSE_STATUS != LSE_GL_INIT_FAIL) {
             
-            window->GLInit();
-            glCB();
-            scCB(window);
-            
+            window->GLInit(); 
+            ::GLInit();
+            ::InitScene(this->window);           
             this->Start();
             
             while(run)

@@ -5,7 +5,7 @@
 /*
 Initialize our scene.
 */
-void CreateScene(LSE_GLWindow *window) {
+void InitScene(LSE_GLWindow *window) {
     
     TestPrism *prism = new TestPrism(window, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
     window->PushGL(prism);
@@ -14,6 +14,9 @@ void CreateScene(LSE_GLWindow *window) {
     //window->PushLight(light);
 }
 
+/*
+Initialize our OpenGL settings.
+*/
 void GLInit() {
     
     glEnable(GL_DEPTH_TEST);
@@ -28,7 +31,7 @@ render. Run the engine.
 */
 int main(int argc, char *argv[]) {
     
-    LSE_Engine engine(GLInit, CreateScene);
+    LSE_Engine engine(argc, argv);
     
     int mask = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT;
     engine.InitWindow("Engine", mask, 640, 480, 90.0, 1.0, 20.0); 

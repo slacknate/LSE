@@ -145,7 +145,7 @@ void LSE_GLWindow_Base::GLInit() {
         slVersion = glVersion - 170;   
     
     unsigned int numDots = 0;
-    for(int i = 0; i < strlen(LSE_GL_VENDOR_VERSION); ++i) {
+    for(unsigned int i = 0; i < strlen(LSE_GL_VENDOR_VERSION); ++i) {
         
         if(LSE_GL_VENDOR_VERSION[i] == '.')
             ++numDots;
@@ -160,7 +160,7 @@ void LSE_GLWindow_Base::GLInit() {
     memset(slVersionString, 0, length);
     
     unsigned int k = 0;
-    for(int i = 0; i < strlen(LSE_GL_VENDOR_VERSION); ++i) {
+    for(unsigned int i = 0; i < strlen(LSE_GL_VENDOR_VERSION); ++i) {
         
         if(LSE_GL_VENDOR_VERSION[i] != '.') {
                 

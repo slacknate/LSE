@@ -6,12 +6,6 @@
 #include "gui/window/window.h"
 
 /*
-Callback typedefs.
-*/
-typedef void (*LSE_GLInitCB)();
-typedef void (*LSE_SceneCB)(LSE_GLWindow *);
-
-/*
 
 */
 class LSE_Engine : public LSE_Thread {
@@ -21,8 +15,6 @@ class LSE_Engine : public LSE_Thread {
     
     private:
         
-        LSE_GLInitCB glCB; // 
-        LSE_SceneCB scCB; //
         LSE_List eventList; // 
         LSE_Object *keyFocus, *mouseFocus;
         LSE_Semaphore event_sem;
@@ -37,7 +29,7 @@ class LSE_Engine : public LSE_Thread {
         
     public:
         
-        LSE_Engine(LSE_GLInitCB g, LSE_SceneCB s);
+        LSE_Engine(int argc, char *argv[]);
         ~LSE_Engine();
         
         void InitWindow(const char *const windowTitle, unsigned int m, int w, int h, double angle, double zi, double za);
@@ -54,5 +46,11 @@ class LSE_Engine : public LSE_Thread {
         bool OnEvent(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr);
         bool OnQuit(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr);
 };
+
+/*
+User defined initialization functions.
+*/
+void GLInit();
+void InitScene(LSE_GLWindow *window);
 
 #endif

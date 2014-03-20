@@ -19,7 +19,6 @@ LSE_List::LSE_List(const LSE_List& other) {
     this->size = other.size;
     this->front = this->back = NULL;
     
-    LSE_ListNode *node = NULL;
     for(LSE_ListNode *curr = other.GetFront(); curr != NULL; curr = curr->GetNext())
         this->PushBack(curr->GetData());
 }
