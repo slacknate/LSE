@@ -6,6 +6,12 @@ TODO:
     function key support?
 */
 
+/*
+These constants are used for opening
+raw device input.
+
+Reference: msdn.microsoft.com/en-us/library/ff543477(VS.85).aspx
+*/
 const unsigned short POINTER_ID    = 0x01;
 const unsigned short POINTER_PAGE  = 0x01;
 
@@ -29,7 +35,7 @@ const unsigned short KEYPAD_PAGE   = 0x01;
 */
 unsigned int vkey_to_lkey(unsigned int vkey, unsigned int make_code, unsigned int left_right) {
     
-    LSE_MESSG_LOG(LOG_LEVEL_VERBOSE, "Got vkey code: 0x%.2X, make code: 0x%.2X, left/right flag: 0x%.2X", vkey, make_code, left_right);
+    LSE_MESSG_LOG(LOG_LEVEL_RAW, "Got vkey code: 0x%.2X, make code: 0x%.2X, left/right flag: 0x%.2X", vkey, make_code, left_right);
     
     unsigned int lkey = LSE_KEY_INVALID;
     
@@ -224,7 +230,7 @@ unsigned int vkey_to_lkey(unsigned int vkey, unsigned int make_code, unsigned in
             LSE_ERROR_LOG("Unhandled vkey code: 0x%.2X", vkey);
     }
     
-    LSE_MESSG_LOG(LOG_LEVEL_VERBOSE, "Returning lkey code: 0x%.2X", lkey);
+    LSE_MESSG_LOG(LOG_LEVEL_RAW, "Returning lkey code: 0x%.2X", lkey);
     
     return lkey;
 }
@@ -267,7 +273,7 @@ LRESULT CALLBACK LSE_IOHandler_Win::WindowHandler(HWND hwnd, unsigned int messag
             // close our window
             PostQuitMessage(0);
             // terminate the engine
-            HandleEvent(NULL, LSE_QUIT, LSE_Engine::ID_QUIT, NULL);
+            LSE_IOHandler_Base::HandleEvent(NULL, LSE_QUIT, LSE_Engine::ID_QUIT, NULL);
             break;
             
         case WM_INPUT:
@@ -314,7 +320,7 @@ LRESULT CALLBACK LSE_IOHandler_Win::WindowHandler(HWND hwnd, unsigned int messag
                 key_event->key = vkey_to_lkey(r_keyboard->VKey, r_keyboard->MakeCode, left_right);
                 key_event->state = key_state;
                 
-                LSE_IOHandler_Base::HandleEvent(NULL, LSE_ANY, LSE_ANY, key_event);
+                LSE_IOHandler_Base::HandleEvent(NULL, LSE_KEYBOARD, LSE_ANY, key_event);
             }
             else if(raw_input->header.dwType == RIM_TYPEMOUSE) {
             
