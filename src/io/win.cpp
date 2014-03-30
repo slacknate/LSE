@@ -6,6 +6,24 @@ TODO:
     function key support?
 */
 
+const unsigned short POINTER_ID    = 0x01;
+const unsigned short POINTER_PAGE  = 0x01;
+
+const unsigned short MOUSE_ID      = 0x02;
+const unsigned short MOUSE_PAGE    = 0x01;
+
+const unsigned short JOYSTICK_ID   = 0x04;
+const unsigned short JOYSTICK_PAGE = 0x01;
+
+const unsigned short GAME_PAD_ID   = 0x05;
+const unsigned short GAME_PAD_PAGE = 0x01;
+
+const unsigned short KEYBOARD_ID   = 0x06;
+const unsigned short KEYBOARD_PAGE = 0x01;
+
+const unsigned short KEYPAD_ID     = 0x07;
+const unsigned short KEYPAD_PAGE   = 0x01;
+
 /*
 
 */
@@ -223,17 +241,17 @@ void LSE_IOHandler_Win::Setup(HWND hwnd) {
     
     RAWINPUTDEVICE raw_io[2];
         
-    raw_io[0].usUsagePage = 0x01; 
-    raw_io[0].usUsage = 0x02; 
+    raw_io[0].usUsagePage = MOUSE_PAGE; 
+    raw_io[0].usUsage = MOUSE_ID; 
     raw_io[0].dwFlags = RIDEV_NOLEGACY;
     raw_io[0].hwndTarget = hwnd;
 
-    raw_io[1].usUsagePage = 0x01; 
-    raw_io[1].usUsage = 0x06; 
+    raw_io[1].usUsagePage = KEYBOARD_PAGE; 
+    raw_io[1].usUsage = KEYBOARD_ID; 
     raw_io[1].dwFlags = RIDEV_NOLEGACY;
     raw_io[1].hwndTarget = hwnd;
 
-    if(RegisterRawInputDevices(raw_io, 2, sizeof(raw_io[0])) == false)
+    if(RegisterRawInputDevices(raw_io, 2, sizeof(RAWINPUTDEVICE)) == false)
         LSE_THROW(LSE_IO_SETUP_FAIL);
 }
 
@@ -312,8 +330,12 @@ LRESULT CALLBACK LSE_IOHandler_Win::WindowHandler(HWND hwnd, unsigned int messag
                        r_mouse->lLastY, 
                        r_mouse->ulExtraInformation);  */
             }
+            else {
+                
+                return DefRawInputProc(&raw_input, 1, sizeof(RAWINPUTHEADER));
+            }
             
-            return DefRawInputProc(&raw_input, 1, sizeof(RAWINPUTHEADER));
+            return 0;
             
         case WM_SIZING: // window being resized
             RECT *new_size = (RECT *)lParam;

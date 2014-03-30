@@ -6,8 +6,9 @@ Defining WINVER and _WIN32_WINNT as 0x501
 tells the compiler that we assume we are
 at least Windows XP.
 */
-#define WINVER       0x0501
-#define _WIN32_WINNT 0x0501
+#define WINVER          0x0501
+#define _WIN32_WINNT    0x0501
+
 #include <windows.h>
 #include "io/base.h"
 
