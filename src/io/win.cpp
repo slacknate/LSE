@@ -2,9 +2,16 @@
 #include "lse/engine.h"
 
 /*
+TODO:
+    function key support?
+*/
+
+/*
 
 */
-unsigned int vkey_to_lkey(unsigned int vkey) {
+unsigned int vkey_to_lkey(unsigned int vkey, unsigned int make_code, unsigned int left_right) {
+    
+    LSE_MESSG_LOG(LOG_LEVEL_DEBUG, "Got vkey code: 0x%.2X, make code: 0x%.2X, left right flag: 0x%.2X", vkey, make_code, left_right);
     
     unsigned int lkey = LSE_KEY_INVALID;
     
@@ -110,18 +117,54 @@ unsigned int vkey_to_lkey(unsigned int vkey) {
             lkey = LSE_KEY_SCROLLOCK; break;
         case VK_CAPITAL:
             lkey = LSE_KEY_CAPSLOCK; break;
-        case VK_LSHIFT:
-            lkey = LSE_KEY_LSHIFT; break;
-        case VK_RSHIFT:
-            lkey = LSE_KEY_RSHIFT; break;
-        case VK_LCONTROL:
-            lkey = LSE_KEY_LCTRL; break;
-        case VK_RCONTROL:
-            lkey = LSE_KEY_RCTRL; break;
-        case VK_LMENU: // left alt
-            lkey = LSE_KEY_LALT; break;
-        case VK_RMENU: // right alt
-            lkey = LSE_KEY_RALT; break;
+        case VK_CLEAR:
+            lkey = LSE_KEY_CLEAR; break;
+        case VK_OEM_1: // ;: on US standard keyboard
+            lkey = LSE_KEY_COLONS; break;
+        case VK_OEM_2: // /? on US standard keyboard
+            lkey = LSE_KEY_FSLASH; break;
+        case VK_OEM_3: // `~ on US standard keyboard
+            lkey = LSE_KEY_TILDE; break;
+        case VK_OEM_4: // [{ on US standard keyboard
+            lkey = LSE_KEY_LEFT_BRACKET; break;
+        case VK_OEM_5: // \| on US standard keyboard
+            lkey = LSE_KEY_BSLASH; break;
+        case VK_OEM_6: // ]} on US standard keyboard
+            lkey = LSE_KEY_RIGHT_BRACKET; break;
+        case VK_OEM_7: // '" on US standard keyboard
+            lkey = LSE_KEY_QUOTES; break;
+        case VK_OEM_COMMA: // ,
+            lkey = LSE_KEY_COMMA; break;
+        case VK_OEM_PERIOD: // .
+            lkey = LSE_KEY_PERIOD; break;
+        case VK_OEM_MINUS: // -_
+            lkey = LSE_KEY_UNDERSCORE; break;
+        case VK_OEM_PLUS: // +=
+            lkey = LSE_KEY_EQUALS; break;
+        case VK_SHIFT:
+            if(make_code == 42) // left shift
+                lkey = LSE_KEY_LSHIFT;
+            
+            else if(make_code == 54) // right shift
+                lkey = LSE_KEY_RSHIFT;
+                 
+            break;
+        case VK_CONTROL:
+            if(left_right == RI_KEY_E0) // left control
+                lkey = LSE_KEY_LCTRL;
+            
+            else if(left_right == RI_KEY_E1) // right control
+                lkey = LSE_KEY_RCTRL;
+                 
+            break;
+        case VK_MENU:
+            if(left_right == RI_KEY_E0) // left alt
+                lkey = LSE_KEY_LALT;
+            
+            else if(left_right == RI_KEY_E1) // right alt
+                lkey = LSE_KEY_RALT;
+                 
+            break;
         case '0':
         case '1':
         case '2':
@@ -157,12 +200,12 @@ unsigned int vkey_to_lkey(unsigned int vkey) {
         case 'W':
         case 'X':
         case 'Y':
-        case 'Z':    
+        case 'Z':
             lkey = vkey; break;
         default:
             LSE_ERROR_LOG("Unhandled vkey code: 0x%.2X", vkey);
     }
-    
+        
     LSE_MESSG_LOG(LOG_LEVEL_DEBUG, "Returning lkey code: 0x%.2X", lkey);
     
     return lkey;
@@ -234,15 +277,21 @@ LRESULT CALLBACK LSE_IOHandler_Win::WindowHandler(HWND hwnd, unsigned int messag
                 
                 RAWKEYBOARD *r_keyboard = &raw_input->data.keyboard;
                 
+                // Not sure what the flags don't seem to match the MSDN documentation.
+                // Adding 0x02 to them DOES make them work like the docs though soooo... o_O
+                unsigned int keyboard_flags = r_keyboard->Flags + 0x02;
+                unsigned int make_break = keyboard_flags & 0x01;
+                unsigned int left_right = keyboard_flags & 0x06;
+                
                 unsigned int key_state = (unsigned int)-1;
-                if(r_keyboard->Flags == RI_KEY_BREAK)
+                if(make_break == RI_KEY_BREAK)
                     key_state = LSE_KEY_STATE_UP;
                     
-                else if(r_keyboard->Flags == RI_KEY_BREAK)
+                else if(make_break == RI_KEY_MAKE)
                     key_state = LSE_KEY_STATE_DOWN;
                 
                 LSE_KeyEvent *key_event = new LSE_KeyEvent;
-                key_event->key = vkey_to_lkey(r_keyboard->VKey);
+                key_event->key = vkey_to_lkey(r_keyboard->VKey, r_keyboard->MakeCode, left_right);
                 key_event->state = key_state;
                 
                 LSE_IOHandler_Base::HandleEvent(NULL, LSE_ANY, LSE_ANY, key_event);

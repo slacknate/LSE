@@ -112,6 +112,18 @@ Keyboard event constants.
 #define LSE_KEY_F10             0x135
 #define LSE_KEY_F11             0x136
 #define LSE_KEY_F12             0x137
+#define LSE_KEY_TILDE           0x138
+#define LSE_KEY_UNDERSCORE      0x139
+#define LSE_KEY_EQUALS          0x13A
+#define LSE_KEY_LEFT_BRACKET    0x13B
+#define LSE_KEY_RIGHT_BRACKET   0x13C
+#define LSE_KEY_BSLASH          0x13D
+#define LSE_KEY_COLONS          0x13E
+#define LSE_KEY_QUOTES          0x13F
+#define LSE_KEY_COMMA           0x140
+#define LSE_KEY_PERIOD          0x141
+#define LSE_KEY_FSLASH          0x142
+#define LSE_KEY_CLEAR           0x143
 #define LSE_KEY_INVALID         ((unsigned int)-1)
 
 /*

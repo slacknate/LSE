@@ -18,7 +18,7 @@ LSE_EVTIMP(LSE_Engine, EngineMap)
 /*
 Engine-wide variables.
 */
-LSE_LogLevel LSE_Engine::log_level = LOG_LEVEL_INFO;
+LSE_LogLevel LSE_Engine::log_level = LOG_LEVEL_DEBUG;
 
 /*
 
