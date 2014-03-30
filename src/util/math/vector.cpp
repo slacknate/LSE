@@ -6,9 +6,9 @@ Initialize a "zero" vector.
 */
 LSE_Vector::LSE_Vector() {
     
-    i = 0.0;
-    j = 0.0;
-    k = 0.0;
+    this->i = 0.0;
+    this->j = 0.0;
+    this->k = 0.0;
 }
 
 /*
@@ -16,19 +16,9 @@ Initialize our vector.
 */
 LSE_Vector::LSE_Vector(double x, double y, double z) {
     
-    i = x;
-    j = y;
-    k = z;
-}
-
-/*
-Define the destructor for potential future use.
-As for now there is no memory in need of
-deallocation.
-*/
-LSE_Vector::~LSE_Vector() {
-    
-    
+    this->i = x;
+    this->j = y;
+    this->k = z;
 }
 
 /*
@@ -36,7 +26,7 @@ Get the X component.
 */
 double LSE_Vector::I() {
     
-    return i;
+    return this->i;
 }
 
 /*
@@ -44,7 +34,7 @@ Get the Y component.
 */
 double LSE_Vector::J() {
     
-    return j;
+    return this->j;
 }
 
 /*
@@ -52,7 +42,7 @@ Get the Z component.
 */
 double LSE_Vector::K() {
     
-    return k;
+    return this->k;
 }
 
 /*
@@ -60,7 +50,7 @@ Get the length of the vector.
 */
 double LSE_Vector::Length() {
     
-    return sqrt(pow(i, 2.0) + pow(j, 2.0) + pow(k, 2.0));
+    return sqrt(pow(this->i, 2.0) + pow(this->j, 2.0) + pow(this->k, 2.0));
 }
 
 /*
@@ -68,12 +58,12 @@ Make this vector a unit vector in its current direction.
 */
 void LSE_Vector::Normalize() {
     
-    double size = Length();
+    double size = this->Length();
     if(size > 0) {
         
-        i /= size;
-        j /= size;
-        k /= size;
+        this->i /= size;
+        this->j /= size;
+        this->k /= size;
     }
 }
 
@@ -138,11 +128,9 @@ Get the cross product of two vector.
 */
 LSE_Vector LSE_Vector::operator%(const LSE_Vector& other) {
     
-    double x, y, z;
-    
-    x = (this->j * other.k) - (this->k * other.j);
-    y = (this->k * other.i) - (this->i * other.k);
-    z = (this->i * other.j) - (this->j * other.i);
+    double x = (this->j * other.k) - (this->k * other.j);
+    double y = (this->k * other.i) - (this->i * other.k);
+    double z = (this->i * other.j) - (this->j * other.i);
     
     return LSE_Vector(x, y, z);
 }

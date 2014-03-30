@@ -16,7 +16,6 @@ class LSE_Vector {
         
         LSE_Vector();
         LSE_Vector(double x, double y, double z);
-        ~LSE_Vector();
         
         double I();
         double J();
