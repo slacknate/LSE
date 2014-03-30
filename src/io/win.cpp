@@ -11,7 +11,7 @@ TODO:
 */
 unsigned int vkey_to_lkey(unsigned int vkey, unsigned int make_code, unsigned int left_right) {
     
-    LSE_MESSG_LOG(LOG_LEVEL_DEBUG, "Got vkey code: 0x%.2X, make code: 0x%.2X, left right flag: 0x%.2X", vkey, make_code, left_right);
+    LSE_MESSG_LOG(LOG_LEVEL_VERBOSE, "Got vkey code: 0x%.2X, make code: 0x%.2X, left/right flag: 0x%.2X", vkey, make_code, left_right);
     
     unsigned int lkey = LSE_KEY_INVALID;
     
@@ -206,7 +206,7 @@ unsigned int vkey_to_lkey(unsigned int vkey, unsigned int make_code, unsigned in
             LSE_ERROR_LOG("Unhandled vkey code: 0x%.2X", vkey);
     }
     
-    LSE_MESSG_LOG(LOG_LEVEL_DEBUG, "Returning lkey code: 0x%.2X", lkey);
+    LSE_MESSG_LOG(LOG_LEVEL_VERBOSE, "Returning lkey code: 0x%.2X", lkey);
     
     return lkey;
 }
@@ -238,14 +238,12 @@ void LSE_IOHandler_Win::Setup(HWND hwnd) {
 }
 
 /*
-Catch all window activate, create, destroy,
-minimize, maximize, move, or sizing events.
+
 */
 LRESULT CALLBACK LSE_IOHandler_Win::WindowHandler(HWND hwnd, unsigned int message, WPARAM wParam, LPARAM lParam) {
     
     switch(message) {
         
-        case WM_QUIT:
         case WM_CLOSE:
         case WM_DESTROY:
             // close our window
@@ -253,22 +251,23 @@ LRESULT CALLBACK LSE_IOHandler_Win::WindowHandler(HWND hwnd, unsigned int messag
             // terminate the engine
             HandleEvent(NULL, LSE_QUIT, LSE_Engine::ID_QUIT, NULL);
             break;
+            
         case WM_INPUT:
             HRAWINPUT r_input = (HRAWINPUT)lParam;
             
-            unsigned int dwSize;
-            GetRawInputData(r_input, RID_INPUT, NULL, &dwSize, sizeof(RAWINPUTHEADER));
+            unsigned int num_bytes;
+            GetRawInputData(r_input, RID_INPUT, NULL, &num_bytes, sizeof(RAWINPUTHEADER));
             
-            BYTE *raw_memory = new BYTE[dwSize];
+            BYTE *raw_memory = new BYTE[num_bytes];
             if(raw_memory == NULL) {
                 
-                LSE_ERROR_LOG("lpb is NULL!"); // TODO: proper error handling/logging
+                LSE_ERROR_LOG("raw_memory is NULL!"); // TODO: proper error handling/logging
                 return 0;
             }
             
-            if(GetRawInputData(r_input, RID_INPUT, raw_memory, &dwSize, sizeof(RAWINPUTHEADER)) != dwSize) {
+            if(GetRawInputData(r_input, RID_INPUT, raw_memory, &num_bytes, sizeof(RAWINPUTHEADER)) != num_bytes) {
                 
-                LSE_ERROR_LOG("GetRawInputData does not return correct size!"); // TODO: proper error handling/logging
+                LSE_ERROR_LOG("GetRawInputData did not return correct size!"); // TODO: proper error handling/logging
                 return 0;
             }
 
@@ -289,6 +288,9 @@ LRESULT CALLBACK LSE_IOHandler_Win::WindowHandler(HWND hwnd, unsigned int messag
                     
                 else if(make_break == RI_KEY_MAKE)
                     key_state = LSE_KEY_STATE_DOWN;
+                    
+                else
+                    LSE_ERROR_LOG("Invalid make/break state: %d", make_break); // TODO: real error handling
                 
                 LSE_KeyEvent *key_event = new LSE_KeyEvent;
                 key_event->key = vkey_to_lkey(r_keyboard->VKey, r_keyboard->MakeCode, left_right);
@@ -310,16 +312,19 @@ LRESULT CALLBACK LSE_IOHandler_Win::WindowHandler(HWND hwnd, unsigned int messag
                        r_mouse->lLastY, 
                        r_mouse->ulExtraInformation);  */
             }
+            
             return DefRawInputProc(&raw_input, 1, sizeof(RAWINPUTHEADER));
+            
         case WM_SIZING: // window being resized
-            RECT *newSize = (RECT *)lParam;
-            unsigned int newWidth = newSize->right - newSize->left;
-            unsigned int newHeight = newSize->bottom - newSize->top;
+            RECT *new_size = (RECT *)lParam;
+            unsigned int new_width = new_size->right - new_size->left;
+            unsigned int new_height = new_size->bottom - new_size->top;
             break;
+            
         case WM_MOVING:
-            RECT *newPos = (RECT *)lParam;
-            unsigned int newXPos = newPos->left;
-            unsigned int newYPos = newPos->top;
+            RECT *new_pos = (RECT *)lParam;
+            unsigned int new_x_pos = new_pos->left;
+            unsigned int new_y_pos = new_pos->top;
             break;
         
         default:
