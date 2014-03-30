@@ -205,7 +205,7 @@ unsigned int vkey_to_lkey(unsigned int vkey, unsigned int make_code, unsigned in
         default:
             LSE_ERROR_LOG("Unhandled vkey code: 0x%.2X", vkey);
     }
-        
+    
     LSE_MESSG_LOG(LOG_LEVEL_DEBUG, "Returning lkey code: 0x%.2X", lkey);
     
     return lkey;
@@ -277,7 +277,7 @@ LRESULT CALLBACK LSE_IOHandler_Win::WindowHandler(HWND hwnd, unsigned int messag
                 
                 RAWKEYBOARD *r_keyboard = &raw_input->data.keyboard;
                 
-                // Not sure what the flags don't seem to match the MSDN documentation.
+                // Not sure why the flags don't seem to match the MSDN documentation.
                 // Adding 0x02 to them DOES make them work like the docs though soooo... o_O
                 unsigned int keyboard_flags = r_keyboard->Flags + 0x02;
                 unsigned int make_break = keyboard_flags & 0x01;
