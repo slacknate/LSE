@@ -129,7 +129,14 @@ Keyboard event constants.
 /*
 Mouse event constants
 */
-// ...lol...
+#define LSE_BUTTON_STATE_DOWN      0x000
+#define LSE_BUTTON_STATE_UP        0x001
+
+#define LSE_LEFT_BUTTON            0x1000
+#define LSE_MIDDLE_BUTTON          0x1001
+#define LSE_RIGHT_BUTTON           0x1002
+#define LSE_MOUSE_WHEEL            0x1003
+#define LSE_BUTTON_INVALID         ((unsigned int)-1)
 
 /*
 LSE engine return types.

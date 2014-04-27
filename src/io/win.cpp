@@ -238,33 +238,69 @@ unsigned int vkey_to_lkey(unsigned int vkey, unsigned int make_code, unsigned in
 /*
 
 */
+int* vbutton_to_lbutton(unsigned int vbutton) {
+    
+    int *lbutton = new int[2];
+    
+    switch(vbutton) {
+        
+        case RI_MOUSE_LEFT_BUTTON_DOWN:
+            lbutton[0] = LSE_LEFT_BUTTON; lbutton[1] = LSE_BUTTON_STATE_DOWN; break;
+        case RI_MOUSE_LEFT_BUTTON_UP:
+            lbutton[0] = LSE_LEFT_BUTTON; lbutton[1] = LSE_BUTTON_STATE_UP; break;
+        case RI_MOUSE_MIDDLE_BUTTON_DOWN:
+            lbutton[0] = LSE_MIDDLE_BUTTON; lbutton[1] = LSE_BUTTON_STATE_DOWN; break;
+        case RI_MOUSE_MIDDLE_BUTTON_UP:
+            lbutton[0] = LSE_MIDDLE_BUTTON; lbutton[1] = LSE_BUTTON_STATE_UP; break;
+        case RI_MOUSE_RIGHT_BUTTON_DOWN:
+            lbutton[0] = LSE_RIGHT_BUTTON; lbutton[1] = LSE_BUTTON_STATE_DOWN; break;
+        case RI_MOUSE_RIGHT_BUTTON_UP:
+            lbutton[0] = LSE_RIGHT_BUTTON; lbutton[1] = LSE_BUTTON_STATE_UP; break;
+        case RI_MOUSE_WHEEL:
+            lbutton[0] = LSE_MOUSE_WHEEL; lbutton[1] = 0; break;
+        default:
+            LSE_ERROR_LOG("Unhandled vbutton code: 0x%.4X", vbutton);
+    }
+    
+    return lbutton;
+}
+
+/*
+
+*/
 LSE_IOHandler_Win::LSE_IOHandler_Win(LSE_Object *e) : LSE_IOHandler_Base(e) { }
 
 /*
 
 */
-void LSE_IOHandler_Win::Setup(HWND hwnd) {
+void LSE_IOHandler_Win::RegisterInput(HWND hwnd, unsigned short page, unsigned short id) {
     
-    RAWINPUTDEVICE raw_io[2];
-        
-    raw_io[0].usUsagePage = MOUSE_PAGE; 
-    raw_io[0].usUsage = MOUSE_ID; 
-    raw_io[0].dwFlags = RIDEV_NOLEGACY;
-    raw_io[0].hwndTarget = hwnd;
+    RAWINPUTDEVICE raw_io;
+    
+    raw_io.usUsagePage = page; 
+    raw_io.usUsage = id; 
+    raw_io.dwFlags = RIDEV_NOLEGACY;
+    raw_io.hwndTarget = hwnd;
 
-    raw_io[1].usUsagePage = KEYBOARD_PAGE; 
-    raw_io[1].usUsage = KEYBOARD_ID; 
-    raw_io[1].dwFlags = RIDEV_NOLEGACY;
-    raw_io[1].hwndTarget = hwnd;
-
-    if(RegisterRawInputDevices(raw_io, 2, sizeof(RAWINPUTDEVICE)) == false)
+    if(RegisterRawInputDevices(&raw_io, 1, sizeof(RAWINPUTDEVICE)) == false)
         LSE_THROW(LSE_IO_SETUP_FAIL);
 }
 
 /*
 
 */
+void LSE_IOHandler_Win::Setup(HWND hwnd) {
+    
+    this->RegisterInput(hwnd, MOUSE_PAGE, MOUSE_ID);
+    this->RegisterInput(hwnd, KEYBOARD_PAGE, KEYBOARD_ID);
+}
+
+/*
+
+*/
 LRESULT CALLBACK LSE_IOHandler_Win::WindowHandler(HWND hwnd, unsigned int message, WPARAM wParam, LPARAM lParam) {
+    
+    LRESULT result = 0;
     
     switch(message) {
         
@@ -296,7 +332,7 @@ LRESULT CALLBACK LSE_IOHandler_Win::WindowHandler(HWND hwnd, unsigned int messag
             }
 
             RAWINPUT* raw_input = (RAWINPUT*)raw_memory;
-            if (raw_input->header.dwType == RIM_TYPEKEYBOARD) {
+            if(raw_input->header.dwType == RIM_TYPEKEYBOARD) {
                 
                 RAWKEYBOARD *r_keyboard = &raw_input->data.keyboard;
                 
@@ -325,23 +361,46 @@ LRESULT CALLBACK LSE_IOHandler_Win::WindowHandler(HWND hwnd, unsigned int messag
             else if(raw_input->header.dwType == RIM_TYPEMOUSE) {
             
                 RAWMOUSE *r_mouse = &raw_input->data.mouse;
-            
-                /*LSE_MESSG_LOG("mouse:\n%hu\n%lu\n%hu\n%hu\n%lu\n%d\n%d\n%lu\n",
-                       r_mouse->usFlags, 
-                       r_mouse->ulButtons, 
-                       r_mouse->usButtonFlags, 
-                       r_mouse->usButtonData, 
-                       r_mouse->ulRawButtons, 
-                       r_mouse->lLastX, 
-                       r_mouse->lLastY, 
-                       r_mouse->ulExtraInformation);  */
+                LSE_MouseEvent *mouse_event = new LSE_MouseEvent;
+                
+                if(r_mouse->usButtonFlags) {
+                    
+                    int *lbutton = vbutton_to_lbutton(r_mouse->usButtonFlags);
+                    
+                    if(lbutton[0] == LSE_MOUSE_WHEEL) {
+                        
+                        short scroll_magnitude = (short)r_mouse->usButtonData;
+                        
+                        mouse_event->button = lbutton[0];
+                        mouse_event->state = scroll_magnitude > 0;
+                        mouse_event->dW = scroll_magnitude;
+                    }
+                    else {
+                        
+                        mouse_event->button = lbutton[0];
+                        mouse_event->state = lbutton[1];
+                    }
+                }
+                else if(r_mouse->usFlags == MOUSE_MOVE_RELATIVE) {
+                    
+                    mouse_event->dX = r_mouse->lLastX;
+                    mouse_event->dY = r_mouse->lLastY;
+                }
+                else {
+                    
+                    LSE_ERROR_LOG("Invalid mouse state"); // TODO: real error handling
+                }
+                
+                LSE_IOHandler_Base::HandleEvent(NULL, LSE_MOUSE, LSE_ANY, mouse_event);
+            }
+            else if(raw_input->header.dwType == RIM_TYPEHID) {
+                
+                
             }
             else {
                 
-                return DefRawInputProc(&raw_input, 1, sizeof(RAWINPUTHEADER));
+                LSE_ERROR_LOG("Invalid raw input type %d", raw_input->header.dwType); // TODO: real error handling
             }
-            
-            return 0;
             
         case WM_SIZING: // window being resized
             RECT *new_size = (RECT *)lParam;
@@ -356,8 +415,8 @@ LRESULT CALLBACK LSE_IOHandler_Win::WindowHandler(HWND hwnd, unsigned int messag
             break;
         
         default:
-            return DefWindowProc(hwnd, message, wParam, lParam);
+            result = DefWindowProc(hwnd, message, wParam, lParam);
     }
     
-    return 0;
+    return result;
 }

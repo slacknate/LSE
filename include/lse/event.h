@@ -35,8 +35,8 @@ class LSE_KeyEvent : LSE_Event {
         
         LSE_KeyEvent() {
             
-            type = LSE_KEYBOARD;
-            key = (unsigned int)-1; 
+            this->type = LSE_KEYBOARD;
+            this->key = LSE_KEY_INVALID; 
         }
 };
 
@@ -44,14 +44,16 @@ class LSE_MouseEvent : LSE_Event {
     
     public:
         
-        int x, y;
-        int dX, dY, dW;
+        int dX, dY;
+        short dW;
+        bool state;
         unsigned int button;
         
         LSE_MouseEvent() {
             
-            type = LSE_MOUSE;
-            x = y = dX = dY = dW = button = 0;
+            this->type = LSE_MOUSE;
+            this->button = LSE_BUTTON_INVALID;
+            this->dX = this->dY = this->dW = 0;
         }
 };
 

@@ -176,6 +176,7 @@ void* LSE_Engine::Execute() {
                 //keyFocus->Dispatch(this, LSE_KEYBOARD, LSE_ANY, event);
                 break;
             case LSE_MOUSE:
+                //mouseFocus->Dispatch(this, LSE_MOUSE, LSE_ANY, event);
                 break;
             default:
                 break;
