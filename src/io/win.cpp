@@ -402,6 +402,8 @@ LRESULT CALLBACK LSE_IOHandler_Win::WindowHandler(HWND hwnd, unsigned int messag
                 LSE_ERROR_LOG("Invalid raw input type %d", raw_input->header.dwType); // TODO: real error handling
             }
             
+            break;
+            
         case WM_SIZING: // window being resized
             RECT *new_size = (RECT *)lParam;
             unsigned int new_width = new_size->right - new_size->left;
