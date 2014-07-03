@@ -3,4 +3,4 @@
 /*
 
 */
-LSE_IOHandler_Nix::LSE_IOHandler_Nix(LSE_Object *e) : LSE_IOHandler_Base(e) { }
+LSE_IOHandler::LSE_IOHandler(LSE_Object *e) : LSE_IOHandler_Base(e) { }

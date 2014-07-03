@@ -268,12 +268,12 @@ int* vbutton_to_lbutton(unsigned int vbutton) {
 /*
 
 */
-LSE_IOHandler_Win::LSE_IOHandler_Win(LSE_Object *e) : LSE_IOHandler_Base(e) { }
+LSE_IOHandler::LSE_IOHandler(LSE_Object *e) : LSE_IOHandler_Base(e) { }
 
 /*
 
 */
-void LSE_IOHandler_Win::RegisterInput(HWND hwnd, unsigned short page, unsigned short id) {
+void LSE_IOHandler::RegisterInput(HWND hwnd, unsigned short page, unsigned short id) {
     
     RAWINPUTDEVICE raw_io;
     
@@ -289,7 +289,7 @@ void LSE_IOHandler_Win::RegisterInput(HWND hwnd, unsigned short page, unsigned s
 /*
 
 */
-void LSE_IOHandler_Win::Setup(HWND hwnd) {
+void LSE_IOHandler::Setup(HWND hwnd) {
     
     this->RegisterInput(hwnd, MOUSE_PAGE, MOUSE_ID);
     this->RegisterInput(hwnd, KEYBOARD_PAGE, KEYBOARD_ID);
@@ -298,7 +298,7 @@ void LSE_IOHandler_Win::Setup(HWND hwnd) {
 /*
 
 */
-LRESULT CALLBACK LSE_IOHandler_Win::WindowHandler(HWND hwnd, unsigned int message, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK LSE_IOHandler::WindowHandler(HWND hwnd, unsigned int message, WPARAM wParam, LPARAM lParam) {
     
     LRESULT result = 0;
     

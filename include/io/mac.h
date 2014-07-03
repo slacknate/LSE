@@ -3,13 +3,11 @@
 
 #include "io/base.h"
 
-class LSE_IOHandler_Mac : public LSE_IOHandler_Base {
+class LSE_IOHandler : public LSE_IOHandler_Base {
         
     public:
         
-        LSE_IOHandler_Mac(LSE_Object *e);
+        LSE_IOHandler(LSE_Object *e);
 };
-
-#define LSE_IOHandler LSE_IOHandler_Mac
 
 #endif
