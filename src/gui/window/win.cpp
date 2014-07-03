@@ -1,23 +1,23 @@
 #include "io/win.h"
 #include "gui/window/win.h"
 
-LSE_GLWindow_Win::LSE_GLWindow_Win(const char *const windowTitle, unsigned int mask,
-                                   int width, int height, double angle, double zi, double za) : 
-                                   LSE_GLWindow_Base(windowTitle, mask, width, height, angle, zi, za) { }
+LSE_GLWindow::LSE_GLWindow(const char *const windowTitle, unsigned int mask,
+                           int width, int height, double angle, double zi, double za) : 
+                           LSE_GLWindow_Base(windowTitle, mask, width, height, angle, zi, za) { }
 
-void LSE_GLWindow_Win::GLContextInit() {
+void LSE_GLWindow::GLContextInit() {
     
     wglMakeCurrent(hdc, hglrc);
 }
 
-void LSE_GLWindow_Win::GLContextDestroy() {
+void LSE_GLWindow::GLContextDestroy() {
     
     wglMakeCurrent(NULL, NULL);
     wglDeleteContext(hglrc);
     ReleaseDC(hwnd, hdc); // this is an issue, HWND is destroyed before we get here....
 }
 
-void LSE_GLWindow_Win::SwapGLBuffers() {
+void LSE_GLWindow::SwapGLBuffers() {
     
     SwapBuffers(hdc);
 }
@@ -26,7 +26,7 @@ void LSE_GLWindow_Win::SwapGLBuffers() {
 Create a window with an OpenGL context,
 and run our UI event loop.
 */
-void* LSE_GLWindow_Win::Execute() {
+void* LSE_GLWindow::Execute() {
     
     LSE_TRY()
     

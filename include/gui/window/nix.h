@@ -3,6 +3,4 @@
 
 #include "gui/window/base.h"
 
-#define LSE_GLWindow LSE_GLWindow_Nix
-
 #endif

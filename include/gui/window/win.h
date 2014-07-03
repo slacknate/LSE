@@ -6,7 +6,7 @@
 /*
 
 */
-class LSE_GLWindow_Win : public LSE_GLWindow_Base {
+class LSE_GLWindow : public LSE_GLWindow_Base {
     
     private:
         
@@ -25,7 +25,5 @@ class LSE_GLWindow_Win : public LSE_GLWindow_Base {
         
         void* Execute();
 };
-
-#define LSE_GLWindow LSE_GLWindow_Win
 
 #endif
