@@ -1,5 +1,6 @@
 #include "util/math/quaternion.h"
 #include "lse/defs.h"
+using namespace LSE;
 
 /*
 Initialize our quaternion by default to a identity orientation.

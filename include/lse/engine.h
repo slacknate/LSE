@@ -5,6 +5,8 @@
 #include "lse/semaphore.h"
 #include "gui/window/window.h"
 
+namespace LSE {
+
 /*
 
 */
@@ -49,10 +51,12 @@ class LSE_Engine : public LSE_Thread {
         bool OnQuit(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr);
 };
 
+}
+
 /*
 User defined initialization functions.
 */
 void GLInit();
-void InitScene(LSE_GLWindow *window);
+void InitScene(LSE::LSE_GLWindow *window);
 
 #endif

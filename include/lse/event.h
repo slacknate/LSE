@@ -1,6 +1,8 @@
 #ifndef LSE_EVENT_H
 #define LSE_EVENT_H
 
+namespace LSE {
+
 /*
 LSE Event types.
 */
@@ -81,5 +83,7 @@ typedef struct {
     
     
 }LSE_QuitEvent;
+
+}
 
 #endif

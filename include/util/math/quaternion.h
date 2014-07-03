@@ -5,6 +5,8 @@
 #include "util/math/vector.h"
 #include "gl/vertex.h"
 
+namespace LSE {
+
 /*
 Quaternion class used to represent gimbal-lock free
 rotation in 3D space.
@@ -42,5 +44,7 @@ class LSE_Quaternion {
         bool operator==(const LSE_Quaternion& other);
         bool operator!=(const LSE_Quaternion& other);
 };
+
+}
 
 #endif

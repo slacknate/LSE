@@ -4,6 +4,8 @@
 #include <pthread.h>
 #include "lse/object.h"
 
+namespace LSE {
+
 /*
 Thread class used to create objects
 which can run an additional thread in the
@@ -37,5 +39,7 @@ class LSE_Thread : public LSE_Object {
         
         bool OnQuit(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr);
 };
+
+}
 
 #endif

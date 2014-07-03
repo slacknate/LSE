@@ -1,6 +1,7 @@
 #include "lse.h"
 #include "prism.h"
 #include "cam.h"
+using namespace LSE;
 
 /*
 Initialize our scene.

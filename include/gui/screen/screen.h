@@ -3,8 +3,7 @@
 
 #include "gl/program.h"
 
-#define SCREEN_VERT_COUNT 4
-#define SCREEN_ELEM_COUNT 2
+namespace LSE {
 
 /*
 Representation of an OpenGL frambuffer.
@@ -14,6 +13,9 @@ LSE_GLPrimitive.
 class LSE_GLScreen {
     
     private:
+        
+        static const int SCREEN_VERT_COUNT = 4;
+        static const int SCREEN_ELEM_COUNT = 2;
         
         LSE_GLProgram program; //
         double *vertices; //
@@ -42,5 +44,7 @@ class LSE_GLScreen {
         
         bool FBOActive();
 };
+
+}
 
 #endif

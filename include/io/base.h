@@ -3,6 +3,11 @@
 
 #include "lse/object.h"
 
+namespace LSE {
+
+/*
+
+*/
 class LSE_IOHandler_Base : public LSE_Object {
     
     private:
@@ -15,5 +20,7 @@ class LSE_IOHandler_Base : public LSE_Object {
         
         static void HandleEvent(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr);
 };
+
+}
 
 #endif

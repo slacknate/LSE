@@ -14,6 +14,8 @@ TODO:
     move version/attribute checking from engine run to context init
 */
 
+namespace LSE {
+
 /*
 OpenGL context class.
 Describes an OpenGL canvas, and
@@ -69,5 +71,7 @@ class LSE_GLWindow_Base : public LSE_Thread {
         
         void Resize();
 };
+
+}
 
 #endif

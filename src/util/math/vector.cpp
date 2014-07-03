@@ -1,5 +1,6 @@
 #include "util/math/vector.h"
 #include "lse/defs.h"
+using namespace LSE;
 
 /*
 Initialize a "zero" vector.

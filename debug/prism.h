@@ -4,6 +4,8 @@
 #include "gl/rectprism.h"
 #include "gui/window/window.h"
 
+namespace LSE {
+
 // test lse_globject class
 class TestPrism : public LSE_GLRectPrism {
     
@@ -26,5 +28,7 @@ class TestPrism : public LSE_GLRectPrism {
         bool OnMouseMotion(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr);
         bool OnKey(LSE_Object *o, unsigned int type, unsigned int id, void *ptr);
 };
+
+}
 
 #endif

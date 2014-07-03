@@ -1,5 +1,42 @@
 #include "lse/exception.h"
 #include "lse/defs.h"
+using namespace LSE;
+
+void call_safe() {
+    
+    try {
+        
+        
+    }
+    catch(const std::bad_alloc &ba) { 
+        
+        throw LSE_Exception(__FILE__, __LINE__, LSE_BAD_ALLOC);
+    }
+    catch(const std::bad_cast &bc) { 
+    
+        throw LSE_Exception(__FILE__, __LINE__, LSE_BAD_CAST);
+    }
+    catch(const std::bad_typeid &bt) { 
+    
+        throw LSE_Exception(__FILE__, __LINE__, LSE_BAD_TYPE_ID);
+    }
+    catch(const std::bad_exception &be) { 
+    
+        throw LSE_Exception(__FILE__, __LINE__, LSE_BAD_EXCEPTION);
+    }
+    catch(const std::ios_base::failure &iof) { 
+    
+        throw LSE_Exception(__FILE__, __LINE__, LSE_IOS_FAIL);
+    }
+    catch(const std::runtime_error &re) { 
+    
+        throw LSE_Exception(__FILE__, __LINE__, LSE_RUNTIME_ERR);
+    }
+    catch(const std::logic_error &le) { 
+    
+        throw LSE_Exception(__FILE__, __LINE__, LSE_LOGIC_ERR);
+    }
+}
 
 /*
 Create an exception, with a corresponding error message.

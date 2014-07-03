@@ -3,9 +3,10 @@
 
 #include "lse/engine.h"
 
-namespace LSE_Signal {
+namespace LSE {
     
-    void LSE_InitSignals(LSE_Engine *engine);
-};
+void LSE_InitSignals(LSE_Engine *engine);
+
+}
 
 #endif

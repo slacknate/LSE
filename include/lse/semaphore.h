@@ -4,6 +4,11 @@
 #include <pthread.h>
 #include <semaphore.h>
 
+namespace LSE {
+
+/*
+
+*/
 class LSE_Semaphore {
     
     private:
@@ -22,4 +27,7 @@ class LSE_Semaphore {
         int Value();
 };
 
+}
+
 #endif
+

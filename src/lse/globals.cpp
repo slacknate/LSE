@@ -1,5 +1,7 @@
 #include "lse/globals.h"
 
+namespace LSE {
+
 /*
 Global viewing and projection matrices.
 They are column major format:
@@ -10,3 +12,5 @@ They are column major format:
 3 7 11 15
 */
 float LSE_VIEW_MATRIX[16], LSE_PROJ_MATRIX[16];
+
+}

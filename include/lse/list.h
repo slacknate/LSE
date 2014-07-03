@@ -3,6 +3,8 @@
 
 #include "lse/listnode.h"
 
+namespace LSE {
+
 /*
 
 */
@@ -42,5 +44,7 @@ class LSE_List {
         int Size();
         void Clear();
 };
+
+}
 
 #endif

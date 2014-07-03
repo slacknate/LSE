@@ -1,5 +1,6 @@
 #include "io/win.h"
 #include "gui/window/win.h"
+using namespace LSE;
 
 LSE_GLWindow::LSE_GLWindow(const char *const windowTitle, unsigned int mask,
                            int width, int height, double angle, double zi, double za) : 
@@ -28,7 +29,7 @@ and run our UI event loop.
 */
 void* LSE_GLWindow::Execute() {
     
-    LSE_TRY()
+    try {
     
     // Create a window class to be used for CreateWindow
     WNDCLASS wc;
@@ -43,19 +44,19 @@ void* LSE_GLWindow::Execute() {
     wc.lpszMenuName = NULL;
     wc.lpszClassName = "Lucent Shards Engine";
     if(!RegisterClass(&wc))
-        LSE_THROW(LSE_WIN_REG_FAIL);
+        throw LSE_Exception(__FILE__, __LINE__, LSE_WIN_REG_FAIL);
     
     // Create our window
     hwnd = CreateWindow(wc.lpszClassName, windowTitle, WS_CAPTION | WS_OVERLAPPEDWINDOW | WS_VISIBLE, 100, 100, width, height, NULL, NULL, wc.hInstance, NULL);
     if(hwnd == NULL)
-        LSE_THROW(LSE_WIN_CREATE_FAIL);
+        throw LSE_Exception(__FILE__, __LINE__, LSE_WIN_CREATE_FAIL);
         
     this->handler->Setup(hwnd);
     
     // Get a device context so we can use OpenGL
     hdc = GetDC(hwnd);
     if(hdc == NULL)
-        LSE_THROW(LSE_GL_CON_FAIL);
+        throw LSE_Exception(__FILE__, __LINE__, LSE_GL_CON_FAIL);
     
     // Set up all out IO for this window
     //io.Setup(hwnd);
@@ -82,11 +83,11 @@ void* LSE_GLWindow::Execute() {
     
     // Finish setting up our OpenGL context
     if(!SetPixelFormat(hdc, ChoosePixelFormat(hdc, &pfd), &pfd))
-        LSE_THROW(LSE_GL_CON_FAIL);
+        throw LSE_Exception(__FILE__, __LINE__, LSE_GL_CON_FAIL);
     
     hglrc = wglCreateContext(hdc);
     if(hglrc == NULL)
-        LSE_THROW(LSE_GL_CON_FAIL);
+        throw LSE_Exception(__FILE__, __LINE__, LSE_GL_CON_FAIL);
     
     initialized = true;
     
@@ -97,8 +98,12 @@ void* LSE_GLWindow::Execute() {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
-
-    LSE_CATCH()
+    
+    }
+    catch(std::exception &e) {
+        
+        throw LSE_Exception(__FILE__, __LINE__, LSE_OK); // FIXME: need a way to "convert" standard exceptions into LSE exceptions
+    }
     
     return NULL;
 }

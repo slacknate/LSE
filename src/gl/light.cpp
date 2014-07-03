@@ -1,4 +1,5 @@
 #include "gl/light.h"
+using namespace LSE;
 
 /*
 Initialize the paramaters. Set all

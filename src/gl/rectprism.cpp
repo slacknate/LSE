@@ -1,6 +1,7 @@
 #include <new>
 #include <cmath>
 #include "gl/rectprism.h"
+using namespace LSE;
 
 /*
 Initialize our prism. Store size attributes
@@ -12,7 +13,7 @@ LSE_GLRectPrism::LSE_GLRectPrism(double x, double y, double z, double w, double 
     height = h;
     depth = d;
     
-    MemAllocate(RECTP_VERT_COUNT, RECTP_ELEM_COUNT);
+    MemAllocate(this->RECTP_VERT_COUNT, this->RECTP_ELEM_COUNT);
 }
 
 /*

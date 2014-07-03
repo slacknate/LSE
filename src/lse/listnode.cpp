@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include "lse/defs.h"
 #include "lse/listnode.h"
+using namespace LSE;
 
 /*
 Initialize our node as empty.
@@ -34,7 +35,7 @@ LSE_ListNode::LSE_ListNode(void *d) {
 */
 LSE_ListNode::~LSE_ListNode() {
     
-    LSE_ERROR_LOG("LSE_ListNode::~LSE_ListNode(): MEMORY LEAK!");
+    LOG(LOG_LEVEL_ERROR, "LSE_ListNode::~LSE_ListNode(): MEMORY LEAK!");
     //delete data;
 }
 

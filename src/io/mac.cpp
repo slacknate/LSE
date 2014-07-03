@@ -1,4 +1,5 @@
 #include "io/mac.h"
+using namespace LSE;
 
 /*
 

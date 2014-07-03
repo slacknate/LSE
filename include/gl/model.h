@@ -3,6 +3,8 @@
 
 #include "gl/object.h"
 
+namespace LSE {
+
 /*
 Base class for all model objects.
 */
@@ -19,5 +21,7 @@ class LSE_GLModel : public LSE_GLObject {
         LSE_GLModel(char *fileName, double x, double y, double z);
         ~LSE_GLModel();
 };
+
+}
 
 #endif

@@ -1,5 +1,6 @@
 #include "gl/object.h"
 #include "gl/shaders.h"
+using namespace LSE;
 
 /*
 Initialize our object to a position.
@@ -15,7 +16,7 @@ LSE_GLObject::LSE_GLObject(double x, double y, double z) : LSE_PHObject(x, y, z)
     program.BindAttrib(VERT_TEX_COORD, "VERT_TEX_COORD");
         
     if(!program.Finalize())
-        LSE_THROW(LSE_GL_PROG_FAIL);
+        throw LSE_Exception(__FILE__, __LINE__, LSE_GL_PROG_FAIL);
         
     program.BindUniform(LSE_MAT4, "VIEW_MAT", 1, GL_FALSE, &LSE_VIEW_MATRIX[0]);
     program.BindUniform(LSE_MAT4, "PROJ_MAT", 1, GL_FALSE, &LSE_PROJ_MATRIX[0]);

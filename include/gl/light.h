@@ -3,6 +3,8 @@
 
 #include "lse/object.h"
 
+namespace LSE {
+
 class LSE_GLLight : LSE_Object {
     
     private:
@@ -26,5 +28,7 @@ class LSE_GLLight : LSE_Object {
         void SetLinearAtten(float x);
         void SetQuadAtten(float x);
 };
+
+}
 
 #endif

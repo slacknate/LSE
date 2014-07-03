@@ -3,6 +3,8 @@
 
 #include "lse/object.h"
 
+namespace LSE {
+
 /*
 Class that describes material lighting properties.
 */
@@ -27,5 +29,7 @@ class LSE_GLMaterial : LSE_Object {
         void SetColorIndices(float x, float y, float z);
         void SetShininess(float x);
 };
+
+}
 
 #endif

@@ -1,6 +1,7 @@
 #include <new>
 #include <cstdio>
 #include "gl/primitive.h"
+using namespace LSE;
 
 /*
 Initialize a primitive. We have a positon, but no
@@ -41,7 +42,7 @@ void LSE_GLPrimitive::MemAllocate(int nv, int ne) {
     }
     else {
         
-        LSE_ERROR_LOG("Failed to allocate memory for vertex, normal, color, texture, or index arrays.");
+        LOG(LOG_LEVEL_ERROR, "Failed to allocate memory for vertex, normal, color, texture, or index arrays.");
         initialized = false;
     }
 }

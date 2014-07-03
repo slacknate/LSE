@@ -1,5 +1,6 @@
 #include "gui/screen/screen.h"
 #include "gui/screen/shaders.h"
+using namespace LSE;
 
 /*
 Initialize our screen. Store the width
@@ -15,13 +16,13 @@ LSE_GLScreen::LSE_GLScreen(int w, int h) {
     program.AddShader(LSE_GetScreenShaders(SHADER_FRAG), SHADER_FRAG);
         
     if(!program.Finalize())
-        LSE_THROW(LSE_GL_INIT_FAIL/*, LSE_ErrorString(LSE_GL_PROG_FAIL)*/);
+        throw LSE_Exception(__FILE__, __LINE__, LSE_GL_INIT_FAIL/*, LSE_ErrorString(LSE_GL_PROG_FAIL)*/);
         
     program.BindUniform(LSE_IN1, "FRAG_TEXTURE", 0);
     
-    vertices = new double [3*SCREEN_VERT_COUNT];
-    indices = new int [3*SCREEN_ELEM_COUNT];
-    texCoords = new int [2*SCREEN_VERT_COUNT];
+    vertices = new double [3*this->SCREEN_VERT_COUNT];
+    indices = new int [3*this->SCREEN_ELEM_COUNT];
+    texCoords = new int [2*this->SCREEN_VERT_COUNT];
     
     CalcVertices();
     CalcIndices();
@@ -163,7 +164,7 @@ void LSE_GLScreen::Resize(int w, int h) {
     
     fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     if(fboStatus != GL_FRAMEBUFFER_COMPLETE)
-        LSE_ERROR_LOG("Frame buffer object creation failed.");
+        LOG(LOG_LEVEL_ERROR, "Frame buffer object creation failed.");
     
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -201,7 +202,7 @@ void LSE_GLScreen::Render() {
     glVertexAttribPointer(VERT_POSITION, 3, GL_DOUBLE, GL_FALSE, 0, vertices);
     glVertexAttribPointer(VERT_TEX_COORD, 2, GL_INT, GL_FALSE, 0, texCoords);
         
-    glDrawElements(GL_TRIANGLES, 3*SCREEN_ELEM_COUNT, GL_UNSIGNED_INT, indices);
+    glDrawElements(GL_TRIANGLES, 3*this->SCREEN_ELEM_COUNT, GL_UNSIGNED_INT, indices);
         
     glDisableVertexAttribArray(VERT_TEX_COORD);
     glDisableVertexAttribArray(VERT_POSITION);

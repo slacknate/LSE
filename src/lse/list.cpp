@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include "lse/defs.h"
 #include "lse/list.h"
+using namespace LSE;
 
 /*
 Initialize our list to empty/
@@ -40,7 +41,7 @@ void LSE_List::PushFront(void *data) {
     if(node != NULL)
         this->PushFront(node);
     else
-        LSE_ERROR_LOG("Failed to allocate memory for new list node.\n");
+        LOG(LOG_LEVEL_ERROR, "Failed to allocate memory for new list node.\n");
 }
 
 /*
@@ -68,7 +69,7 @@ void LSE_List::PushFront(LSE_ListNode *node) {
     }
     else {
 
-        LSE_ERROR_LOG("Cannot add NULL node to list.\n");
+        LOG(LOG_LEVEL_ERROR, "Cannot add NULL node to list.\n");
     }
 }
 
@@ -83,11 +84,11 @@ void LSE_List::Insert(void *data, int index) {
         if(node != NULL)
             Insert(node, index);
         else
-            LSE_ERROR_LOG("Failed to allocate memory for new list node.\n");
+            LOG(LOG_LEVEL_ERROR, "Failed to allocate memory for new list node.\n");
     }
     else {
 
-        LSE_ERROR_LOG("List node insertion index out of range.\n");
+        LOG(LOG_LEVEL_ERROR, "List node insertion index out of range.\n");
     }
 }
 
@@ -123,12 +124,12 @@ void LSE_List::Insert(LSE_ListNode *node, int index) {
         }
         else {
 
-            LSE_ERROR_LOG("Cannot add NULL node to list.\n");
+            LOG(LOG_LEVEL_ERROR, "Cannot add NULL node to list.\n");
         }
     }
     else {
 
-        LSE_ERROR_LOG("List node insertion index out of range.\n");
+        LOG(LOG_LEVEL_ERROR, "List node insertion index out of range.\n");
     }
 }
 
@@ -141,7 +142,7 @@ void LSE_List::PushBack(void *data) {
     if(node != NULL)
         PushBack(node);
     else
-        LSE_ERROR_LOG("Failed to allocate memory for new list node.\n");
+        LOG(LOG_LEVEL_ERROR, "Failed to allocate memory for new list node.\n");
 }
 
 /*
@@ -169,7 +170,7 @@ void LSE_List::PushBack(LSE_ListNode *node) {
     }
     else {
 
-        LSE_ERROR_LOG("Cannot add NULL node to list.\n");
+        LOG(LOG_LEVEL_ERROR, "Cannot add NULL node to list.\n");
     }
 }
 

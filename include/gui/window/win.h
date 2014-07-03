@@ -3,6 +3,8 @@
 
 #include "gui/window/base.h"
 
+namespace LSE {
+
 /*
 
 */
@@ -25,5 +27,7 @@ class LSE_GLWindow : public LSE_GLWindow_Base {
         
         void* Execute();
 };
+
+}
 
 #endif

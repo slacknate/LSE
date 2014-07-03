@@ -5,6 +5,8 @@
 #include "gl/program.h"
 #include "gl/material.h"
 
+namespace LSE {
+
 /*
 Base class for all objects which are drawable
 on an OpenGL canvas.
@@ -34,5 +36,7 @@ class LSE_GLObject : public LSE_PHObject {
         virtual bool Hit(double, double, double) { return false; } // collision detection method
         virtual LSE_Vector GetNormalAt(double, double, double) { return LSE_Vector(); } // object specific surface normal algorithm
 };
+
+}
 
 #endif

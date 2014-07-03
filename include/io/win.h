@@ -12,6 +12,8 @@ at least Windows XP.
 #include <windows.h>
 #include "io/base.h"
 
+namespace LSE {
+
 class LSE_IOHandler : public LSE_IOHandler_Base {
         
     public:
@@ -21,5 +23,7 @@ class LSE_IOHandler : public LSE_IOHandler_Base {
         void Setup(HWND hwnd);
         static LRESULT CALLBACK WindowHandler(HWND hwnd, unsigned int message, WPARAM wParam, LPARAM lParam);
 };
+
+}
 
 #endif

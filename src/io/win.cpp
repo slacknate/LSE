@@ -1,5 +1,6 @@
 #include "io/win.h"
 #include "lse/engine.h"
+using namespace LSE;
 
 /*
 TODO:
@@ -35,7 +36,7 @@ const unsigned short KEYPAD_PAGE   = 0x01;
 */
 unsigned int vkey_to_lkey(unsigned int vkey, unsigned int make_code, unsigned int left_right) {
     
-    LSE_MESSG_LOG(LOG_LEVEL_RAW, "Got vkey code: 0x%.2X, make code: 0x%.2X, left/right flag: 0x%.2X", vkey, make_code, left_right);
+    LOG(LOG_LEVEL_RAW, "Got vkey code: 0x%.2X, make code: 0x%.2X, left/right flag: 0x%.2X", vkey, make_code, left_right);
     
     unsigned int lkey = LSE_KEY_INVALID;
     
@@ -227,10 +228,10 @@ unsigned int vkey_to_lkey(unsigned int vkey, unsigned int make_code, unsigned in
         case 'Z':
             lkey = vkey; break;
         default:
-            LSE_ERROR_LOG("Unhandled vkey code: 0x%.2X", vkey);
+            LOG(LOG_LEVEL_ERROR, "Unhandled vkey code: 0x%.2X", vkey);
     }
     
-    LSE_MESSG_LOG(LOG_LEVEL_RAW, "Returning lkey code: 0x%.2X", lkey);
+    LOG(LOG_LEVEL_RAW, "Returning lkey code: 0x%.2X", lkey);
     
     return lkey;
 }
@@ -259,7 +260,7 @@ int* vbutton_to_lbutton(unsigned int vbutton) {
         case RI_MOUSE_WHEEL:
             lbutton[0] = LSE_MOUSE_WHEEL; lbutton[1] = 0; break;
         default:
-            LSE_ERROR_LOG("Unhandled vbutton code: 0x%.4X", vbutton);
+            LOG(LOG_LEVEL_ERROR, "Unhandled vbutton code: 0x%.4X", vbutton);
     }
     
     return lbutton;
@@ -283,7 +284,7 @@ void LSE_IOHandler::RegisterInput(HWND hwnd, unsigned short page, unsigned short
     raw_io.hwndTarget = hwnd;
 
     if(RegisterRawInputDevices(&raw_io, 1, sizeof(RAWINPUTDEVICE)) == false)
-        LSE_THROW(LSE_IO_SETUP_FAIL);
+        throw LSE_Exception(__FILE__, __LINE__, LSE_IO_SETUP_FAIL);
 }
 
 /*
@@ -321,13 +322,13 @@ LRESULT CALLBACK LSE_IOHandler::WindowHandler(HWND hwnd, unsigned int message, W
             BYTE *raw_memory = new BYTE[num_bytes];
             if(raw_memory == NULL) {
                 
-                LSE_ERROR_LOG("raw_memory is NULL!"); // TODO: proper error handling/logging
+                LOG(LOG_LEVEL_ERROR, "raw_memory is NULL!"); // TODO: proper error handling/logging
                 return 0;
             }
             
             if(GetRawInputData(r_input, RID_INPUT, raw_memory, &num_bytes, sizeof(RAWINPUTHEADER)) != num_bytes) {
                 
-                LSE_ERROR_LOG("GetRawInputData did not return correct size!"); // TODO: proper error handling/logging
+                LOG(LOG_LEVEL_ERROR, "GetRawInputData did not return correct size!"); // TODO: proper error handling/logging
                 return 0;
             }
 
@@ -350,7 +351,7 @@ LRESULT CALLBACK LSE_IOHandler::WindowHandler(HWND hwnd, unsigned int message, W
                     key_state = LSE_KEY_STATE_DOWN;
                     
                 else
-                    LSE_ERROR_LOG("Invalid make/break state: %d", make_break); // TODO: real error handling
+                    LOG(LOG_LEVEL_ERROR, "Invalid make/break state: %d", make_break); // TODO: real error handling
                 
                 LSE_KeyEvent *key_event = new LSE_KeyEvent;
                 key_event->key = vkey_to_lkey(r_keyboard->VKey, r_keyboard->MakeCode, left_right);
@@ -388,7 +389,7 @@ LRESULT CALLBACK LSE_IOHandler::WindowHandler(HWND hwnd, unsigned int message, W
                 }
                 else {
                     
-                    LSE_ERROR_LOG("Invalid mouse state"); // TODO: real error handling
+                    LOG(LOG_LEVEL_ERROR, "Invalid mouse state"); // TODO: real error handling
                 }
                 
                 LSE_IOHandler_Base::HandleEvent(NULL, LSE_MOUSE, LSE_ANY, mouse_event);
@@ -399,7 +400,7 @@ LRESULT CALLBACK LSE_IOHandler::WindowHandler(HWND hwnd, unsigned int message, W
             }
             else {
                 
-                LSE_ERROR_LOG("Invalid raw input type %d", raw_input->header.dwType); // TODO: real error handling
+                LOG(LOG_LEVEL_ERROR, "Invalid raw input type %d", raw_input->header.dwType); // TODO: real error handling
             }
             
             break;

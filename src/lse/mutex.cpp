@@ -1,5 +1,6 @@
 #include "lse/mutex.h"
 #include "lse/defs.h"
+using namespace LSE;
 
 /*
 Initialize our mutex.
@@ -8,7 +9,7 @@ LSE_Mutex::LSE_Mutex() {
     
     initialized = !pthread_mutex_init(&mutex, NULL);
     if(!initialized)
-        LSE_ERRNO_LOG("Failed to initialize mutex");
+        ERRNO("Failed to initialize mutex");
 }
 
 /*
@@ -19,7 +20,7 @@ LSE_Mutex::~LSE_Mutex() {
     if(initialized) {
         
         if(pthread_mutex_destroy(&mutex))
-            LSE_ERRNO_LOG("Failed to destroy mutex");
+            ERRNO("Failed to destroy mutex");
     }
 }
 
@@ -31,7 +32,7 @@ void LSE_Mutex::Lock() {
     if(initialized) {
         
         if(pthread_mutex_lock(&mutex))
-            LSE_ERRNO_LOG("Failed to lock mutex");
+            ERRNO("Failed to lock mutex");
     }
 }
 
@@ -43,7 +44,7 @@ void LSE_Mutex::TryLock() {
     if(initialized) {
         
         if(pthread_mutex_trylock(&mutex))
-            LSE_ERRNO_LOG("Failed trying mutex lock");
+            ERRNO("Failed trying mutex lock");
     }
 }
 
@@ -55,6 +56,6 @@ void LSE_Mutex::Unlock() {
     if(initialized) {
         
         if(pthread_mutex_unlock(&mutex))
-            LSE_ERRNO_LOG("Failed to unlock mutex");
+            ERRNO("Failed to unlock mutex");
     }
 }

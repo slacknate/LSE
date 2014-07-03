@@ -1,5 +1,6 @@
 #include "lse/engine.h"
 #include "lse/signals.h"
+using namespace LSE;
 
 /*
 LSE_Engine event table.
@@ -33,7 +34,7 @@ LSE_Engine::LSE_Engine(int argc, char *argv[]) : handler(this) {
     
 //    CreateLogs();
     
-    LSE_Signal::LSE_InitSignals(this);
+    LSE_InitSignals(this);
 }
 
 /*
@@ -121,7 +122,7 @@ void LSE_Engine::CreateLogs() {
     else {
         
         // need to write this to disk....
-        LSE_ERROR_LOG("Error creating error log files!");
+        LOG(LOG_LEVEL_ERROR, "Error creating error log files!");
     }
 }
 
@@ -219,20 +220,20 @@ int LSE_Engine::Run() {
         else {
             
             if(LSE_GL_VERSION < LSE_MIN_GL_VERSION)
-                LSE_ERROR_LOG("OpenGL version too low.");
+                LOG(LOG_LEVEL_ERROR, "OpenGL version too low.");
         
             if(LSE_GL_MAX_VERT_ATTRIB < LSE_GL_MIN_VERT_ATTRIB)
-                LSE_ERROR_LOG("Too few bindable vertex attributes available.");
+                LOG(LOG_LEVEL_ERROR, "Too few bindable vertex attributes available.");
                 
             if(LSE_GL_MAX_COLOR_ATTACH < LSE_GL_MIN_COLOR_ATTACH)
-                LSE_ERROR_LOG("Too few bindable Frame buffer object color attachmentments available.");
+                LOG(LOG_LEVEL_ERROR, "Too few bindable Frame buffer object color attachmentments available.");
         }
         
         window->Join();
     }
     else {
         
-        LSE_ERROR_LOG("Cannot render NULL OpenGL window.");
+        LOG(LOG_LEVEL_ERROR, "Cannot render NULL OpenGL window.");
     }
     
     return status;

@@ -3,6 +3,8 @@
 
 #include <cmath>
 
+namespace LSE {
+
 /*
 
 */
@@ -34,5 +36,7 @@ class LSE_Vector {
         bool operator==(const LSE_Vector& other);
         bool operator!=(const LSE_Vector& other);
 };
+
+}
 
 #endif

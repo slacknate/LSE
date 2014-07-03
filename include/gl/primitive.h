@@ -10,6 +10,8 @@ TODO:
     add texture
 */
 
+namespace LSE {
+
 /*
 Base class for OpenGL 2D and 3D primitives.
 */
@@ -47,5 +49,7 @@ class LSE_GLPrimitive : public LSE_GLObject {
         bool Hit(double x, double y, double z);
         LSE_Vector GetNormalAt(double x, double y, double z);
 };
+
+}
 
 #endif

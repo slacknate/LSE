@@ -1,4 +1,5 @@
 #include "gl/shaders.h"
+using namespace LSE;
 
 /*
 Built in vertex shader for LSE.
@@ -148,6 +149,8 @@ static const char *const LSE_SHADERS[] = {
 	FRAGMENT_SHADER
 };
 
+namespace LSE {
+
 /*
 Get the shader of the specified type.
 This function is used to obtain the shaders
@@ -155,9 +158,11 @@ built into the engine.
 */
 const char* LSE_GetObjShaders(LSE_ShaderType type) {
     
-    if(VALID_SHADER_TYPE(type))
+    if(valid_shader_type(type))
         return LSE_SHADERS[type];
     
-    LSE_ERROR_LOG("Invalid LSE_Shader type.");
+    LOG(LOG_LEVEL_ERROR, "Invalid LSE_Shader type.");
     return NULL;
+}
+
 }

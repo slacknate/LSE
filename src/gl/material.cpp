@@ -1,4 +1,5 @@
 #include "gl/material.h"
+using namespace LSE;
 
 /*
 Initialize the paramaters. Set all

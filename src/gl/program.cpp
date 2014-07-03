@@ -1,5 +1,6 @@
 #include <cstdarg>
 #include "gl/program.h"
+using namespace LSE;
 
 /*
 LSE Shader type strings.
@@ -20,6 +21,18 @@ Return the shader type name as a string.
 const char* LSE_ShaderString(LSE_ShaderType s) {
     
     return SHADER_STRINGS[s];
+}
+
+namespace LSE {
+
+/*
+LSE Shader type validation function.
+*/
+bool valid_shader_type(LSE_ShaderType s) {
+    
+    return s >= 0 && s < 6;
+}
+
 }
 
 /*
@@ -75,17 +88,17 @@ char* LSE_GLProgram::ReadShader(const char *fileName) {
                 delete[] shaderSource;
                 shaderSource = NULL;
                 
-                LSE_ERROR_LOG("An error occurred while reading the shader source.");
+                LOG(LOG_LEVEL_ERROR, "An error occurred while reading the shader source.");
             }
         }
         else {
             
-            LSE_ERROR_LOG("Failed to allocate memory for shader source.");
+            LOG(LOG_LEVEL_ERROR, "Failed to allocate memory for shader source.");
         }
     }
     else {
             
-        LSE_ERROR_LOG("Shader source file unable to be read.");
+        LOG(LOG_LEVEL_ERROR, "Shader source file unable to be read.");
     }
     
     return shaderSource;
@@ -133,13 +146,13 @@ GLenum LSE_GLProgram::ShaderType(const char *fileName) {
         else if(!strcmp(extension, "frag"))
             type = GL_FRAGMENT_SHADER;
         else
-            LSE_ERROR_LOG("Unknown file extension. Unable to determine OpenGL shader type.");
+            LOG(LOG_LEVEL_ERROR, "Unknown file extension. Unable to determine OpenGL shader type.");
             
         delete[] extension;   
     }
     else {
             
-        LSE_ERROR_LOG("No shader file extension found. Unable to determine OpenGL shader type.");
+        LOG(LOG_LEVEL_ERROR, "No shader file extension found. Unable to determine OpenGL shader type.");
     }
         
     return type;
@@ -163,7 +176,7 @@ GLenum LSE_GLProgram::ShaderType(LSE_ShaderType lseType) {
     else if(lseType == SHADER_FRAG)
         glType = GL_FRAGMENT_SHADER;
     else
-        LSE_ERROR_LOG("Invalid LSE_Shader type. Unable to determine OpenGL shader type.");
+        LOG(LOG_LEVEL_ERROR, "Invalid LSE_Shader type. Unable to determine OpenGL shader type.");
     
     return glType;
 }
@@ -187,14 +200,14 @@ bool LSE_GLProgram::ValidateShader(const char *fileName, unsigned int shaderID, 
         else {
             
             if(lseType == SHADER_INVALID)
-                LSE_ERROR_LOG("Shader read from \"%s\" failed validation:\n%s", fileName, buffer);
+                LOG(LOG_LEVEL_ERROR, "Shader read from \"%s\" failed validation:\n%s", fileName, buffer);
             else
-                LSE_ERROR_LOG("%s shader read from stream failed validation:\n%s", LSE_ShaderString(lseType), buffer);
+                LOG(LOG_LEVEL_ERROR, "%s shader read from stream failed validation:\n%s", LSE_ShaderString(lseType), buffer);
         }
     }
     else {
                     
-        LSE_ERROR_LOG("An error occurred while obtaining the shader log.");
+        LOG(LOG_LEVEL_ERROR, "An error occurred while obtaining the shader log.");
     }
     
     return false;
@@ -254,11 +267,11 @@ int LSE_GLProgram::AddShader(const char *buffer, LSE_ShaderType lseType) {
                             *newID = shaderID;
                             shaderIDs.PushBack(newID);
                             
-                            LSE_MESSG_LOG(LOG_LEVEL_DEBUG, "Shader file \"%s\" bound to ID %u and attached to program %u.", buffer, shaderID, progID);
+                            LOG(LOG_LEVEL_DEBUG, "Shader file \"%s\" bound to ID %u and attached to program %u.", buffer, shaderID, progID);
                         }
                         else {
                             
-                            LSE_ERROR_LOG("Failed to allocate memory for element in shader ID list.");
+                            LOG(LOG_LEVEL_ERROR, "Failed to allocate memory for element in shader ID list.");
                             glDeleteShader(shaderID);
                         }
                     }
@@ -271,9 +284,9 @@ int LSE_GLProgram::AddShader(const char *buffer, LSE_ShaderType lseType) {
                         
                     int error = glGetError();
                     if(error)
-                        LSE_ERROR_LOG("An error occurred while creating shader from \"%s\": %s.", buffer, LSE_GLErrorString(error));
+                        LOG(LOG_LEVEL_ERROR, "An error occurred while creating shader from \"%s\": %s.", buffer, LSE_GLErrorString(error));
                     else
-                        LSE_ERROR_LOG("An unknown error occurred while creating shader from \"%s.\"", buffer);
+                        LOG(LOG_LEVEL_ERROR, "An unknown error occurred while creating shader from \"%s.\"", buffer);
                 }
             
                 delete[] shaderSource;
@@ -303,11 +316,11 @@ int LSE_GLProgram::AddShader(const char *buffer, LSE_ShaderType lseType) {
                         *newID = shaderID;
                         shaderIDs.PushBack(newID);
                             
-                        LSE_MESSG_LOG(LOG_LEVEL_DEBUG, "%s shader loaded from stream bound to ID %u and attached to program %u.", LSE_ShaderString(lseType), shaderID, progID);
+                        LOG(LOG_LEVEL_DEBUG, "%s shader loaded from stream bound to ID %u and attached to program %u.", LSE_ShaderString(lseType), shaderID, progID);
                     }
                     else {
                             
-                        LSE_ERROR_LOG("Failed to allocate memory for element in shader ID list.");
+                        LOG(LOG_LEVEL_ERROR, "Failed to allocate memory for element in shader ID list.");
                         glDeleteShader(shaderID);
                     }
                 }
@@ -320,15 +333,15 @@ int LSE_GLProgram::AddShader(const char *buffer, LSE_ShaderType lseType) {
                         
                 int error = glGetError();
                 if(error)
-                    LSE_ERROR_LOG("An error occurred while creating shader from \"%s\": %s.", buffer, LSE_GLErrorString(error));
+                    LOG(LOG_LEVEL_ERROR, "An error occurred while creating shader from \"%s\": %s.", buffer, LSE_GLErrorString(error));
                 else
-                    LSE_ERROR_LOG("An unknown error occurred while creating shader from \"%s.\"", buffer);
+                    LOG(LOG_LEVEL_ERROR, "An unknown error occurred while creating shader from \"%s.\"", buffer);
             }
         }
     }
     else {
         
-       LSE_ERROR_LOG("Shader input may not be NULL."); 
+       LOG(LOG_LEVEL_ERROR, "Shader input may not be NULL."); 
     }
     
     return shaderID;
@@ -353,7 +366,7 @@ bool LSE_GLProgram::RemoveShader(unsigned int shaderID) {
         glDetachShader(progID, shaderID);
         glDeleteShader(shaderID);
         
-        LSE_MESSG_LOG(LOG_LEVEL_DEBUG, "Shader %u was removed from program %u.", shaderID, progID);
+        LOG(LOG_LEVEL_DEBUG, "Shader %u was removed from program %u.", shaderID, progID);
     }
     
     return valid;
@@ -558,7 +571,7 @@ void LSE_GLProgram::BindUniform(LSE_UniformType type, const char *const name, ..
     }
     else {
         
-        LSE_ERROR_LOG("Cannot bind uniform: unknown type.");
+        LOG(LOG_LEVEL_ERROR, "Cannot bind uniform: unknown type.");
     }
     
     va_end(argList);

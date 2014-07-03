@@ -4,10 +4,7 @@
 #include "lse/defs.h"
 #include "lse/list.h"
 
-/*
-LSE Shader type validation function macro.
-*/
-#define VALID_SHADER_TYPE(X)    (X >= 0 && X < 6)
+namespace LSE {
 
 /*
 LSE Shader types.
@@ -110,5 +107,9 @@ class LSE_GLProgram {
         void Bind();
         void Unbind();
 };
+
+bool valid_shader_type(LSE_ShaderType s);
+
+}
 
 #endif

@@ -1,4 +1,5 @@
 #include "gl/vertex.h"
+using namespace LSE;
 
 /*
 Initialize our vertex.

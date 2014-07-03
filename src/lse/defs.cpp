@@ -58,6 +58,8 @@ static const char *const ERROR_STRINGS[] = {
     "Unknown error code. "
 };
 
+namespace LSE {
+
 /*
 LSE Error status.
 */
@@ -107,4 +109,6 @@ const char* LSE_ErrorIDString(int c) {
         return ERROR_ID_STRINGS[c];
     else
         return ERROR_ID_STRINGS[errorStatus];
+}
+
 }

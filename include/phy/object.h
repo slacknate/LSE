@@ -5,12 +5,14 @@
 #include "util/math/vector.h"
 #include "util/math/quaternion.h"
 
+namespace LSE {
+
 /*
 Physics constants.
 */
-#define PHY_UPD_TIME            1
-#define PHY_UPD_MULT            0.001
-#define PI                      3.14159265359
+const int PHY_UPD_TIME   = 1;
+const float PHY_UPD_MULT = 0.001f;
+const double PI          = 3.14159265359;
 
 /*
 Class that describes an object which will have physical interaction
@@ -31,5 +33,7 @@ class LSE_PHObject : public LSE_Object {
         void ApplyForce(LSE_Vector& force, LSE_Vector &normal, double x, double y, double z);
         //static unsigned int Update(unsigned int delay, void *arg);
 };
+
+}
 
 #endif

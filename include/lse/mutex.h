@@ -3,6 +3,8 @@
 
 #include <pthread.h>
 
+namespace LSE {
+
 /*
 
 */
@@ -22,5 +24,7 @@ class LSE_Mutex {
         void TryLock();
         void Unlock();
 };
+
+}
 
 #endif

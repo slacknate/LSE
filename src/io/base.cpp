@@ -1,4 +1,5 @@
 #include "io/base.h"
+using namespace LSE;
 
 LSE_Object *LSE_IOHandler_Base::engine = NULL;
 

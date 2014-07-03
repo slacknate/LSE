@@ -1,5 +1,6 @@
 #include "cam.h"
 #include "lse/defs.h"
+using namespace LSE;
 
 LSE_EVTMAP(TestCam) CamMap[] = {
     

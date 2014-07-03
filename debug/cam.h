@@ -3,6 +3,8 @@
 
 #include "gui/window/window.h"
 
+namespace LSE {
+
 // test camera manipulation object
 class TestCam : public LSE_Object {
     
@@ -23,5 +25,7 @@ class TestCam : public LSE_Object {
         
         bool OnKey(LSE_Object *o, unsigned int type, unsigned int id, void *ptr);
 };
+
+}
 
 #endif

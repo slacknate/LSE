@@ -1,4 +1,5 @@
 #include "prism.h"
+using namespace LSE;
 
 LSE_EVTMAP(TestPrism) PrismMap[] = {
     

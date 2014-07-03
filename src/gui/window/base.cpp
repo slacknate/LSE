@@ -1,5 +1,6 @@
 #include "gui/window/window.h"
 #include "lse/engine.h"
+using namespace LSE;
 
 /*
 OpenGL version variables.
@@ -12,6 +13,8 @@ OpenGL implementation detail variables.
 */
 static int glMaxVertexAttribs = 0;
 static int glMaxColorAttach = 0;
+
+namespace LSE {
 
 /*
 OpenGL version fetching function.
@@ -59,6 +62,8 @@ Fetch max number of frame buffer object color attachments.
 const int LSE_MaxFBOColorAttachments() {
     
     return (const int)glMaxColorAttach;
+}
+
 }
 
 /*
@@ -122,25 +127,26 @@ OpenGL context has been obtained.
 */
 void LSE_GLWindow_Base::GLInit() {
     
-    LSE_TRY()
+    try {
     
     this->GLContextInit();
     
     int glewStatus = glewInit();
     if(glewStatus != GLEW_OK)
-        LSE_THROW(LSE_GL_INIT_FAIL/*, (const char *)glewGetErrorString(glewStatus)*/);
+        throw LSE_Exception(__FILE__, __LINE__, LSE_GL_INIT_FAIL/*, (const char *)glewGetErrorString(glewStatus)*/);
           
-    LSE_MESSG_LOG(LOG_LEVEL_INFO, "GL_VERSION: %s\nGL_SHADING_LANGUAGE_VERSION: %s", LSE_GL_VENDOR_VERSION, LSE_SL_VENDOR_VERSION);
+    LOG(LOG_LEVEL_INFO, "GL_VERSION: %s\nGL_SHADING_LANGUAGE_VERSION: %s", LSE_GL_VENDOR_VERSION, LSE_SL_VENDOR_VERSION);
     
     // get the OpenGL version as an integer
     int glMajor = 0, glMinor = 0;
     glGetIntegerv(GL_MAJOR_VERSION, &glMajor);
     glGetIntegerv(GL_MINOR_VERSION, &glMinor);
     glVersion = (100*glMajor + 10*glMinor); 
-    
+        
     // get the GLSL version as an integer
     if(glVersion >= 330)
         slVersion = glVersion;
+            
     else
         slVersion = glVersion - 170;   
     
@@ -187,7 +193,7 @@ void LSE_GLWindow_Base::GLInit() {
     
     int glStatus = LSE_GL_VERSION >= LSE_MIN_GL_VERSION && LSE_GL_MAX_VERT_ATTRIB >= LSE_GL_MIN_VERT_ATTRIB && LSE_GL_MAX_COLOR_ATTACH >= LSE_GL_MIN_COLOR_ATTACH;
     if(!glStatus)
-        LSE_THROW(LSE_GL_INIT_FAIL);
+        throw LSE_Exception(__FILE__, __LINE__, LSE_GL_INIT_FAIL);
 
     // compute and bind viewing matrix
     PlaceCamera();
@@ -197,8 +203,12 @@ void LSE_GLWindow_Base::GLInit() {
     
     // create our framebuffer
     screen = new LSE_GLScreen(width, height);
-    
-    LSE_CATCH()
+        
+    }
+    catch(std::exception &e) {
+        
+        throw LSE_Exception(__FILE__, __LINE__, LSE_OK); // FIXME: need a way to "convert" standard exceptions into LSE exceptions
+    }
 }
 
 /*

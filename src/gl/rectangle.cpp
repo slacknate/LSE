@@ -1,4 +1,5 @@
 #include "gl/rectangle.h"
+using namespace LSE;
 
 /*
 Initialize our quad. Store size attributes
@@ -9,7 +10,7 @@ LSE_GLRectangle::LSE_GLRectangle(double x, double y, double z, double w, double 
     width = w;
     height = h;
     
-    MemAllocate(QUAD_VERT_COUNT, QUAD_ELEM_COUNT);
+    MemAllocate(this->QUAD_VERT_COUNT, this->QUAD_ELEM_COUNT);
 }
 
 /*

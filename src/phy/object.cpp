@@ -1,4 +1,5 @@
 #include "phy/object.h"
+using namespace LSE;
 
 /*
 Set our objects point and create a new velocity vector

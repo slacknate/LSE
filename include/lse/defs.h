@@ -14,6 +14,9 @@ LSE includes.
 #include "lse/globals.h"
 #include "lse/exception.h"
 
+// TODO: convert all defines to const's that are possible; determine what to do with the rest of the defines
+namespace LSE {
+
 /*
 Extended error code macros.
 */
@@ -177,5 +180,7 @@ const char* LSE_GLErrorString(GLenum e);
 int LSE_ErrorStatus(int c=-1);
 const char* LSE_ErrorString(int c=-1);
 const char* LSE_ErrorIDString(int c=-1);
+
+}
 
 #endif

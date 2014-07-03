@@ -4,6 +4,8 @@
 #include <cmath>
 #include "lse/defs.h"
 
+namespace LSE {
+
 /*
 A matrix stored in column major format.
 */
@@ -39,5 +41,7 @@ class LSE_Matrix {
         bool operator==(const LSE_Matrix& other);
         bool operator!=(const LSE_Matrix& other);
 };
+
+}
 
 #endif

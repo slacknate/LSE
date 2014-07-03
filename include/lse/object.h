@@ -4,6 +4,9 @@
 #include "lse/defs.h"
 #include "lse/event.h"
 
+// TODO: do these defines need to exist? can we refactor the object class to do all this for us without defines?
+namespace LSE {
+
 /*
 Class event map type declaration.
 */
@@ -45,5 +48,7 @@ class LSE_Object {
         
         virtual int Dispatch(LSE_Object *, unsigned int, unsigned int, void *) { return 0; }
 };
+
+}
 
 #endif

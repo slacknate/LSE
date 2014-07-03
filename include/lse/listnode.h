@@ -1,11 +1,14 @@
 #ifndef LSE_LIST_NODE_H
 #define LSE_LIST_NODE_H
 
+namespace LSE {
+
 /*
 Forward declaration of list class to
 allow for friend class relationship
 of same template type.
 */
+// TODO: determine if the list node class can be refactored to avoid this
 class LSE_List;
 
 /*
@@ -44,5 +47,7 @@ class LSE_ListNode {
         LSE_ListNode* GetPrev() const;
         LSE_ListNode* GetNext() const;
 };
+
+}
 
 #endif
