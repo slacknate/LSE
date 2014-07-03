@@ -16,7 +16,7 @@ class LSE_GLWindow : public LSE_GLWindow_Base {
         
     public:
         
-        LSE_GLWindow_Win(const char *const windowTitle, unsigned int m, int w, int h, double angle, double zi, double za);
+        LSE_GLWindow(const char *const windowTitle, unsigned int m, int w, int h, double angle, double zi, double za);
         
         void GLContextInit();
         void GLContextDestroy();
