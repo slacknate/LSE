@@ -3,7 +3,6 @@
 
 #include <cstdio>
 
-// TODO: change these defines to function definitions; make WriteLog local to logger.cpp
 namespace LSE {
 
 /*
