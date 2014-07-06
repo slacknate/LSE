@@ -18,23 +18,12 @@ LSE includes.
 namespace LSE {
     
 /*
-
+Minimum OpenGL and GLSL requirements.
 */
-#define MIN_GL_VERSION      320
-#define MIN_SL_VERSION      150
-#define GL_MIN_COLOR_ATTACH 2
-#define GL_MIN_VERT_ATTRIB  6
-
-/*
-Extended error code macros.
-*/
-#if defined(_WIN32) || defined(_WIN64)
-#define EXT_ERR_CODE        (GetLastError())
-#elif defined(__unix__) && !defined(__APPLE__) // all unix variants, non-mac
-#define EXT_ERR_CODE        ??? // FIXME
-#elif defined(__APPLE__) && !defined(__MACH__) // mac osx, non-ios
-#define EXT_ERR_CODE        ??? // FIXME
-#endif
+const int MIN_GL_VERSION      = 320;
+const int MIN_SL_VERSION      = 150;
+const int GL_MIN_COLOR_ATTACH = 2;
+const int GL_MIN_VERT_ATTRIB  = 6;
 
 enum {
     
@@ -172,6 +161,7 @@ const char* GLErrorString(GLenum e);
 LSE Engine status functions.
 */
 int StatusCode(int code=-1);
+int ExtendedStatusCode();
 const char* StatusString(int code=-1);
 const char* StatusID(int code=-1);
 

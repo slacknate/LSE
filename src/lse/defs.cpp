@@ -1,4 +1,11 @@
 #include "lse/defs.h"
+#if defined(_WIN32) || defined(_WIN64) // all windows variants
+#include <windows.h>
+#elif defined(__unix__) && !defined(__APPLE__) // all unix variants, non-mac
+// put nix include here
+#elif defined(__APPLE__) && !defined(__MACH__) // mac osx, non-ios
+// put mac include here
+#endif
 using namespace LSE;
 
 /*
@@ -89,6 +96,21 @@ int StatusCode(int code) {
         error_status = code;
         
     return error_status;
+}
+
+/*
+Platform specific error code fetcher.
+
+TODO: make this less sloochy?
+*/
+int ExtendedStatusCode() {
+#if defined(_WIN32) || defined(_WIN64) // all windows variants
+    return GetLastError();
+#elif defined(__unix__) && !defined(__APPLE__) // all unix variants, non-mac
+    return 0; // FIXME
+#elif defined(__APPLE__) && !defined(__MACH__) // mac osx, non-ios
+    return 0; // FIXME
+#endif
 }
 
 /*
