@@ -8,7 +8,7 @@ namespace LSE {
 /*
 Class that describes material lighting properties.
 */
-class LSE_GLMaterial : LSE_Object {
+class GLMaterial : Object {
     
     private:
         
@@ -16,7 +16,7 @@ class LSE_GLMaterial : LSE_Object {
         
     public:
         
-        LSE_GLMaterial();
+        GLMaterial();
         
         void Bind();
         void Unbind();

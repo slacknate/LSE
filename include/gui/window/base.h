@@ -19,18 +19,18 @@ namespace LSE {
 /*
 OpenGL context class.
 Describes an OpenGL canvas, and
-Draws all LSE_GLObjects.
+Draws all GLObjects.
 */
-class LSE_GLWindow_Base : public LSE_Thread {
+class GLWindow_Base : public Thread {
     
     protected:
         
-        LSE_IOHandler *handler; // 
-        LSE_List drawList; // list of objects to be drawn
-        LSE_List lightList; // list of all lights in the scene
-        LSE_GLScreen *screen; // 
-        LSE_Vertex pos, focus; // camera position and focus point
-        LSE_Vector up; // camera up vector
+        IOHandler *handler; // 
+        List drawList; // list of objects to be drawn
+        List lightList; // list of all lights in the scene
+        GLScreen *screen; // 
+        Vertex pos, focus; // camera position and focus point
+        Vector up; // camera up vector
         
         bool initialized;
         //int glewStatus, glStatus; // return code of glewInit()
@@ -44,28 +44,28 @@ class LSE_GLWindow_Base : public LSE_Thread {
         
     public:
         
-        LSE_GLWindow_Base(const char *const windowTitle, unsigned int m, int w, int h, double angle, double zi, double za);
-        ~LSE_GLWindow_Base();
+        GLWindow_Base(const char *const windowTitle, unsigned int m, int w, int h, double angle, double zi, double za);
+        ~GLWindow_Base();
         
-        void SetupIO(LSE_IOHandler *h);
+        void SetupIO(IOHandler *h);
         
         void GLInit();
         virtual void GLContextInit() {}
         virtual void GLContextDestroy() {}
         
-        void PushGL(LSE_GLObject *o);
+        void PushGL(GLObject *o);
         void PopGL();
         void ClearGL();
         
-        void PushLight(LSE_GLLight *l);
+        void PushLight(GLLight *l);
         void PopLight();
         void ClearLights();
         
         void Render();
         virtual void SwapGLBuffers() {}
         
-        LSE_Vertex& GetCamPos();
-        LSE_Vertex& GetCamFocus();
+        Vertex& GetCamPos();
+        Vertex& GetCamFocus();
         
         bool Ready();
         

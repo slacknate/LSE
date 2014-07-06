@@ -9,7 +9,7 @@ namespace LSE {
 /*
 A matrix stored in column major format.
 */
-class LSE_Matrix {
+class Matrix {
     
     private:
         
@@ -18,28 +18,28 @@ class LSE_Matrix {
         
     public:
         
-        LSE_Matrix(unsigned int r, unsigned int c);
-        LSE_Matrix(const LSE_Matrix& other);
-        ~LSE_Matrix();
+        Matrix(unsigned int r, unsigned int c);
+        Matrix(const Matrix& other);
+        ~Matrix();
         
         float* RawMatrix();
         
-        LSE_Matrix Inverse();
-        LSE_Matrix Transpose();
-        LSE_Matrix TopTriangular();
-        LSE_Matrix BotTriangular();
+        Matrix Inverse();
+        Matrix Transpose();
+        Matrix TopTriangular();
+        Matrix BotTriangular();
         
         float Determinant();
         
         void operator*(const double& scalar);
         void operator/(const double& scalar);
-        LSE_Matrix operator+(const LSE_Matrix& other);
-        LSE_Matrix operator-(const LSE_Matrix& other);
-        LSE_Matrix operator*(const LSE_Matrix& other);
-        LSE_Matrix operator/(LSE_Matrix& other);
+        Matrix operator+(const Matrix& other);
+        Matrix operator-(const Matrix& other);
+        Matrix operator*(const Matrix& other);
+        Matrix operator/(Matrix& other);
         float* operator[](const int& rIndex);
-        bool operator==(const LSE_Matrix& other);
-        bool operator!=(const LSE_Matrix& other);
+        bool operator==(const Matrix& other);
+        bool operator!=(const Matrix& other);
 };
 
 }

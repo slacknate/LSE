@@ -4,7 +4,6 @@
 #include <iostream>
 #include <stdexcept>
 #include <exception>
-#include "lse/defs.h"
 
 namespace LSE {
 
@@ -14,7 +13,7 @@ line numbers automatically.
 TODO:
     extended OS error code info
 */
-class LSE_Exception {
+class Exception {
     
     private:
         
@@ -26,7 +25,7 @@ class LSE_Exception {
     
     public:
         
-        LSE_Exception(const char *f, int l, int c) throw();
+        Exception(const char *f, int l, int c) throw();
         
         const char* what() const throw();
         const int code() const throw();

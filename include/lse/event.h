@@ -1,48 +1,50 @@
 #ifndef LSE_EVENT_H
 #define LSE_EVENT_H
 
+#include "lse/defs.h"
+
 namespace LSE {
 
 /*
 LSE Event types.
 */
-enum {
+typedef enum {
     
-    LSE_ANY = 0,
-    LSE_KEYBOARD,
-    LSE_MOUSE,
-    LSE_INPUTOTHER,
-    LSE_VIDEO,
-    LSE_USER,
-    LSE_SYSTEM,
-    LSE_QUIT
-};
+    ANY = 0,
+    KEYBOARD,
+    MOUSE,
+    INPUTOTHER,
+    VIDEO,
+    USER,
+    SYSTEM,
+    QUIT
+}EventType;
 
 /*
-LSE_Event structures.
+Event structures.
 */
-class LSE_Event {
+class Event {
     
     public:
         
-        unsigned int type;
+        EventType type;
 };
 
-class LSE_KeyEvent : LSE_Event {
+class KeyEvent : Event {
     
     public:
         
         bool state;
         unsigned int key;
         
-        LSE_KeyEvent() {
+        KeyEvent() {
             
-            this->type = LSE_KEYBOARD;
-            this->key = LSE_KEY_INVALID; 
+            this->type = KEYBOARD;
+            this->key = KEY_INVALID; 
         }
 };
 
-class LSE_MouseEvent : LSE_Event {
+class MouseEvent : Event {
     
     public:
         
@@ -51,10 +53,10 @@ class LSE_MouseEvent : LSE_Event {
         bool state;
         unsigned int button;
         
-        LSE_MouseEvent() {
+        MouseEvent() {
             
-            this->type = LSE_MOUSE;
-            this->button = LSE_BUTTON_INVALID;
+            this->type = MOUSE;
+            this->button = MOUSE_INVALID;
             this->dX = this->dY = this->dW = 0;
         }
 };
@@ -62,27 +64,27 @@ class LSE_MouseEvent : LSE_Event {
 typedef struct {
     
     
-}LSE_IOEvent;
+}IOEvent;
 
 typedef struct {
     
     
-}LSE_VideoEvent;
+}VideoEvent;
 
 typedef struct {
     
     
-}LSE_UserEvent;
+}UserEvent;
 
 typedef struct {
     
     
-}LSE_SysEvent;
+}SysEvent;
 
 typedef struct {
     
     
-}LSE_QuitEvent;
+}QuitEvent;
 
 }
 

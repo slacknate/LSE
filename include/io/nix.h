@@ -5,11 +5,11 @@
 
 namespace LSE {
 
-class LSE_IOHandler : public LSE_IOHandler_Base {
+class IOHandler : public IOHandler_Base {
         
     public:
         
-        LSE_IOHandler(LSE_Object *e);
+        IOHandler(Object *e);
 };
 
 }

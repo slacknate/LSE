@@ -10,21 +10,21 @@ LINKOBJ  = ../../obj/main.o $(RES)
 LIBS =  -L"C:/MinGW/lib"  
 INCS =  -I"C:/MinGW/include" 
 CXXINCS =  -I"C:/MinGW/lib/gcc/mingw32/3.4.5/include"  -I"C:/MinGW/include/c++/3.4.5/backward"  -I"C:/MinGW/include/c++/3.4.5/mingw32"  -I"C:/MinGW/include/c++/3.4.5"  -I"C:/MinGW/include" 
-BIN  = ../../bin/LSE_ShaderDump.exe
+BIN  = ../../bin/ShaderDump.exe
 CXXFLAGS = $(CXXINCS)  
 CFLAGS = $(INCS)  
 RM = rm -f
 
 .PHONY: all all-before all-after clean clean-custom
 
-all: all-before ../../bin/LSE_ShaderDump.exe all-after
+all: all-before ../../bin/ShaderDump.exe all-after
 
 
 clean: clean-custom
 	${RM} $(OBJ) $(BIN)
 
 $(BIN): $(OBJ)
-	$(CC) $(LINKOBJ) -o "..\..\bin\LSE_ShaderDump.exe" $(LIBS)
+	$(CC) $(LINKOBJ) -o "..\..\bin\ShaderDump.exe" $(LIBS)
 
 ../../obj/main.o: ../../src/main.c
 	$(CC) -c ../../src/main.c -o ../../obj/main.o $(CFLAGS)

@@ -52,7 +52,7 @@ const char *const SHADER_ARRAY_DECL[] = {
 const char const SHADER_ARRAY_CLOSE[] = "\n};\n\n";
 
 const char const ARRAY_OF_SHADERS[] = "/*\nArray of all built in LSE Shaders.\n\
-*/\nstatic const char *const LSE_SHADERS[] = {\n\
+*/\nstatic const char *const SHADERS[] = {\n\
 \n\
 \t\"Invalid\\0\",\n\
 \tVERTEX_SHADER,\n\
@@ -69,18 +69,18 @@ built into the engine.\n\
 */\n\
 const char* ";
 
-const char const SHADER_GET_FUNC_E[] = "(LSE_ShaderType type) {\n\
+const char const SHADER_GET_FUNC_E[] = "(ShaderType type) {\n\
     \n\
     if(VALID_SHADER_TYPE(type))\n\
-        return LSE_SHADERS[type];\n\
+        return SHADERS[type];\n\
     \n\
-    LSE_ERROR_LOG(\"Invalid LSE_Shader type.\");\n\
+    ERROR_LOG(\"Invalid Shader type.\");\n\
     return NULL;\n\
 }\n";
 
-const char const SHADER_HEADER_B[] = "#include \"LSE_Defs.h\"\n\nconst char* ";
+const char const SHADER_HEADER_B[] = "#include \"Defs.h\"\n\nconst char* ";
 
-const char const SHADER_HEADER_E[] = "(LSE_ShaderType type);\n\n#endif\n";
+const char const SHADER_HEADER_E[] = "(ShaderType type);\n\n#endif\n";
 
 void WriteShader(char *fileName, FILE *shaderArrayFile) {
     
@@ -220,7 +220,7 @@ int main(int argc, char *argv[]) {
     // print out how to use this program if no arguments supplied
     if(argc < 4) {
         
-        printf("usage: LSE_ShaderDump src-directory name cpp-dest-directory h-dest-directory\n");
+        printf("usage: ShaderDump src-directory name cpp-dest-directory h-dest-directory\n");
     }
     else {
         
@@ -235,7 +235,7 @@ int main(int argc, char *argv[]) {
             char destCppFile[strlen(argv[3]) + strlen(argv[2]) + 8];
             strcpy(destCppFile, argv[3]);
             strcat(destCppFile, DIR_STR);
-            strcat(destCppFile, "LSE_");
+            strcat(destCppFile, "");
             strcat(destCppFile, argv[2]);
             strcat(destCppFile, ".cpp");
             FILE *shaderArrayFile = fopen(destCppFile, "wb");
@@ -243,7 +243,7 @@ int main(int argc, char *argv[]) {
             char destHFile[strlen(argv[4]) + strlen(argv[2]) + 6];
             strcpy(destHFile, argv[4]);
             strcat(destHFile, DIR_STR);
-            strcat(destHFile, "LSE_");
+            strcat(destHFile, "");
             strcat(destHFile, argv[2]);
             strcat(destHFile, ".h");
             FILE *shaderArrayHeader = fopen(destHFile, "wb");
@@ -254,7 +254,7 @@ int main(int argc, char *argv[]) {
                 
                 // write out the include directive
                 fprintf(shaderArrayFile, "%s", SHADER_INCLUDE_B);
-                fprintf(shaderArrayFile, "LSE_%s.h", argv[2]);
+                fprintf(shaderArrayFile, "%s.h", argv[2]);
                 fprintf(shaderArrayFile, "%s", SHADER_INCLUDE_E);
                 
                 // skip over the special directory entries . and ..
@@ -300,7 +300,7 @@ int main(int argc, char *argv[]) {
                 char getFunction[strlen(argv[2]) + 8];
                 memset(getFunction, 0, strlen(argv[2]) + 8);
                 
-                strcpy(getFunction, "LSE_Get");
+                strcpy(getFunction, "Get");
                 strcat(getFunction, argv[2]);
                 
                 // write out a get function to obtain the arrays
@@ -315,7 +315,7 @@ int main(int argc, char *argv[]) {
                 char includeGuard[strlen(argv[2]) + 7];
                 memset(includeGuard, 0, strlen(argv[2]) + 7);
                 
-                strcpy(includeGuard, "LSE_");
+                strcpy(includeGuard, "");
                 strcat(includeGuard, argv[2]);
                 strcat(includeGuard, "_H");
                 

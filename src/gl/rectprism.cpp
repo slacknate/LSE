@@ -7,7 +7,7 @@ using namespace LSE;
 Initialize our prism. Store size attributes
 and allocate all necessary memory.
 */
-LSE_GLRectPrism::LSE_GLRectPrism(double x, double y, double z, double w, double h, double d) : LSE_GLPrimitive(x, y, z) {
+GLRectPrism::GLRectPrism(double x, double y, double z, double w, double h, double d) : GLPrimitive(x, y, z) {
     
     width = w;
     height = h;
@@ -19,7 +19,7 @@ LSE_GLRectPrism::LSE_GLRectPrism(double x, double y, double z, double w, double 
 /*
 Predefined rectangular prism vertices.
 */
-void LSE_GLRectPrism::CalcVertices() {
+void GLRectPrism::CalcVertices() {
     
     // front face
     
@@ -158,7 +158,7 @@ void LSE_GLRectPrism::CalcVertices() {
 Tell OpenGL which vertices to use,
 and where.
 */
-void LSE_GLRectPrism::CalcIndices() {
+void GLRectPrism::CalcIndices() {
     
     // front
     indices[0] = 0;

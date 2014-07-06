@@ -8,7 +8,7 @@ namespace LSE {
 /*
 Pre-defined rectangular prism primitive.
 */
-class LSE_GLRectPrism : public LSE_GLPrimitive {
+class GLRectPrism : public GLPrimitive {
     
     private:
         
@@ -24,7 +24,7 @@ class LSE_GLRectPrism : public LSE_GLPrimitive {
         
     public:
         
-        LSE_GLRectPrism(double x, double y, double z, double w, double h, double d);
+        GLRectPrism(double x, double y, double z, double w, double h, double d);
 };
 
 }

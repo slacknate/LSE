@@ -11,30 +11,30 @@ namespace LSE {
 Base class for all objects which are drawable
 on an OpenGL canvas.
 */
-class LSE_GLObject : public LSE_PHObject {
+class GLObject : public PHObject {
     
     protected:
         
-        LSE_GLProgram program; // shader program
-        LSE_Quaternion quat; // object orientation
+        GLProgram program; // shader program
+        Quaternion quat; // object orientation
         
         virtual void CalcNormals() {} // calculate normal vectors to all surfaces
         
     public:
         
-        LSE_GLObject(double x, double y, double z);
+        GLObject(double x, double y, double z);
         
-        LSE_GLProgram* GetProgram();
+        GLProgram* GetProgram();
         
         void Move(double dX, double dY, double dZ);
-        void Transform(LSE_Quaternion& q);
+        void Transform(Quaternion& q);
         
         void Render();
         
         virtual void Draw() {} // object specific render method
         virtual void RenderNormals() {} // object specific normal render method
         virtual bool Hit(double, double, double) { return false; } // collision detection method
-        virtual LSE_Vector GetNormalAt(double, double, double) { return LSE_Vector(); } // object specific surface normal algorithm
+        virtual Vector GetNormalAt(double, double, double) { return Vector(); } // object specific surface normal algorithm
 };
 
 }

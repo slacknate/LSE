@@ -1,11 +1,11 @@
-#ifndef LSE_OBJSHADERS_H
-#define LSE_OBJSHADERS_H
+#ifndef LSE_OBJ_SHADERS_H
+#define LSE_OBJ_SHADERS_H
 
 #include "gl/program.h"
 
 namespace LSE {
 
-const char* LSE_GetObjShaders(LSE_ShaderType type);
+const char* GetObjShaders(ShaderType type);
 
 }
 

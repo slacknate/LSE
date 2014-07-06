@@ -6,7 +6,7 @@ using namespace LSE;
 /*
 Initialize our list to empty/
 */
-LSE_List::LSE_List() {
+List::List() {
     
     this->size = 0;
     this->front = this->back = NULL;
@@ -15,19 +15,19 @@ LSE_List::LSE_List() {
 /*
 Create a copy of an existing list.
 */
-LSE_List::LSE_List(const LSE_List& other) {
+List::List(const List& other) {
     
     this->size = other.size;
     this->front = this->back = NULL;
     
-    for(LSE_ListNode *curr = other.GetFront(); curr != NULL; curr = curr->GetNext())
+    for(ListNode *curr = other.GetFront(); curr != NULL; curr = curr->GetNext())
         this->PushBack(curr->GetData());
 }
 
 /*
 Free all resources allocated by the list.
 */
-LSE_List::~LSE_List() {
+List::~List() {
     
     this->Clear();
 }
@@ -35,9 +35,9 @@ LSE_List::~LSE_List() {
 /*
 Add new data onto the front of the list.
 */
-void LSE_List::PushFront(void *data) {
+void List::PushFront(void *data) {
     
-    LSE_ListNode *node = new (std::nothrow) LSE_ListNode(data);
+    ListNode *node = new (std::nothrow) ListNode(data);
     if(node != NULL)
         this->PushFront(node);
     else
@@ -47,7 +47,7 @@ void LSE_List::PushFront(void *data) {
 /*
 Add a pre-existing node to the front of the list.
 */
-void LSE_List::PushFront(LSE_ListNode *node) {
+void List::PushFront(ListNode *node) {
     
     if(node != NULL) {
 
@@ -76,11 +76,11 @@ void LSE_List::PushFront(LSE_ListNode *node) {
 /*
 Insert new data somewhere between the list front and back.
 */
-void LSE_List::Insert(void *data, int index) {
+void List::Insert(void *data, int index) {
     
     if(index >= 0 && index < size) {
     
-        LSE_ListNode *node = new (std::nothrow) LSE_ListNode(data);
+        ListNode *node = new (std::nothrow) ListNode(data);
         if(node != NULL)
             Insert(node, index);
         else
@@ -95,19 +95,19 @@ void LSE_List::Insert(void *data, int index) {
 /*
 Insert a pre-existing node somewhere between the list front and back.
 */
-void LSE_List::Insert(LSE_ListNode *node, int index) {
+void List::Insert(ListNode *node, int index) {
     
     if(index >= 0 && index < size) {
     
         if(node != NULL) {
 
-            LSE_ListNode *curr = front;
+            ListNode *curr = front;
             for(int i = 0; i < index + 1; ++i, curr = curr->GetNext()) {
     
                 if(i == index) {
 
-                    LSE_ListNode *prev = curr->GetPrev();
-                    LSE_ListNode *next = curr;
+                    ListNode *prev = curr->GetPrev();
+                    ListNode *next = curr;
     
                     if(prev)
                         prev->next = node;
@@ -136,9 +136,9 @@ void LSE_List::Insert(LSE_ListNode *node, int index) {
 /*
 Add new data to the back of the list.
 */
-void LSE_List::PushBack(void *data) {
+void List::PushBack(void *data) {
     
-    LSE_ListNode *node = new (std::nothrow) LSE_ListNode(data);
+    ListNode *node = new (std::nothrow) ListNode(data);
     if(node != NULL)
         PushBack(node);
     else
@@ -148,7 +148,7 @@ void LSE_List::PushBack(void *data) {
 /*
 Add a pre-existing node to the back of the list.
 */
-void LSE_List::PushBack(LSE_ListNode *node) {
+void List::PushBack(ListNode *node) {
     
     if(node != NULL) {
     
@@ -177,7 +177,7 @@ void LSE_List::PushBack(LSE_ListNode *node) {
 /*
 Return the first node of the list.
 */
-LSE_ListNode* LSE_List::GetFront()const { 
+ListNode* List::GetFront()const { 
     
     return front;
 }
@@ -185,13 +185,13 @@ LSE_ListNode* LSE_List::GetFront()const {
 /*
 Get the node at the given index.
 */
-LSE_ListNode* LSE_List::GetNode(const int& index) const {
+ListNode* List::GetNode(const int& index) const {
     
-    LSE_ListNode *node = NULL;
+    ListNode *node = NULL;
     
     if(index >= 0 && index < size) {
 
-        LSE_ListNode *curr = front;
+        ListNode *curr = front;
         for(int i = 0; i < size && node == NULL; ++i, curr = curr->GetNext()) {
     
             if(i == index)
@@ -205,7 +205,7 @@ LSE_ListNode* LSE_List::GetNode(const int& index) const {
 /*
 Get the node at the given index.
 */
-LSE_ListNode* LSE_List::operator[](const int& index) const {
+ListNode* List::operator[](const int& index) const {
     
     return this->GetNode(index);
 }
@@ -213,7 +213,7 @@ LSE_ListNode* LSE_List::operator[](const int& index) const {
 /*
 Return the last node of the list.
 */
-LSE_ListNode* LSE_List::GetBack() const {
+ListNode* List::GetBack() const {
     
     return back;
 }
@@ -221,9 +221,9 @@ LSE_ListNode* LSE_List::GetBack() const {
 /*
 Pop the first item off the list.
 */       
-LSE_ListNode* LSE_List::PopFront() {
+ListNode* List::PopFront() {
 
-    LSE_ListNode *node = front;
+    ListNode *node = front;
     
     if(front != NULL) {
 
@@ -241,21 +241,21 @@ LSE_ListNode* LSE_List::PopFront() {
 /*
 Pop the item with the given index off the list.
 */
-LSE_ListNode* LSE_List::PopNode(int index) {
+ListNode* List::PopNode(int index) {
     
-    LSE_ListNode *node = NULL;
+    ListNode *node = NULL;
     
     if(index >= 0 && index < size) {
 
-        LSE_ListNode *curr = front;
+        ListNode *curr = front;
         for(int i = 0; i < size && node == NULL; ++i, curr = curr->GetNext()) {
     
             if(i == index) {
 
                 node = curr;
     
-                LSE_ListNode *prev = node->GetPrev();
-                LSE_ListNode *next = node->GetNext();
+                ListNode *prev = node->GetPrev();
+                ListNode *next = node->GetNext();
 
                 if(prev)
                     prev->next = next;
@@ -284,12 +284,12 @@ LSE_ListNode* LSE_List::PopNode(int index) {
 /*
 Pop the given item off the list.
 */
-void LSE_List::PopNode(LSE_ListNode *node) {
+void List::PopNode(ListNode *node) {
     
     if(node != NULL) {
 
-        LSE_ListNode *prev = node->GetPrev();
-        LSE_ListNode *next = node->GetNext();
+        ListNode *prev = node->GetPrev();
+        ListNode *next = node->GetNext();
 
         if(prev)
             prev->next = next;
@@ -314,9 +314,9 @@ void LSE_List::PopNode(LSE_ListNode *node) {
 /*
 Pop the last item off the list.
 */
-LSE_ListNode* LSE_List::PopBack() {
+ListNode* List::PopBack() {
     
-    LSE_ListNode *node = back;
+    ListNode *node = back;
     
     if(back != NULL) {
 
@@ -336,7 +336,7 @@ LSE_ListNode* LSE_List::PopBack() {
 /*
 Return the size of the list.
 */
-int LSE_List::Size() {
+int List::Size() {
     
     return size;
 }
@@ -344,7 +344,7 @@ int LSE_List::Size() {
 /*
 Empty the list.
 */
-void LSE_List::Clear() {
+void List::Clear() {
     
     while(size > 0)
         delete PopBack();

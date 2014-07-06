@@ -3,7 +3,12 @@
 namespace LSE {
 
 /*
-Global viewing and projection matrices.
+System log level.
+*/
+LogLevel LOG_LEVEL;
+
+/*
+Viewing and projection matrices.
 They are column major format:
 
 0 4 8  12
@@ -11,6 +16,6 @@ They are column major format:
 2 6 10 14
 3 7 11 15
 */
-float LSE_VIEW_MATRIX[16], LSE_PROJ_MATRIX[16];
+float VIEW_MATRIX[16], PROJ_MATRIX[16];
 
 }

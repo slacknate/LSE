@@ -9,9 +9,9 @@
 TODO:
     why do some sample rates cause segfaults?
 */
-LSE_Terrain2D LSE_InterpNoise2D(float startX, float startZ, int width, int depth, int sampleRate, float low, float high, anl::CImplicitFractal& fractal) {
+Terrain2D InterpNoise2D(float startX, float startZ, int width, int depth, int sampleRate, float low, float high, anl::CImplicitFractal& fractal) {
     
-    LSE_Terrain2D points = NULL; // terrain data
+    Terrain2D points = NULL; // terrain data
     
     if(sampleRate > 1) {
         
@@ -85,7 +85,7 @@ LSE_Terrain2D LSE_InterpNoise2D(float startX, float startZ, int width, int depth
                                     
                         float x = float(w - p1X)/float(sampleRate);
                         float y = float(d - p1Y)/float(sampleRate);
-                        points[w][d] = LSE_BicubicInterpolate(interpPoints, x, y);
+                        points[w][d] = BicubicInterpolate(interpPoints, x, y);
                     }
                 }
             }
@@ -95,7 +95,7 @@ LSE_Terrain2D LSE_InterpNoise2D(float startX, float startZ, int width, int depth
     return points;
 }
 
-LSE_Terrain2D LSE_GenTerrain2D(int seed, float startX, float startZ, int width, int depth, float low, float high) {
+Terrain2D GenTerrain2D(int seed, float startX, float startZ, int width, int depth, float low, float high) {
     
     int sampleRates[4];
     sampleRates[0] = 8;
@@ -131,12 +131,12 @@ LSE_Terrain2D LSE_GenTerrain2D(int seed, float startX, float startZ, int width, 
 	f3.setGain(5357.891);
 	f3.setLacunarity(double(sampleRates[3]));
     
-    LSE_Terrain2D p0 = LSE_InterpNoise2D(startX, startZ, width, depth, sampleRates[0], low, high, f0);
-    LSE_Terrain2D p1 = LSE_InterpNoise2D(startX, startZ, width, depth, sampleRates[1], low, high, f1);
-    LSE_Terrain2D p2 = LSE_InterpNoise2D(startX, startZ, width, depth, sampleRates[2], low, high, f2);
-    LSE_Terrain2D p3 = LSE_InterpNoise2D(startX, startZ, width, depth, sampleRates[3], low, high, f3);
+    Terrain2D p0 = InterpNoise2D(startX, startZ, width, depth, sampleRates[0], low, high, f0);
+    Terrain2D p1 = InterpNoise2D(startX, startZ, width, depth, sampleRates[1], low, high, f1);
+    Terrain2D p2 = InterpNoise2D(startX, startZ, width, depth, sampleRates[2], low, high, f2);
+    Terrain2D p3 = InterpNoise2D(startX, startZ, width, depth, sampleRates[3], low, high, f3);
     
-    LSE_Terrain2D points = NULL;
+    Terrain2D points = NULL;
     
     if(p0 && p1 && p2 && p3) {
     
@@ -169,15 +169,15 @@ LSE_Terrain2D LSE_GenTerrain2D(int seed, float startX, float startZ, int width, 
         }
     }
     
-    LSE_Free2D(&p0, width, sampleRates[0]);
-    LSE_Free2D(&p1, width, sampleRates[1]);
-    LSE_Free2D(&p2, width, sampleRates[2]);
-    LSE_Free2D(&p3, width, sampleRates[3]);
+    Free2D(&p0, width, sampleRates[0]);
+    Free2D(&p1, width, sampleRates[1]);
+    Free2D(&p2, width, sampleRates[2]);
+    Free2D(&p3, width, sampleRates[3]);
     
     return points;
 }
 
-void LSE_Free2D(LSE_Terrain2D *points, int width, int sampleRate) {
+void Free2D(Terrain2D *points, int width, int sampleRate) {
     
     if(points) {
         

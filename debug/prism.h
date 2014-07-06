@@ -7,17 +7,17 @@
 namespace LSE {
 
 // test lse_globject class
-class TestPrism : public LSE_GLRectPrism {
+class TestPrism : public GLRectPrism {
     
-    LSE_DECLARE(TestPrism)
+    DECLARE(TestPrism)
     
     private:
         
-        LSE_GLWindow *window; // system provided opengl context
+        GLWindow *window; // system provided opengl context
     
     public:
         
-        TestPrism(LSE_GLWindow *win, double x, double y, double z, double w, double h, double d);
+        TestPrism(GLWindow *win, double x, double y, double z, double w, double h, double d);
         
         enum {
             
@@ -25,8 +25,8 @@ class TestPrism : public LSE_GLRectPrism {
             ID_KEY
         };
         
-        bool OnMouseMotion(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr);
-        bool OnKey(LSE_Object *o, unsigned int type, unsigned int id, void *ptr);
+        bool OnMouseMotion(Object *sender, unsigned int type, unsigned int id, void *ptr);
+        bool OnKey(Object *o, unsigned int type, unsigned int id, void *ptr);
 };
 
 }

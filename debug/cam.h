@@ -6,24 +6,24 @@
 namespace LSE {
 
 // test camera manipulation object
-class TestCam : public LSE_Object {
+class TestCam : public Object {
     
-    LSE_DECLARE(TestCam)
+    DECLARE(TestCam)
     
     private:
     
-        LSE_GLWindow *window; // system provided opengl context
+        GLWindow *window; // system provided opengl context
     
     public:
         
-        TestCam(LSE_GLWindow *w);
+        TestCam(GLWindow *w);
         
         enum {
             
             ID_KEY = 1
         };
         
-        bool OnKey(LSE_Object *o, unsigned int type, unsigned int id, void *ptr);
+        bool OnKey(Object *o, unsigned int type, unsigned int id, void *ptr);
 };
 
 }

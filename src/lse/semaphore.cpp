@@ -8,7 +8,7 @@ Set shared and initial value parameters,
 and if we have a desired max value,
 store that as well.
 */
-LSE_Semaphore::LSE_Semaphore(int initial, int shared) {
+Semaphore::Semaphore(int initial, int shared) {
     
     initialized = !sem_init(&semaphore, shared, initial);
     if(!initialized)
@@ -18,7 +18,7 @@ LSE_Semaphore::LSE_Semaphore(int initial, int shared) {
 /*
 Destroy the semaphore.
 */
-LSE_Semaphore::~LSE_Semaphore() {
+Semaphore::~Semaphore() {
     
     if(initialized) {
         
@@ -30,7 +30,7 @@ LSE_Semaphore::~LSE_Semaphore() {
 /*
 Wait on the semaphore.
 */
-void LSE_Semaphore::Wait() {
+void Semaphore::Wait() {
     
     if(initialized) {
         
@@ -42,7 +42,7 @@ void LSE_Semaphore::Wait() {
 /*
 Attempt to non-blocking wait on the semaphore.
 */
-void LSE_Semaphore::TryWait() {
+void Semaphore::TryWait() {
     
     if(initialized) {
         
@@ -54,7 +54,7 @@ void LSE_Semaphore::TryWait() {
 /*
 Post to the semaphore.
 */
-void LSE_Semaphore::Post() {
+void Semaphore::Post() {
     
     if(initialized) {
         
@@ -66,7 +66,7 @@ void LSE_Semaphore::Post() {
 /*
 Get the current number of available wait slots available.
 */
-int LSE_Semaphore::Value() {
+int Semaphore::Value() {
     
     int currValue = 0;
     

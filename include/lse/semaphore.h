@@ -9,7 +9,7 @@ namespace LSE {
 /*
 
 */
-class LSE_Semaphore {
+class Semaphore {
     
     private:
         
@@ -18,8 +18,8 @@ class LSE_Semaphore {
         
     public:
         
-        LSE_Semaphore(int initial=0, int shared=0);
-        ~LSE_Semaphore();
+        Semaphore(int initial=0, int shared=0);
+        ~Semaphore();
         
         void Wait();
         void TryWait();

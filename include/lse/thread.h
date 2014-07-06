@@ -11,9 +11,9 @@ Thread class used to create objects
 which can run an additional thread in the
 background but still respond to events.
 */
-class LSE_Thread : public LSE_Object {
+class Thread : public Object {
     
-    LSE_DECLARE(LSE_Thread)
+    DECLARE(Thread)
        
     protected:
         
@@ -24,7 +24,7 @@ class LSE_Thread : public LSE_Object {
         
     public:
         
-        LSE_Thread();
+        Thread();
         
         bool Start();
         bool Detach();
@@ -37,7 +37,7 @@ class LSE_Thread : public LSE_Object {
             ID_QUIT = 1
         };
         
-        bool OnQuit(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr);
+        bool OnQuit(Object *sender, unsigned int type, unsigned int id, void *ptr);
 };
 
 }

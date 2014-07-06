@@ -10,18 +10,18 @@ namespace LSE {
 /*
 
 */
-class LSE_Engine : public LSE_Thread {
+class Engine : public Thread {
     
     // event map type and handler declaration
-    LSE_DECLARE(LSE_Engine)
+    DECLARE(Engine)
     
     private:
         
-        LSE_List eventList; // 
-        LSE_Object *keyFocus, *mouseFocus;
-        LSE_Semaphore event_sem;
-        LSE_IOHandler handler;
-        LSE_GLWindow *window; // OpenGL window
+        List eventList; // 
+        Object *keyFocus, *mouseFocus;
+        Semaphore event_sem;
+        IOHandler handler;
+        GLWindow *window; // OpenGL window
         FILE *messgLog, *errorLog; // logging file handles
         bool run; // keep the engine running
         int status; // exit status
@@ -31,10 +31,8 @@ class LSE_Engine : public LSE_Thread {
         
     public:
         
-        static LSE_LogLevel log_level;
-        
-        LSE_Engine(int argc, char *argv[]);
-        ~LSE_Engine();
+        Engine(int argc, char *argv[]);
+        ~Engine();
         
         void InitWindow(const char *const windowTitle, unsigned int m, int w, int h, double angle, double zi, double za);
         int Run();
@@ -47,8 +45,8 @@ class LSE_Engine : public LSE_Thread {
             ID_EVENT
         };
         
-        bool OnEvent(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr);
-        bool OnQuit(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr);
+        bool OnEvent(Object *sender, unsigned int type, unsigned int id, void *ptr);
+        bool OnQuit(Object *sender, unsigned int type, unsigned int id, void *ptr);
 };
 
 }
@@ -57,6 +55,6 @@ class LSE_Engine : public LSE_Thread {
 User defined initialization functions.
 */
 void GLInit();
-void InitScene(LSE::LSE_GLWindow *window);
+void InitScene(LSE::GLWindow *window);
 
 #endif

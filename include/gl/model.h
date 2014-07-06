@@ -8,7 +8,7 @@ namespace LSE {
 /*
 Base class for all model objects.
 */
-class LSE_GLModel : public LSE_GLObject {
+class GLModel : public GLObject {
     
     protected:
         
@@ -18,8 +18,8 @@ class LSE_GLModel : public LSE_GLObject {
         
     public:
         
-        LSE_GLModel(char *fileName, double x, double y, double z);
-        ~LSE_GLModel();
+        GLModel(char *fileName, double x, double y, double z);
+        ~GLModel();
 };
 
 }

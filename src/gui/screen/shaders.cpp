@@ -125,7 +125,7 @@ static const char FRAGMENT_SHADER[] = {
 /*
 Array of all built in LSE Shaders.
 */
-static const char *const LSE_SHADERS[] = {
+static const char *const SHADERS[] = {
 
 	"Invalid\0",
 	VERTEX_SHADER,
@@ -142,12 +142,12 @@ Get the shader of the specified type.
 This function is used to obtain the shaders
 built into the engine.
 */
-const char* LSE_GetScreenShaders(LSE_ShaderType type) {
+const char* GetScreenShaders(ShaderType type) {
     
     if(valid_shader_type(type))
-        return LSE_SHADERS[type];
+        return SHADERS[type];
     
-    LOG(LOG_LEVEL_ERROR, "Invalid LSE_Shader type.");
+    LOG(LOG_LEVEL_ERROR, "Invalid Shader type.");
     return NULL;
 }
 

@@ -1,4 +1,5 @@
 #include "lse/defs.h"
+using namespace LSE;
 
 /*
 OpenGL error messages.
@@ -17,29 +18,29 @@ static const char *const GL_ERRORS[] = {
 /*
 
 */
-static const char *const ERROR_ID_STRINGS[] = {
+static const char *const STATUS_ID_STRINGS[] = {
     
-    "LSE_OK",
-    "LSE_GL_INIT_FAIL",
-    "LSE_GL_PROG_FAIL",
-    "LSE_BAD_ALLOC",
-    "LSE_BAD_CAST",
-    "LSE_BAD_EXCEPTION",
-    "LSE_BAD_TYPE_ID",
-    "LSE_IOS_FAIL",
-    "LSE_RUNTIME_ERR",
-    "LSE_LOGIC_ERR",
-    "LSE_WIN_REG_FAIL",
-    "LSE_WIN_CREATE_FAIL",
-    "LSE_GL_CON_FAIL",
-    "LSE_IO_SETUP_FAIL",
-    "LSE_STAT_LAST"
+    "OK",
+    "GL_INIT_FAIL",
+    "GL_PROG_FAIL",
+    "BAD_ALLOC",
+    "BAD_CAST",
+    "BAD_EXCEPTION",
+    "BAD_TYPE_ID",
+    "IOS_FAIL",
+    "RUNTIME_ERR",
+    "LOGIC_ERR",
+    "WIN_REG_FAIL",
+    "WIN_CREATE_FAIL",
+    "GL_CON_FAIL",
+    "IO_SETUP_FAIL",
+    "STAT_LAST"
 };
 
 /*
 LSE Status strings.
 */
-static const char *const ERROR_STRINGS[] = {
+static const char *const STATUS_STRINGS[] = {
     
     "No errors. ",
     "OpenGL failed to initialize. ",
@@ -63,17 +64,18 @@ namespace LSE {
 /*
 LSE Error status.
 */
-static int errorStatus = LSE_OK;
+static int error_status = OK;
 
 /*
 Return the string equivalent of an
 OpenGL error code.
 */
-const char* LSE_GLErrorString(GLenum e) {
+const char* GLErrorString(GLenum gl_error) {
     
-    int i = e - 0x0500;
-    if(i >= 0 && i < 7)
-        return GL_ERRORS[i];
+    int err_index = gl_error - 0x0500;
+    if(err_index >= 0 && err_index < 7)
+        return GL_ERRORS[err_index];
+        
     else
         return "Unknown OpenGL error.";
 }
@@ -81,34 +83,115 @@ const char* LSE_GLErrorString(GLenum e) {
 /*
 
 */
-int LSE_ErrorStatus(int c) {
+int StatusCode(int code) {
     
-    if(c >= LSE_OK && c < LSE_STAT_LAST)
-        errorStatus = c;
+    if(code >= OK && code < STAT_LAST)
+        error_status = code;
         
-    return errorStatus;
+    return error_status;
 }
 
 /*
 
 */
-const char* LSE_ErrorString(int c) {
+const char* StatusString(int code) {
     
-    if(c >= LSE_OK && c < LSE_STAT_LAST)
-        return ERROR_STRINGS[c];
+    if(code >= OK && code < STAT_LAST)
+        return STATUS_STRINGS[code];
+        
     else
-        return ERROR_STRINGS[errorStatus];
+        return STATUS_STRINGS[error_status];
 }
 
 /*
 
 */
-const char* LSE_ErrorIDString(int c) {
+const char* StatusID(int code) {
     
-    if(c >= LSE_OK && c < LSE_STAT_LAST)
-        return ERROR_ID_STRINGS[c];
+    if(code >= OK && code < STAT_LAST)
+        return STATUS_ID_STRINGS[code];
+        
     else
-        return ERROR_ID_STRINGS[errorStatus];
+        return STATUS_ID_STRINGS[error_status];
 }
+
+/*
+Get the OpenGL version as an integer.
+*/
+const int GLVersion() {
+    
+    static int gl_version = 0;
+    
+    if(gl_version == 0) {
+    
+        int gl_major = 0, gl_minor = 0;
+        
+        glGetIntegerv(GL_MAJOR_VERSION, &gl_major);
+        glGetIntegerv(GL_MINOR_VERSION, &gl_minor);
+        
+        gl_version = (100 * gl_major + 10 * gl_minor); 
+    }
+    
+    return (const int)gl_version;
+}
+
+/*
+Get the GLSL version as an integer.
+*/
+const int SLVersion() {
+    
+    static int sl_version = 0;
+    
+    if(sl_version == 0) {
+        
+        const int gl_version = GLVersion();
+    
+        if(gl_version >= 330)
+            sl_version = gl_version;
+            
+        else
+            sl_version = gl_version - 170;   
+    }
+    
+    return (const int)sl_version;
+}
+
+/*
+Fetch max number of vertex attributes.
+*/
+const int MaxGLVertAttrib() {
+    
+    int gl_max_vert_attr;
+    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &gl_max_vert_attr);
+    return (const int)gl_max_vert_attr;
+}
+
+/*
+Fetch max number of frame buffer object color attachments.
+*/
+const int MaxFBOColorAttachments() {
+    
+    int gl_max_color_attach;
+    glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &gl_max_color_attach);
+    return (const int)gl_max_color_attach;
+}
+
+/*
+
+*/
+const char *const GLVendorVersion() {
+    
+    return (const char* const)glGetString(GL_VERSION);
+}
+
+/*
+
+*/
+const char *const SLVendorVersion() {
+    
+    return (const char* const)glGetString(GL_SHADING_LANGUAGE_VERSION);
+}
+
+// fix me -> fetch max number of uniforms
 
 }

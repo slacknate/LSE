@@ -5,7 +5,7 @@
 
 namespace LSE {
 
-const char* LSE_GetScreenShaders(LSE_ShaderType type);
+const char* GetScreenShaders(ShaderType type);
 
 }
 

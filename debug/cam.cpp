@@ -2,17 +2,17 @@
 #include "lse/defs.h"
 using namespace LSE;
 
-LSE_EVTMAP(TestCam) CamMap[] = {
+EVTMAP(TestCam) CamMap[] = {
     
-    LSE_EVTFUNC(LSE_KEYBOARD, TestCam::ID_KEY, TestCam::OnKey)
+    EVTFUNC(KEYBOARD, TestCam::ID_KEY, TestCam::OnKey)
 };
 
-LSE_EVTIMP(TestCam, CamMap);
+EVTIMP(TestCam, CamMap);
 
 /*
 
 */
-TestCam::TestCam(LSE_GLWindow *w) : LSE_Object() {
+TestCam::TestCam(GLWindow *w) : Object() {
     
     window = w;
 }
@@ -20,7 +20,7 @@ TestCam::TestCam(LSE_GLWindow *w) : LSE_Object() {
 /*
 
 */
-bool TestCam::OnKey(LSE_Object *, unsigned int, unsigned int, void *) {
+bool TestCam::OnKey(Object *, unsigned int, unsigned int, void *) {
             
     printf("Key!\n");
     return true;

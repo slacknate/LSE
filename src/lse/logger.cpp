@@ -15,9 +15,9 @@ const char *const LOG_LEVEL_PREFIXS[] = {
     "R",
 };
 
-void WriteLog(LSE_LogLevel log_level, FILE *stream, va_list &arg_list) {
+void WriteLog(LogLevel log_level, FILE *stream, va_list &arg_list) {
     
-    if(log_level <= LSE_Engine::log_level) {
+    if(log_level <= LOG_LEVEL) {
         
         char *timeStr = new (std::nothrow) char [9];
         if(stream != NULL && timeStr != NULL) {
@@ -47,9 +47,19 @@ void WriteLog(LSE_LogLevel log_level, FILE *stream, va_list &arg_list) {
     }
 }
 
+void errno_helper(LogLevel log_level, FILE *stream, ...) {
+    
+    va_list arg_list;
+    va_start(arg_list, stream);
+    
+    WriteLog(log_level, stream, arg_list);
+    
+    va_end(arg_list);
+}
+
 namespace LSE {
 
-void LOG(LSE_LogLevel log_level, ...) {
+void LOG(LogLevel log_level, ...) {
     
     va_list arg_list;
     va_start(arg_list, log_level);
@@ -63,19 +73,9 @@ void LOG(LSE_LogLevel log_level, ...) {
     va_end(arg_list);
 }
 
-void errno_helper(LSE_LogLevel log_level, FILE *stream, ...) {
-    
-    va_list arg_list;
-    va_start(arg_list, stream);
-    
-    WriteLog(log_level, stream, arg_list);
-    
-    va_end(arg_list);
-}
-
 void ERRNO(const char *const errno_msg) {
     
-    errno_helper(LOG_LEVEL_ERROR, stderr, "%s: %s", errno_msg, strerror(errno));
+    ::errno_helper(LOG_LEVEL_ERROR, stderr, "%s: %s", errno_msg, strerror(errno));
 }
 
 }

@@ -14,172 +14,166 @@ LSE includes.
 #include "lse/globals.h"
 #include "lse/exception.h"
 
-// TODO: convert all defines to const's that are possible; determine what to do with the rest of the defines
+// TODO: convert all defines to enums that are possible; determine what to do with the rest of the defines
 namespace LSE {
+    
+/*
+
+*/
+#define MIN_GL_VERSION      320
+#define MIN_SL_VERSION      150
+#define GL_MIN_COLOR_ATTACH 2
+#define GL_MIN_VERT_ATTRIB  6
 
 /*
 Extended error code macros.
 */
 #if defined(_WIN32) || defined(_WIN64)
-#define LSE_EXT_ERR_CODE        (GetLastError())
+#define EXT_ERR_CODE        (GetLastError())
 #elif defined(__unix__) && !defined(__APPLE__) // all unix variants, non-mac
-#define LSE_EXT_ERR_CODE        ??? // FIXME
+#define EXT_ERR_CODE        ??? // FIXME
 #elif defined(__APPLE__) && !defined(__MACH__) // mac osx, non-ios
-#define LSE_EXT_ERR_CODE        ??? // FIXME
+#define EXT_ERR_CODE        ??? // FIXME
 #endif
 
-/*
-LSE Engine status macros.
-*/
-#define LSE_STATUS              (LSE_ErrorStatus())
-#define LSE_ERROR_STRING        (LSE_ErrorString())
-#define LSE_ERROR_ID_STRING     (LSE_ErrorIDString())
-
-/*
-OpenGL function macros.
-*/
-#define LSE_GL_VERSION          (LSE_GLVersion())
-#define LSE_GL_VERSION_STR      (LSE_GLVersionString())
-#define LSE_SL_VERSION          (LSE_SLVersion())
-#define LSE_SL_VERSION_STR      (LSE_SLVersionString())
-#define LSE_GL_MIN_VERT_ATTRIB  6
-#define LSE_GL_MAX_VERT_ATTRIB  (LSE_MaxGLVertAttrib())
-#define LSE_GL_MIN_COLOR_ATTACH 2
-#define LSE_GL_MAX_COLOR_ATTACH (LSE_MaxFBOColorAttachments())
-#define LSE_MIN_GL_VERSION      320
-#define LSE_MIN_GL_VERSION_STR  "320"
-#define LSE_MIN_SL_VERSION      150
-#define LSE_MIN_SL_VERSION_STR  "150"
-#define LSE_GL_VENDOR_VERSION   ((const char* const)glGetString(GL_VERSION))
-#define LSE_SL_VENDOR_VERSION   ((const char* const)glGetString(GL_SHADING_LANGUAGE_VERSION))
+enum {
+    
+    STATE_DOWN = 0x000,
+    STATE_UP   = 0x001
+};
 
 /*
 Keyboard event constants.
 */
-#define LSE_KEY_STATE_DOWN      0x000
-#define LSE_KEY_STATE_UP        0x001
+enum {
 
-#define LSE_KEY_LSHIFT          0x100
-#define LSE_KEY_RSHIFT          0x101
-#define LSE_KEY_LCTRL           0x102
-#define LSE_KEY_RCTRL           0x103
-#define LSE_KEY_LALT            0x104
-#define LSE_KEY_RALT            0x105
-#define LSE_KEY_BACKSPACE       0x106
-#define LSE_KEY_TAB             0x107
-#define LSE_KEY_RETURN          0x108
-#define LSE_KEY_PAUSE           0x109
-#define LSE_KEY_ESCAPE          0x10A
-#define LSE_KEY_SPACE           0x10B
-#define LSE_KEY_NUMLOCK         0x10C
-#define LSE_KEY_SCROLLOCK       0x10D
-#define LSE_KEY_CAPSLOCK        0x10E
-#define LSE_KEY_PAGEUP          0x10F
-#define LSE_KEY_PAGEDOWN        0x110
-#define LSE_KEY_END             0x111
-#define LSE_KEY_DOWN            0x112
-#define LSE_KEY_LEFT            0x113
-#define LSE_KEY_UP              0x114
-#define LSE_KEY_RIGHT           0x115
-#define LSE_KEY_HOME            0x116
-#define LSE_KEY_PRNTSCRN        0x117
-#define LSE_KEY_INSERT          0x118
-#define LSE_KEY_DELETE          0x119
-#define LSE_KEY_LSUPER          0x11A
-#define LSE_KEY_RSUPER          0x11B
-#define LSE_KEY_MENU            0x11C
-#define LSE_KEY_NUM0            0x11D
-#define LSE_KEY_NUM1            0x11E
-#define LSE_KEY_NUM2            0x11F
-#define LSE_KEY_NUM3            0x120
-#define LSE_KEY_NUM4            0x121
-#define LSE_KEY_NUM5            0x122
-#define LSE_KEY_NUM6            0x123
-#define LSE_KEY_NUM7            0x124
-#define LSE_KEY_NUM8            0x125
-#define LSE_KEY_NUM9            0x126
-#define LSE_KEY_MULT            0x127
-#define LSE_KEY_ADD             0x128
-#define LSE_KEY_SUB             0x129
-#define LSE_KEY_DIV             0x12A
-#define LSE_KEY_DECIMAL         0x12B
-#define LSE_KEY_F1              0x12C
-#define LSE_KEY_F2              0x12D
-#define LSE_KEY_F3              0x12E
-#define LSE_KEY_F4              0x12F
-#define LSE_KEY_F5              0x130
-#define LSE_KEY_F6              0x131
-#define LSE_KEY_F7              0x132
-#define LSE_KEY_F8              0x133
-#define LSE_KEY_F9              0x134
-#define LSE_KEY_F10             0x135
-#define LSE_KEY_F11             0x136
-#define LSE_KEY_F12             0x137
-#define LSE_KEY_TILDE           0x138
-#define LSE_KEY_UNDERSCORE      0x139
-#define LSE_KEY_EQUALS          0x13A
-#define LSE_KEY_LEFT_BRACKET    0x13B
-#define LSE_KEY_RIGHT_BRACKET   0x13C
-#define LSE_KEY_BSLASH          0x13D
-#define LSE_KEY_COLONS          0x13E
-#define LSE_KEY_QUOTES          0x13F
-#define LSE_KEY_COMMA           0x140
-#define LSE_KEY_PERIOD          0x141
-#define LSE_KEY_FSLASH          0x142
-#define LSE_KEY_CLEAR           0x143
-#define LSE_KEY_INVALID         ((unsigned int)-1)
+	KEY_LSHIFT        = 0x100,
+	KEY_RSHIFT        = 0x101,
+	KEY_LCTRL         = 0x102,
+	KEY_RCTRL         = 0x103,
+	KEY_LALT          = 0x104,
+	KEY_RALT          = 0x105,
+	KEY_BACKSPACE     = 0x106,
+	KEY_TAB           = 0x107,
+	KEY_RETURN        = 0x108,
+	KEY_PAUSE         = 0x109,
+	KEY_ESCAPE        = 0x10A,
+	KEY_SPACE         = 0x10B,
+	KEY_NUMLOCK       = 0x10C,
+	KEY_SCROLLOCK     = 0x10D,
+	KEY_CAPSLOCK      = 0x10E,
+	KEY_PAGEUP        = 0x10F,
+	KEY_PAGEDOWN      = 0x110,
+	KEY_END           = 0x111,
+	KEY_DOWN          = 0x112,
+	KEY_LEFT          = 0x113,
+	KEY_UP            = 0x114,
+	KEY_RIGHT         = 0x115,
+	KEY_HOME          = 0x116,
+	KEY_PRNTSCRN      = 0x117,
+	KEY_INSERT        = 0x118,
+	KEY_DELETE        = 0x119,
+	KEY_LSUPER        = 0x11A,
+	KEY_RSUPER        = 0x11B,
+	KEY_MENU          = 0x11C,
+	KEY_NUM0          = 0x11D,
+	KEY_NUM1          = 0x11E,
+	KEY_NUM2          = 0x11F,
+	KEY_NUM3          = 0x120,
+	KEY_NUM4          = 0x121,
+	KEY_NUM5          = 0x122,
+	KEY_NUM6          = 0x123,
+	KEY_NUM7          = 0x124,
+	KEY_NUM8          = 0x125,
+	KEY_NUM9          = 0x126,
+	KEY_MULT          = 0x127,
+	KEY_ADD           = 0x128,
+	KEY_SUB           = 0x129,
+	KEY_DIV           = 0x12A,
+	KEY_DECIMAL       = 0x12B,
+	KEY_F1            = 0x12C,
+	KEY_F2            = 0x12D,
+	KEY_F3            = 0x12E,
+	KEY_F4            = 0x12F,
+	KEY_F5            = 0x130,
+	KEY_F6            = 0x131,
+	KEY_F7            = 0x132,
+	KEY_F8            = 0x133,
+	KEY_F9            = 0x134,
+	KEY_F10           = 0x135,
+	KEY_F11           = 0x136,
+	KEY_F12           = 0x137,
+	KEY_TILDE         = 0x138,
+	KEY_UNDERSCORE    = 0x139,
+	KEY_EQUALS        = 0x13A,
+	KEY_LEFT_BRACKET  = 0x13B,
+	KEY_RIGHT_BRACKET = 0x13C,
+	KEY_BSLASH        = 0x13D,
+	KEY_COLONS        = 0x13E,
+	KEY_QUOTES        = 0x13F,
+	KEY_COMMA         = 0x140,
+	KEY_PERIOD        = 0x141,
+	KEY_FSLASH        = 0x142,
+	KEY_CLEAR         = 0x143,
+	KEY_INVALID       = ((unsigned int)-1)
+};
 
 /*
 Mouse event constants
 */
-#define LSE_BUTTON_STATE_DOWN      0x000
-#define LSE_BUTTON_STATE_UP        0x001
-
-#define LSE_LEFT_BUTTON            0x1000
-#define LSE_MIDDLE_BUTTON          0x1001
-#define LSE_RIGHT_BUTTON           0x1002
-#define LSE_MOUSE_WHEEL            0x1003
-#define LSE_BUTTON_INVALID         ((unsigned int)-1)
+enum {
+    
+	MOUSE_LEFT    = 0x1000,
+	MOUSE_MIDDLE  = 0x1001,
+	MOUSE_RIGHT   = 0x1002,
+	MOUSE_WHEEL   = 0x1003,
+	MOUSE_INVALID = ((unsigned int)-1)
+};
 
 /*
 LSE engine return types.
 */
-enum {
+typedef enum {
     
-    LSE_OK = 0,
-    LSE_GL_INIT_FAIL,
-    LSE_GL_PROG_FAIL,
-    LSE_BAD_ALLOC,
-    LSE_BAD_CAST,
-    LSE_BAD_EXCEPTION,
-    LSE_BAD_TYPE_ID,
-    LSE_IOS_FAIL,
-    LSE_RUNTIME_ERR,
-    LSE_LOGIC_ERR,
-    LSE_WIN_REG_FAIL,
-    LSE_WIN_CREATE_FAIL,
-    LSE_GL_CON_FAIL,
-    LSE_IO_SETUP_FAIL,
-    LSE_STAT_LAST
-};
+    OK = 0,
+    GL_INIT_FAIL,
+    GL_PROG_FAIL,
+    BAD_ALLOC,
+    BAD_CAST,
+    BAD_EXCEPTION,
+    BAD_TYPE_ID,
+    IOS_FAIL,
+    RUNTIME_ERR,
+    LOGIC_ERR,
+    WIN_REG_FAIL,
+    WIN_CREATE_FAIL,
+    GL_CON_FAIL,
+    IO_SETUP_FAIL,
+    STAT_LAST
+} EngineStatus;
 
 /*
 OpenGL Version and Attribute fetching functions.
 */
-const int LSE_GLVersion();
-const char *const LSE_GLVersionString();
-const int LSE_SLVersion();
-const char *const LSE_SLVersionString();
-const int LSE_MaxGLVertAttrib();
-const int LSE_MaxFBOColorAttachments();
+const int GLVersion();
+const char *const GLVendorVersion();
+const int SLVersion();
+const char *const SLVendorVersion();
+const int MaxGLVertAttrib();
+const int MaxFBOColorAttachments();
 
 /*
 Utility functions.
 */
-const char* LSE_GLErrorString(GLenum e);
-int LSE_ErrorStatus(int c=-1);
-const char* LSE_ErrorString(int c=-1);
-const char* LSE_ErrorIDString(int c=-1);
+const char* GLErrorString(GLenum e);
+
+
+/*
+LSE Engine status functions.
+*/
+int StatusCode(int code=-1);
+const char* StatusString(int code=-1);
+const char* StatusID(int code=-1);
 
 }
 

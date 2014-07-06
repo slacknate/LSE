@@ -14,10 +14,10 @@ at least Windows XP.
 
 namespace LSE {
 
-class LSE_IOHandler : public LSE_IOHandler_Base {
+class IOHandler : public IOHandler_Base {
         
     public:
-        LSE_IOHandler(LSE_Object *e);
+        IOHandler(Object *e);
         
         void RegisterInput(HWND hwnd, unsigned short page, unsigned short id);
         void Setup(HWND hwnd);

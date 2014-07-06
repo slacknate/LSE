@@ -10,38 +10,38 @@ void call_safe() {
     }
     catch(const std::bad_alloc &ba) { 
         
-        throw LSE_Exception(__FILE__, __LINE__, LSE_BAD_ALLOC);
+        throw Exception(__FILE__, __LINE__, BAD_ALLOC);
     }
     catch(const std::bad_cast &bc) { 
     
-        throw LSE_Exception(__FILE__, __LINE__, LSE_BAD_CAST);
+        throw Exception(__FILE__, __LINE__, BAD_CAST);
     }
     catch(const std::bad_typeid &bt) { 
     
-        throw LSE_Exception(__FILE__, __LINE__, LSE_BAD_TYPE_ID);
+        throw Exception(__FILE__, __LINE__, BAD_TYPE_ID);
     }
     catch(const std::bad_exception &be) { 
     
-        throw LSE_Exception(__FILE__, __LINE__, LSE_BAD_EXCEPTION);
+        throw Exception(__FILE__, __LINE__, BAD_EXCEPTION);
     }
     catch(const std::ios_base::failure &iof) { 
     
-        throw LSE_Exception(__FILE__, __LINE__, LSE_IOS_FAIL);
+        throw Exception(__FILE__, __LINE__, IOS_FAIL);
     }
     catch(const std::runtime_error &re) { 
     
-        throw LSE_Exception(__FILE__, __LINE__, LSE_RUNTIME_ERR);
+        throw Exception(__FILE__, __LINE__, RUNTIME_ERR);
     }
     catch(const std::logic_error &le) { 
     
-        throw LSE_Exception(__FILE__, __LINE__, LSE_LOGIC_ERR);
+        throw Exception(__FILE__, __LINE__, LOGIC_ERR);
     }
 }
 
 /*
 Create an exception, with a corresponding error message.
 */
-LSE_Exception::LSE_Exception(const char *f, int l, int c) throw() {
+Exception::Exception(const char *f, int l, int c) throw() {
     
     memset(output, 0, ERROR_BUFFER_SIZE + 1);
     fileName = f;
@@ -52,16 +52,16 @@ LSE_Exception::LSE_Exception(const char *f, int l, int c) throw() {
 /*
 Return the error message.
 */
-const char* LSE_Exception::what() const throw() {
+const char* Exception::what() const throw() {
     
-    snprintf((char *)output, ERROR_BUFFER_SIZE, "An exception was thrown in \"%s\" at line %d, code %s: %s", fileName, lineNumber, LSE_ErrorIDString(errCode), LSE_ErrorString(errCode));
+    snprintf((char *)output, ERROR_BUFFER_SIZE, "An exception was thrown in \"%s\" at line %d, code %s: %s", fileName, lineNumber, StatusID(errCode), StatusString(errCode));
     return output;
 }
 
 /*
 Return the error code.
 */
-const int LSE_Exception::code() const throw() {
+const int Exception::code() const throw() {
     
     return errCode;
 }

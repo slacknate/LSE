@@ -38,156 +38,156 @@ unsigned int vkey_to_lkey(unsigned int vkey, unsigned int make_code, unsigned in
     
     LOG(LOG_LEVEL_RAW, "Got vkey code: 0x%.2X, make code: 0x%.2X, left/right flag: 0x%.2X", vkey, make_code, left_right);
     
-    unsigned int lkey = LSE_KEY_INVALID;
+    unsigned int lkey = KEY_INVALID;
     
     switch(vkey) {
         
         case VK_BACK:
-            lkey = LSE_KEY_BACKSPACE; break;
+            lkey = KEY_BACKSPACE; break;
         case VK_TAB:
-            lkey = LSE_KEY_TAB; break;
+            lkey = KEY_TAB; break;
         case VK_RETURN:
-            lkey = LSE_KEY_RETURN; break;
+            lkey = KEY_RETURN; break;
         case VK_PAUSE:
-            lkey = LSE_KEY_PAUSE; break;
+            lkey = KEY_PAUSE; break;
         case VK_ESCAPE:
-            lkey = LSE_KEY_ESCAPE; break;
+            lkey = KEY_ESCAPE; break;
         case VK_SPACE:
-            lkey = LSE_KEY_SPACE; break;
+            lkey = KEY_SPACE; break;
         case VK_PRIOR: // page up
-            lkey = LSE_KEY_PAGEUP; break;
+            lkey = KEY_PAGEUP; break;
         case VK_NEXT: // page down
-            lkey = LSE_KEY_PAGEDOWN; break;
+            lkey = KEY_PAGEDOWN; break;
         case VK_END:
-            lkey = LSE_KEY_END; break;
+            lkey = KEY_END; break;
         case VK_HOME:
-            lkey = LSE_KEY_HOME; break;
+            lkey = KEY_HOME; break;
         case VK_LEFT:
-            lkey = LSE_KEY_LEFT; break;
+            lkey = KEY_LEFT; break;
         case VK_UP:
-            lkey = LSE_KEY_UP; break;
+            lkey = KEY_UP; break;
         case VK_RIGHT:
-            lkey = LSE_KEY_RIGHT; break;
+            lkey = KEY_RIGHT; break;
         case VK_DOWN:
-            lkey = LSE_KEY_DOWN; break;
+            lkey = KEY_DOWN; break;
         case VK_SNAPSHOT: // print screen
-            lkey = LSE_KEY_PRNTSCRN; break;
+            lkey = KEY_PRNTSCRN; break;
         case VK_INSERT:
-            lkey = LSE_KEY_INSERT; break;
+            lkey = KEY_INSERT; break;
         case VK_DELETE:
-            lkey = LSE_KEY_DELETE; break;
+            lkey = KEY_DELETE; break;
         case VK_LWIN: // left windows key
-            lkey = LSE_KEY_LSUPER; break;
+            lkey = KEY_LSUPER; break;
         case VK_RWIN: // right windows key
-            lkey = LSE_KEY_RSUPER; break;
+            lkey = KEY_RSUPER; break;
         case VK_APPS: // menu key
-            lkey = LSE_KEY_MENU; break;
+            lkey = KEY_MENU; break;
         case VK_NUMPAD0:
-            lkey = LSE_KEY_NUM0; break;
+            lkey = KEY_NUM0; break;
         case VK_NUMPAD1:
-            lkey = LSE_KEY_NUM1; break;
+            lkey = KEY_NUM1; break;
         case VK_NUMPAD2:
-            lkey = LSE_KEY_NUM2; break;
+            lkey = KEY_NUM2; break;
         case VK_NUMPAD3:
-            lkey = LSE_KEY_NUM3; break;
+            lkey = KEY_NUM3; break;
         case VK_NUMPAD4:
-            lkey = LSE_KEY_NUM4; break;
+            lkey = KEY_NUM4; break;
         case VK_NUMPAD5:
-            lkey = LSE_KEY_NUM5; break;
+            lkey = KEY_NUM5; break;
         case VK_NUMPAD6:
-            lkey = LSE_KEY_NUM6; break;
+            lkey = KEY_NUM6; break;
         case VK_NUMPAD7:
-            lkey = LSE_KEY_NUM7; break;
+            lkey = KEY_NUM7; break;
         case VK_NUMPAD8:
-            lkey = LSE_KEY_NUM8; break;
+            lkey = KEY_NUM8; break;
         case VK_NUMPAD9:
-            lkey = LSE_KEY_NUM9; break;
+            lkey = KEY_NUM9; break;
         case VK_MULTIPLY:
-            lkey = LSE_KEY_MULT; break;
+            lkey = KEY_MULT; break;
         case VK_ADD:
-            lkey = LSE_KEY_ADD; break;
+            lkey = KEY_ADD; break;
         case VK_SUBTRACT:
-            lkey = LSE_KEY_SUB; break;
+            lkey = KEY_SUB; break;
         case VK_DECIMAL:
-            lkey = LSE_KEY_DECIMAL; break;
+            lkey = KEY_DECIMAL; break;
         case VK_DIVIDE:
-            lkey = LSE_KEY_DIV; break;
+            lkey = KEY_DIV; break;
         case VK_F1:
-            lkey = LSE_KEY_F1; break;
+            lkey = KEY_F1; break;
         case VK_F2:
-            lkey = LSE_KEY_F2; break;
+            lkey = KEY_F2; break;
         case VK_F3:
-            lkey = LSE_KEY_F3; break;
+            lkey = KEY_F3; break;
         case VK_F4:
-            lkey = LSE_KEY_F4; break;
+            lkey = KEY_F4; break;
         case VK_F5:
-            lkey = LSE_KEY_F5; break;
+            lkey = KEY_F5; break;
         case VK_F6:
-            lkey = LSE_KEY_F6; break;
+            lkey = KEY_F6; break;
         case VK_F7:
-            lkey = LSE_KEY_F7; break;
+            lkey = KEY_F7; break;
         case VK_F8:
-            lkey = LSE_KEY_F8; break;
+            lkey = KEY_F8; break;
         case VK_F9:
-            lkey = LSE_KEY_F9; break;
+            lkey = KEY_F9; break;
         case VK_F10:
-            lkey = LSE_KEY_F10; break;
+            lkey = KEY_F10; break;
         case VK_F11:
-            lkey = LSE_KEY_F11; break;
+            lkey = KEY_F11; break;
         case VK_F12:
-            lkey = LSE_KEY_F12; break;
+            lkey = KEY_F12; break;
         case VK_NUMLOCK:
-            lkey = LSE_KEY_NUMLOCK; break;
+            lkey = KEY_NUMLOCK; break;
         case VK_SCROLL:
-            lkey = LSE_KEY_SCROLLOCK; break;
+            lkey = KEY_SCROLLOCK; break;
         case VK_CAPITAL:
-            lkey = LSE_KEY_CAPSLOCK; break;
+            lkey = KEY_CAPSLOCK; break;
         case VK_CLEAR:
-            lkey = LSE_KEY_CLEAR; break;
+            lkey = KEY_CLEAR; break;
         case VK_OEM_1: // ;: on US standard keyboard
-            lkey = LSE_KEY_COLONS; break;
+            lkey = KEY_COLONS; break;
         case VK_OEM_2: // /? on US standard keyboard
-            lkey = LSE_KEY_FSLASH; break;
+            lkey = KEY_FSLASH; break;
         case VK_OEM_3: // `~ on US standard keyboard
-            lkey = LSE_KEY_TILDE; break;
+            lkey = KEY_TILDE; break;
         case VK_OEM_4: // [{ on US standard keyboard
-            lkey = LSE_KEY_LEFT_BRACKET; break;
+            lkey = KEY_LEFT_BRACKET; break;
         case VK_OEM_5: // \| on US standard keyboard
-            lkey = LSE_KEY_BSLASH; break;
+            lkey = KEY_BSLASH; break;
         case VK_OEM_6: // ]} on US standard keyboard
-            lkey = LSE_KEY_RIGHT_BRACKET; break;
+            lkey = KEY_RIGHT_BRACKET; break;
         case VK_OEM_7: // '" on US standard keyboard
-            lkey = LSE_KEY_QUOTES; break;
+            lkey = KEY_QUOTES; break;
         case VK_OEM_COMMA: // ,
-            lkey = LSE_KEY_COMMA; break;
+            lkey = KEY_COMMA; break;
         case VK_OEM_PERIOD: // .
-            lkey = LSE_KEY_PERIOD; break;
+            lkey = KEY_PERIOD; break;
         case VK_OEM_MINUS: // -_
-            lkey = LSE_KEY_UNDERSCORE; break;
+            lkey = KEY_UNDERSCORE; break;
         case VK_OEM_PLUS: // +=
-            lkey = LSE_KEY_EQUALS; break;
+            lkey = KEY_EQUALS; break;
         case VK_SHIFT:
             if(make_code == 42) // left shift
-                lkey = LSE_KEY_LSHIFT;
+                lkey = KEY_LSHIFT;
             
             else if(make_code == 54) // right shift
-                lkey = LSE_KEY_RSHIFT;
+                lkey = KEY_RSHIFT;
                  
             break;
         case VK_CONTROL:
             if(left_right == RI_KEY_E0) // left control
-                lkey = LSE_KEY_LCTRL;
+                lkey = KEY_LCTRL;
             
             else if(left_right == RI_KEY_E1) // right control
-                lkey = LSE_KEY_RCTRL;
+                lkey = KEY_RCTRL;
                  
             break;
         case VK_MENU:
             if(left_right == RI_KEY_E0) // left alt
-                lkey = LSE_KEY_LALT;
+                lkey = KEY_LALT;
             
             else if(left_right == RI_KEY_E1) // right alt
-                lkey = LSE_KEY_RALT;
+                lkey = KEY_RALT;
                  
             break;
         case '0':
@@ -246,19 +246,19 @@ int* vbutton_to_lbutton(unsigned int vbutton) {
     switch(vbutton) {
         
         case RI_MOUSE_LEFT_BUTTON_DOWN:
-            lbutton[0] = LSE_LEFT_BUTTON; lbutton[1] = LSE_BUTTON_STATE_DOWN; break;
+            lbutton[0] = MOUSE_LEFT; lbutton[1] = STATE_DOWN; break;
         case RI_MOUSE_LEFT_BUTTON_UP:
-            lbutton[0] = LSE_LEFT_BUTTON; lbutton[1] = LSE_BUTTON_STATE_UP; break;
+            lbutton[0] = MOUSE_LEFT; lbutton[1] = STATE_UP; break;
         case RI_MOUSE_MIDDLE_BUTTON_DOWN:
-            lbutton[0] = LSE_MIDDLE_BUTTON; lbutton[1] = LSE_BUTTON_STATE_DOWN; break;
+            lbutton[0] = MOUSE_MIDDLE; lbutton[1] = STATE_DOWN; break;
         case RI_MOUSE_MIDDLE_BUTTON_UP:
-            lbutton[0] = LSE_MIDDLE_BUTTON; lbutton[1] = LSE_BUTTON_STATE_UP; break;
+            lbutton[0] = MOUSE_MIDDLE; lbutton[1] = STATE_UP; break;
         case RI_MOUSE_RIGHT_BUTTON_DOWN:
-            lbutton[0] = LSE_RIGHT_BUTTON; lbutton[1] = LSE_BUTTON_STATE_DOWN; break;
+            lbutton[0] = MOUSE_RIGHT; lbutton[1] = STATE_DOWN; break;
         case RI_MOUSE_RIGHT_BUTTON_UP:
-            lbutton[0] = LSE_RIGHT_BUTTON; lbutton[1] = LSE_BUTTON_STATE_UP; break;
+            lbutton[0] = MOUSE_RIGHT; lbutton[1] = STATE_UP; break;
         case RI_MOUSE_WHEEL:
-            lbutton[0] = LSE_MOUSE_WHEEL; lbutton[1] = 0; break;
+            lbutton[0] = MOUSE_WHEEL; lbutton[1] = 0; break; // Why is lbutton[1] = 0?
         default:
             LOG(LOG_LEVEL_ERROR, "Unhandled vbutton code: 0x%.4X", vbutton);
     }
@@ -269,12 +269,12 @@ int* vbutton_to_lbutton(unsigned int vbutton) {
 /*
 
 */
-LSE_IOHandler::LSE_IOHandler(LSE_Object *e) : LSE_IOHandler_Base(e) { }
+IOHandler::IOHandler(Object *e) : IOHandler_Base(e) { }
 
 /*
 
 */
-void LSE_IOHandler::RegisterInput(HWND hwnd, unsigned short page, unsigned short id) {
+void IOHandler::RegisterInput(HWND hwnd, unsigned short page, unsigned short id) {
     
     RAWINPUTDEVICE raw_io;
     
@@ -284,13 +284,13 @@ void LSE_IOHandler::RegisterInput(HWND hwnd, unsigned short page, unsigned short
     raw_io.hwndTarget = hwnd;
 
     if(RegisterRawInputDevices(&raw_io, 1, sizeof(RAWINPUTDEVICE)) == false)
-        throw LSE_Exception(__FILE__, __LINE__, LSE_IO_SETUP_FAIL);
+        throw Exception(__FILE__, __LINE__, IO_SETUP_FAIL);
 }
 
 /*
 
 */
-void LSE_IOHandler::Setup(HWND hwnd) {
+void IOHandler::Setup(HWND hwnd) {
     
     this->RegisterInput(hwnd, MOUSE_PAGE, MOUSE_ID);
     this->RegisterInput(hwnd, KEYBOARD_PAGE, KEYBOARD_ID);
@@ -299,7 +299,7 @@ void LSE_IOHandler::Setup(HWND hwnd) {
 /*
 
 */
-LRESULT CALLBACK LSE_IOHandler::WindowHandler(HWND hwnd, unsigned int message, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK IOHandler::WindowHandler(HWND hwnd, unsigned int message, WPARAM wParam, LPARAM lParam) {
     
     LRESULT result = 0;
     
@@ -310,7 +310,7 @@ LRESULT CALLBACK LSE_IOHandler::WindowHandler(HWND hwnd, unsigned int message, W
             // close our window
             PostQuitMessage(0);
             // terminate the engine
-            LSE_IOHandler_Base::HandleEvent(NULL, LSE_QUIT, LSE_Engine::ID_QUIT, NULL);
+            IOHandler_Base::HandleEvent(NULL, QUIT, Engine::ID_QUIT, NULL);
             break;
             
         case WM_INPUT:
@@ -345,30 +345,30 @@ LRESULT CALLBACK LSE_IOHandler::WindowHandler(HWND hwnd, unsigned int message, W
                 
                 unsigned int key_state = (unsigned int)-1;
                 if(make_break == RI_KEY_BREAK)
-                    key_state = LSE_KEY_STATE_UP;
+                    key_state = STATE_UP;
                     
                 else if(make_break == RI_KEY_MAKE)
-                    key_state = LSE_KEY_STATE_DOWN;
+                    key_state = STATE_DOWN;
                     
                 else
                     LOG(LOG_LEVEL_ERROR, "Invalid make/break state: %d", make_break); // TODO: real error handling
                 
-                LSE_KeyEvent *key_event = new LSE_KeyEvent;
+                KeyEvent *key_event = new KeyEvent;
                 key_event->key = vkey_to_lkey(r_keyboard->VKey, r_keyboard->MakeCode, left_right);
                 key_event->state = key_state;
                 
-                LSE_IOHandler_Base::HandleEvent(NULL, LSE_KEYBOARD, LSE_ANY, key_event);
+                IOHandler_Base::HandleEvent(NULL, KEYBOARD, ANY, key_event);
             }
             else if(raw_input->header.dwType == RIM_TYPEMOUSE) {
             
                 RAWMOUSE *r_mouse = &raw_input->data.mouse;
-                LSE_MouseEvent *mouse_event = new LSE_MouseEvent;
+                MouseEvent *mouse_event = new MouseEvent;
                 
                 if(r_mouse->usButtonFlags) {
                     
                     int *lbutton = vbutton_to_lbutton(r_mouse->usButtonFlags);
                     
-                    if(lbutton[0] == LSE_MOUSE_WHEEL) {
+                    if(lbutton[0] == MOUSE_WHEEL) {
                         
                         short scroll_magnitude = (short)r_mouse->usButtonData;
                         
@@ -392,11 +392,11 @@ LRESULT CALLBACK LSE_IOHandler::WindowHandler(HWND hwnd, unsigned int message, W
                     LOG(LOG_LEVEL_ERROR, "Invalid mouse state"); // TODO: real error handling
                 }
                 
-                LSE_IOHandler_Base::HandleEvent(NULL, LSE_MOUSE, LSE_ANY, mouse_event);
+                IOHandler_Base::HandleEvent(NULL, MOUSE, ANY, mouse_event);
             }
             else if(raw_input->header.dwType == RIM_TYPEHID) {
                 
-                
+                LOG(LOG_LEVEL_DEBUG, "HID device support not implemented"); // TODO: real error handling
             }
             else {
                 

@@ -4,7 +4,7 @@ using namespace LSE;
 /*
 
 */
-LSE_GLModel::LSE_GLModel(char *fileName, double x, double y, double z) : LSE_GLObject(x, y, z) {
+GLModel::GLModel(char *fileName, double x, double y, double z) : GLObject(x, y, z) {
     
     if(fileName) {
         
@@ -33,7 +33,7 @@ LSE_GLModel::LSE_GLModel(char *fileName, double x, double y, double z) : LSE_GLO
 /*
 
 */
-LSE_GLModel::~LSE_GLModel() {
+GLModel::~GLModel() {
     
     if(modelData)
         delete[] modelData;

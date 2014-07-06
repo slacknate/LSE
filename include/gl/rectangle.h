@@ -8,7 +8,7 @@ namespace LSE {
 /*
 Pre-defined quad primitive.
 */
-class LSE_GLRectangle : public LSE_GLPrimitive {
+class GLRectangle : public GLPrimitive {
     
     private:
         
@@ -25,7 +25,7 @@ class LSE_GLRectangle : public LSE_GLPrimitive {
         
     public:
         
-        LSE_GLRectangle(double x, double y, double z, double w, double h);
+        GLRectangle(double x, double y, double z, double w, double h);
 };
 
 }

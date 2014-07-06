@@ -5,7 +5,7 @@ using namespace LSE;
 /*
 Initialize our mutex.
 */
-LSE_Mutex::LSE_Mutex() {
+Mutex::Mutex() {
     
     initialized = !pthread_mutex_init(&mutex, NULL);
     if(!initialized)
@@ -15,7 +15,7 @@ LSE_Mutex::LSE_Mutex() {
 /*
 Destroy the mutex.
 */
-LSE_Mutex::~LSE_Mutex() {
+Mutex::~Mutex() {
     
     if(initialized) {
         
@@ -27,7 +27,7 @@ LSE_Mutex::~LSE_Mutex() {
 /*
 Lock the mutex.
 */
-void LSE_Mutex::Lock() {
+void Mutex::Lock() {
     
     if(initialized) {
         
@@ -39,7 +39,7 @@ void LSE_Mutex::Lock() {
 /*
 Attempt a non-blocking lock on the mutex.
 */
-void LSE_Mutex::TryLock() {
+void Mutex::TryLock() {
     
     if(initialized) {
         
@@ -51,7 +51,7 @@ void LSE_Mutex::TryLock() {
 /*
 Unlock the mutex.
 */
-void LSE_Mutex::Unlock() {
+void Mutex::Unlock() {
     
     if(initialized) {
         

@@ -1,18 +1,18 @@
 #include "prism.h"
 using namespace LSE;
 
-LSE_EVTMAP(TestPrism) PrismMap[] = {
+EVTMAP(TestPrism) PrismMap[] = {
     
-    LSE_EVTFUNC(LSE_MOUSE,      TestPrism::ID_MOUSE,    TestPrism::OnMouseMotion),
-    LSE_EVTFUNC(LSE_KEYBOARD,   TestPrism::ID_KEY,      TestPrism::OnKey)
+    EVTFUNC(MOUSE,      TestPrism::ID_MOUSE,    TestPrism::OnMouseMotion),
+    EVTFUNC(KEYBOARD,   TestPrism::ID_KEY,      TestPrism::OnKey)
 };
 
-LSE_EVTIMP(TestPrism, PrismMap);
+EVTIMP(TestPrism, PrismMap);
 
 /*
 
 */
-TestPrism::TestPrism(LSE_GLWindow *win, double x, double y, double z, double w, double h, double d) : LSE_GLRectPrism(x, y, z, w, h, d) {
+TestPrism::TestPrism(GLWindow *win, double x, double y, double z, double w, double h, double d) : GLRectPrism(x, y, z, w, h, d) {
     
     window = win;
 }
@@ -20,17 +20,17 @@ TestPrism::TestPrism(LSE_GLWindow *win, double x, double y, double z, double w, 
 /*
 
 */
-bool TestPrism::OnMouseMotion(LSE_Object *, unsigned int, unsigned int, void *) {
+bool TestPrism::OnMouseMotion(Object *, unsigned int, unsigned int, void *) {
     
     /*SDL_MouseMotionEvent *event = (SDL_MouseMotionEvent *)ptr;
     if(event != NULL) {
         
         if(event->state == SDL_PRESSED) {
             
-            LSE_Vector v(event->yrel, event->xrel, 0);
+            Vector v(event->yrel, event->xrel, 0);
             v.Normalize();
 
-            LSE_Quaternion q(10.0*cos(3.14159265359/180.0), v.I(), v.J(), v.K());
+            Quaternion q(10.0*cos(3.14159265359/180.0), v.I(), v.J(), v.K());
             q.Normalize();
         
             Transform(q);
@@ -43,13 +43,13 @@ bool TestPrism::OnMouseMotion(LSE_Object *, unsigned int, unsigned int, void *) 
 /*
 
 */
-bool TestPrism::OnKey(LSE_Object *, unsigned int, unsigned int, void *ptr) {
+bool TestPrism::OnKey(Object *, unsigned int, unsigned int, void *ptr) {
     
     printf("Key!\n");
-    LSE_KeyEvent *event = (LSE_KeyEvent *)ptr;
+    KeyEvent *event = (KeyEvent *)ptr;
     
-    LSE_Vertex& pos = window->GetCamPos();
-    LSE_Vertex& foc = window->GetCamFocus();
+    Vertex& pos = window->GetCamPos();
+    Vertex& foc = window->GetCamFocus();
             
     if(event->key == 'w') {
                 

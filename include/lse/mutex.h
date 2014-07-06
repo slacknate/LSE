@@ -8,7 +8,7 @@ namespace LSE {
 /*
 
 */
-class LSE_Mutex {
+class Mutex {
     
     private:
         
@@ -17,8 +17,8 @@ class LSE_Mutex {
         
     public:
         
-        LSE_Mutex();
-        ~LSE_Mutex();
+        Mutex();
+        ~Mutex();
         
         void Lock();
         void TryLock();

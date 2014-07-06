@@ -3,26 +3,26 @@
 #include "lse/defs.h"
 using namespace LSE;
 
-static LSE_Engine *engine = NULL;
+static Engine *engine = NULL;
 
 void AbortHandler(int code) {
     
     LOG(LOG_LEVEL_ERROR, "Abort signal received.\n");
-    engine->Dispatch(NULL, LSE_QUIT, LSE_Engine::ID_QUIT, NULL);
+    engine->Dispatch(NULL, QUIT, Engine::ID_QUIT, NULL);
     exit(code);
 }
 
 void FPEHandler(int code) {
     
     LOG(LOG_LEVEL_ERROR, "Floating Point Exception signal received.\n");
-    engine->Dispatch(NULL, LSE_QUIT, LSE_Engine::ID_QUIT, NULL);
+    engine->Dispatch(NULL, QUIT, Engine::ID_QUIT, NULL);
     exit(code);
 }
 
 void IIHandler(int code) {
     
     LOG(LOG_LEVEL_ERROR, "Illegal Instruction signal received.\n");
-    engine->Dispatch(NULL, LSE_QUIT, LSE_Engine::ID_QUIT, NULL);
+    engine->Dispatch(NULL, QUIT, Engine::ID_QUIT, NULL);
     system("pause");
     exit(code);
 }
@@ -30,7 +30,7 @@ void IIHandler(int code) {
 void InterruptHandler(int code) {
     
     LOG(LOG_LEVEL_ERROR, "Interrupt signal received.\n");
-    engine->Dispatch(NULL, LSE_QUIT, LSE_Engine::ID_QUIT, NULL);
+    engine->Dispatch(NULL, QUIT, Engine::ID_QUIT, NULL);
     system("pause");
     exit(code);
 }
@@ -38,7 +38,7 @@ void InterruptHandler(int code) {
 void SegfaultHandler(int code) {
     
     LOG(LOG_LEVEL_ERROR, "Segfault signal received.\n");
-    engine->Dispatch(NULL, LSE_QUIT, LSE_Engine::ID_QUIT, NULL);
+    engine->Dispatch(NULL, QUIT, Engine::ID_QUIT, NULL);
     system("pause");
     exit(code);
 }
@@ -46,14 +46,14 @@ void SegfaultHandler(int code) {
 void TerminateHandler(int code) {
     
     LOG(LOG_LEVEL_ERROR, "Terminate signal received.\n");
-    engine->Dispatch(NULL, LSE_QUIT, LSE_Engine::ID_QUIT, NULL);
+    engine->Dispatch(NULL, QUIT, Engine::ID_QUIT, NULL);
     system("pause");
     exit(code);
 }
 
 namespace LSE {
 
-void LSE_InitSignals(LSE_Engine *e) {
+void InitSignals(Engine *e) {
     
     engine = e;
     

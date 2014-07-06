@@ -8,16 +8,16 @@ namespace LSE {
 /*
 Representation of an OpenGL frambuffer.
 This is essentially a specialized
-LSE_GLPrimitive.
+GLPrimitive.
 */
-class LSE_GLScreen {
+class GLScreen {
     
     private:
         
         static const int SCREEN_VERT_COUNT = 4;
         static const int SCREEN_ELEM_COUNT = 2;
         
-        LSE_GLProgram program; //
+        GLProgram program; //
         double *vertices; //
         int *texCoords; //
         int *indices; //
@@ -32,8 +32,8 @@ class LSE_GLScreen {
     
     public:
         
-        LSE_GLScreen(int w, int h);
-        ~LSE_GLScreen();
+        GLScreen(int w, int h);
+        ~GLScreen();
         
         void Resize(int w, int h);
         

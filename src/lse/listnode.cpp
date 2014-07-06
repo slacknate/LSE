@@ -6,7 +6,7 @@ using namespace LSE;
 /*
 Initialize our node as empty.
 */
-LSE_ListNode::LSE_ListNode() {
+ListNode::ListNode() {
     
     prev = next = NULL;
     data = NULL;
@@ -15,7 +15,7 @@ LSE_ListNode::LSE_ListNode() {
 /*
 Create a copy of an existing node.
 */
-LSE_ListNode::LSE_ListNode(const LSE_ListNode& other) {
+ListNode::ListNode(const ListNode& other) {
     
     prev = next = NULL;
     SetData(other.data);
@@ -24,7 +24,7 @@ LSE_ListNode::LSE_ListNode(const LSE_ListNode& other) {
 /*
 Initialize our node with data.
 */
-LSE_ListNode::LSE_ListNode(void *d) {
+ListNode::ListNode(void *d) {
     
     prev = next = NULL;
     SetData(d);
@@ -33,16 +33,16 @@ LSE_ListNode::LSE_ListNode(void *d) {
 /*
 
 */
-LSE_ListNode::~LSE_ListNode() {
+ListNode::~ListNode() {
     
-    LOG(LOG_LEVEL_ERROR, "LSE_ListNode::~LSE_ListNode(): MEMORY LEAK!");
+    LOG(LOG_LEVEL_ERROR, "ListNode::~ListNode(): MEMORY LEAK!");
     //delete data;
 }
 
 /*
 Store data in this node.
 */
-void LSE_ListNode::SetData(void *d) {
+void ListNode::SetData(void *d) {
     
     data = d;
 }
@@ -50,7 +50,7 @@ void LSE_ListNode::SetData(void *d) {
 /*
 Return the previous node in the list.
 */      
-LSE_ListNode* LSE_ListNode::GetPrev() const {
+ListNode* ListNode::GetPrev() const {
     
     return prev;
 }
@@ -58,7 +58,7 @@ LSE_ListNode* LSE_ListNode::GetPrev() const {
 /*
 Return the next node in the list.
 */
-LSE_ListNode* LSE_ListNode::GetNext() const {
+ListNode* ListNode::GetNext() const {
     
     return next;
 }
@@ -66,7 +66,7 @@ LSE_ListNode* LSE_ListNode::GetNext() const {
 /*
 Return this nodes data.
 */
-void* LSE_ListNode::GetData() const {
+void* ListNode::GetData() const {
     
     return data;
 }

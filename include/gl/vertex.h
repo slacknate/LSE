@@ -3,13 +3,13 @@
 
 namespace LSE {
 
-class LSE_Vertex {
+class Vertex {
     
     public:
         
         double x, y, z; // vertex components
         
-        LSE_Vertex(double c1=0.0, double c2=0.0, double c3=0.0);
+        Vertex(double c1=0.0, double c2=0.0, double c3=0.0);
 };
 
 }

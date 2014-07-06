@@ -5,7 +5,7 @@ using namespace LSE;
 /*
 Initialize our quaternion by default to a identity orientation.
 */
-LSE_Quaternion::LSE_Quaternion() {
+Quaternion::Quaternion() {
     
     i = 0.0;
     j = 0.0;
@@ -18,7 +18,7 @@ LSE_Quaternion::LSE_Quaternion() {
 /*
 Initialize our quaternion given all four components.
 */
-LSE_Quaternion::LSE_Quaternion(double x, double y, double z, double n) {
+Quaternion::Quaternion(double x, double y, double z, double n) {
     
     i = x;
     j = y;
@@ -31,7 +31,7 @@ LSE_Quaternion::LSE_Quaternion(double x, double y, double z, double n) {
 /*
 Get the X component.
 */
-double LSE_Quaternion::I() {
+double Quaternion::I() {
     
     return i;
 }
@@ -39,7 +39,7 @@ double LSE_Quaternion::I() {
 /*
 Get the Y component.
 */
-double LSE_Quaternion::J() {
+double Quaternion::J() {
     
     return j;
 }
@@ -47,7 +47,7 @@ double LSE_Quaternion::J() {
 /*
 Get the Z component.
 */
-double LSE_Quaternion::K() {
+double Quaternion::K() {
     
     return k;
 }
@@ -55,7 +55,7 @@ double LSE_Quaternion::K() {
 /*
 Get the scalar component.
 */
-double LSE_Quaternion::S() {
+double Quaternion::S() {
     
     return s;
 }
@@ -63,7 +63,7 @@ double LSE_Quaternion::S() {
 /*
 Get the length of the quaternion.
 */
-double LSE_Quaternion::Norm() {
+double Quaternion::Norm() {
     
     return sqrt(i*i + j*j + k*k + s*s);
 }
@@ -71,15 +71,15 @@ double LSE_Quaternion::Norm() {
 /*
 Return the conjugate of this quaternion.
 */
-LSE_Quaternion LSE_Quaternion::Conjugate() {
+Quaternion Quaternion::Conjugate() {
     
-    return LSE_Quaternion(-i, -j, -k, s);
+    return Quaternion(-i, -j, -k, s);
 }
 
 /*
 Make this quaternion a unit quaternion in its current direction.
 */
-void LSE_Quaternion::Normalize() {
+void Quaternion::Normalize() {
     
     double size = Norm();
     
@@ -98,7 +98,7 @@ This matrix can be used natively with OpenGL,
 but must be transposed to be used with Direct3D.
 
 Reference:
-    www.cprogramming.com/tutorial/3d/LSE_Quaternions.html
+    www.cprogramming.com/tutorial/3d/Quaternions.html
     http://www.flipcode.com/documents/matrfaq.html#Q54
 
 0 4 8  12
@@ -106,7 +106,7 @@ Reference:
 2 6 10 14
 3 7 11 15
 */
-void LSE_Quaternion::UpdateMatrix() {
+void Quaternion::UpdateMatrix() {
     
     double xx = i * i;
     double xy = i * j;
@@ -140,69 +140,69 @@ void LSE_Quaternion::UpdateMatrix() {
 Return the address of the first element of the matrix
 to be passed to OpenGL or Direct3D for rotation.
 */
-double* LSE_Quaternion::GetMatrix() {
+double* Quaternion::GetMatrix() {
     
     return &matrix[0];
 }
 
 /*
-LSE_Quaternion scalar multiplication.
+Quaternion scalar multiplication.
 */
-LSE_Quaternion LSE_Quaternion::operator*(const double& scalar) {
+Quaternion Quaternion::operator*(const double& scalar) {
     
-    return LSE_Quaternion(this->i * scalar, this->j * scalar, this->k * scalar, this->s * scalar);
+    return Quaternion(this->i * scalar, this->j * scalar, this->k * scalar, this->s * scalar);
 }
 
 /*
 Quaternion scalar division.
 */
-LSE_Quaternion LSE_Quaternion::operator/(const double& scalar) {
+Quaternion Quaternion::operator/(const double& scalar) {
     
-    return LSE_Quaternion(this->i / scalar, this->j / scalar, this->k / scalar, this->s / scalar);
+    return Quaternion(this->i / scalar, this->j / scalar, this->k / scalar, this->s / scalar);
 }
 
 /*
 Multiply a 3D point by this quaternion.
 */
-LSE_Vertex LSE_Quaternion::operator*(LSE_Vertex& v) {
+Vertex Quaternion::operator*(Vertex& v) {
     
-    LSE_Quaternion qv(v.x, v.y, v.z, 0.0);
-    LSE_Quaternion q = this->Conjugate() * qv;
+    Quaternion qv(v.x, v.y, v.z, 0.0);
+    Quaternion q = this->Conjugate() * qv;
     q = q * *this;
-    return LSE_Vertex(q.I(), q.J(), q.K());
+    return Vertex(q.I(), q.J(), q.K());
 }
 
 /*
 Multiply a vector by this quaternion.
 */
-LSE_Vector LSE_Quaternion::operator*(LSE_Vector& v) {
+Vector Quaternion::operator*(Vector& v) {
     
-    LSE_Quaternion qv(v.I(), v.J(), v.K(), 0.0);
-    LSE_Quaternion q = this->Conjugate() * qv;
+    Quaternion qv(v.I(), v.J(), v.K(), 0.0);
+    Quaternion q = this->Conjugate() * qv;
     q = q * *this;
-    return LSE_Vector(q.I(), q.J(), q.K());
+    return Vector(q.I(), q.J(), q.K());
 }
 
 /*
 Quaternion addition.
 */
-LSE_Quaternion LSE_Quaternion::operator+(const LSE_Quaternion& other) {
+Quaternion Quaternion::operator+(const Quaternion& other) {
     
-    return LSE_Quaternion(this->i + other.i, this->j + other.j, this->k + other.k, this->s + other.s);
+    return Quaternion(this->i + other.i, this->j + other.j, this->k + other.k, this->s + other.s);
 }
 
 /*
 Quaternion subtraction.
 */
-LSE_Quaternion LSE_Quaternion::operator-(const LSE_Quaternion& other) {
+Quaternion Quaternion::operator-(const Quaternion& other) {
     
-    return LSE_Quaternion(this->i - other.i, this->j - other.j, this->k - other.k, this->s - other.s);
+    return Quaternion(this->i - other.i, this->j - other.j, this->k - other.k, this->s - other.s);
 }
 
 /*
 Multiply two quaternion.
 */
-LSE_Quaternion LSE_Quaternion::operator*(const LSE_Quaternion& other) {
+Quaternion Quaternion::operator*(const Quaternion& other) {
     
     double x, y, z, n;
     
@@ -211,14 +211,14 @@ LSE_Quaternion LSE_Quaternion::operator*(const LSE_Quaternion& other) {
     z = (this->s * other.k) + (this->k * other.s) + (this->i * other.j) - (this->j * other.i);
     n = (this->s * other.s) - (this->i * other.i) - (this->j * other.j) - (this->k * other.k);
     
-    return LSE_Quaternion(x, y, z, n);
+    return Quaternion(x, y, z, n);
 }
 
 /*
 Divide a quaternion by another quaternion. fix me
 http://www.mathworks.com/help/aeroblks/quaterniondivision.html
 */
-LSE_Quaternion LSE_Quaternion::operator/(const LSE_Quaternion& other) {
+Quaternion Quaternion::operator/(const Quaternion& other) {
     
     return other;
 }
@@ -226,7 +226,7 @@ LSE_Quaternion LSE_Quaternion::operator/(const LSE_Quaternion& other) {
 /*
 
 */
-bool LSE_Quaternion::operator==(const LSE_Quaternion& other) {
+bool Quaternion::operator==(const Quaternion& other) {
     
     return (this->i == other.i && this->j == other.j && this->k == other.k && this->s == other.s);
 }
@@ -234,7 +234,7 @@ bool LSE_Quaternion::operator==(const LSE_Quaternion& other) {
 /*
 
 */
-bool LSE_Quaternion::operator!=(const LSE_Quaternion& other) {
+bool Quaternion::operator!=(const Quaternion& other) {
     
     return (this->i != other.i || this->j != other.j || this->k != other.k || this->s != other.s);
 }

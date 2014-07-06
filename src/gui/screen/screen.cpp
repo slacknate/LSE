@@ -8,17 +8,17 @@ and height of our render surface,
 allocate all memory needed, and create
 our frame buffer object.
 */
-LSE_GLScreen::LSE_GLScreen(int w, int h) {
+GLScreen::GLScreen(int w, int h) {
     
     frameBufferID = renderBufferID = colorTexID = normalTexID = 0;
     
-    program.AddShader(LSE_GetScreenShaders(SHADER_VERT), SHADER_VERT);
-    program.AddShader(LSE_GetScreenShaders(SHADER_FRAG), SHADER_FRAG);
+    program.AddShader(GetScreenShaders(SHADER_VERT), SHADER_VERT);
+    program.AddShader(GetScreenShaders(SHADER_FRAG), SHADER_FRAG);
         
     if(!program.Finalize())
-        throw LSE_Exception(__FILE__, __LINE__, LSE_GL_INIT_FAIL/*, LSE_ErrorString(LSE_GL_PROG_FAIL)*/);
+        throw Exception(__FILE__, __LINE__, GL_INIT_FAIL/*, ErrorString(GL_PROG_FAIL)*/);
         
-    program.BindUniform(LSE_IN1, "FRAG_TEXTURE", 0);
+    program.BindUniform(IN1, "FRAG_TEXTURE", 0);
     
     vertices = new double [3*this->SCREEN_VERT_COUNT];
     indices = new int [3*this->SCREEN_ELEM_COUNT];
@@ -34,7 +34,7 @@ LSE_GLScreen::LSE_GLScreen(int w, int h) {
 /*
 Free all memory and OpenGL objects.
 */
-LSE_GLScreen::~LSE_GLScreen() {
+GLScreen::~GLScreen() {
     
     glDeleteTextures(1, &normalTexID);    
     glDeleteTextures(1, &colorTexID);
@@ -45,7 +45,7 @@ LSE_GLScreen::~LSE_GLScreen() {
 /*
 Predefined quad vertices.
 */
-void LSE_GLScreen::CalcVertices() {
+void GLScreen::CalcVertices() {
     
     // v0
     vertices[0] = -1.0/2.0;
@@ -72,7 +72,7 @@ void LSE_GLScreen::CalcVertices() {
 Tell OpenGL which vertices to use,
 and where.
 */
-void LSE_GLScreen::CalcIndices() {
+void GLScreen::CalcIndices() {
     
     indices[0] = 0;
     indices[1] = 1;
@@ -85,7 +85,7 @@ void LSE_GLScreen::CalcIndices() {
 /*
 
 */
-void LSE_GLScreen::CalcTexCoords() {
+void GLScreen::CalcTexCoords() {
     
     // v0
     texCoords[0] = 0;
@@ -108,7 +108,7 @@ void LSE_GLScreen::CalcTexCoords() {
 Create a new framebuffer object with a new width
 and height.
 */
-void LSE_GLScreen::Resize(int w, int h) {
+void GLScreen::Resize(int w, int h) {
     
     width = w;
     height = h;
@@ -173,7 +173,7 @@ void LSE_GLScreen::Resize(int w, int h) {
 /*
 Bind to our frame buffer.
 */
-void LSE_GLScreen::BindFBO() {
+void GLScreen::BindFBO() {
     
     glBindFramebuffer(GL_FRAMEBUFFER, frameBufferID);
 }
@@ -181,7 +181,7 @@ void LSE_GLScreen::BindFBO() {
 /*
 Unbind from our framebuffer.
 */
-void LSE_GLScreen::UnbindFBO() {
+void GLScreen::UnbindFBO() {
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -189,7 +189,7 @@ void LSE_GLScreen::UnbindFBO() {
 /*
 Render the contents of our framebuffer.
 */
-void LSE_GLScreen::Render() {
+void GLScreen::Render() {
     
     glBindTexture(GL_TEXTURE_2D, colorTexID);
     glActiveTexture(GL_TEXTURE0);
@@ -215,7 +215,7 @@ void LSE_GLScreen::Render() {
 /*
 
 */
-bool LSE_GLScreen::FBOActive() {
+bool GLScreen::FBOActive() {
     
     return fboStatus;
 }

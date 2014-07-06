@@ -2,23 +2,23 @@
 #include "gui/window/win.h"
 using namespace LSE;
 
-LSE_GLWindow::LSE_GLWindow(const char *const windowTitle, unsigned int mask,
+GLWindow::GLWindow(const char *const windowTitle, unsigned int mask,
                            int width, int height, double angle, double zi, double za) : 
-                           LSE_GLWindow_Base(windowTitle, mask, width, height, angle, zi, za) { }
+                           GLWindow_Base(windowTitle, mask, width, height, angle, zi, za) { }
 
-void LSE_GLWindow::GLContextInit() {
+void GLWindow::GLContextInit() {
     
     wglMakeCurrent(hdc, hglrc);
 }
 
-void LSE_GLWindow::GLContextDestroy() {
+void GLWindow::GLContextDestroy() {
     
     wglMakeCurrent(NULL, NULL);
     wglDeleteContext(hglrc);
     ReleaseDC(hwnd, hdc); // this is an issue, HWND is destroyed before we get here....
 }
 
-void LSE_GLWindow::SwapGLBuffers() {
+void GLWindow::SwapGLBuffers() {
     
     SwapBuffers(hdc);
 }
@@ -27,7 +27,7 @@ void LSE_GLWindow::SwapGLBuffers() {
 Create a window with an OpenGL context,
 and run our UI event loop.
 */
-void* LSE_GLWindow::Execute() {
+void* GLWindow::Execute() {
     
     try {
     
@@ -44,19 +44,19 @@ void* LSE_GLWindow::Execute() {
     wc.lpszMenuName = NULL;
     wc.lpszClassName = "Lucent Shards Engine";
     if(!RegisterClass(&wc))
-        throw LSE_Exception(__FILE__, __LINE__, LSE_WIN_REG_FAIL);
+        throw Exception(__FILE__, __LINE__, WIN_REG_FAIL);
     
     // Create our window
     hwnd = CreateWindow(wc.lpszClassName, windowTitle, WS_CAPTION | WS_OVERLAPPEDWINDOW | WS_VISIBLE, 100, 100, width, height, NULL, NULL, wc.hInstance, NULL);
     if(hwnd == NULL)
-        throw LSE_Exception(__FILE__, __LINE__, LSE_WIN_CREATE_FAIL);
+        throw Exception(__FILE__, __LINE__, WIN_CREATE_FAIL);
         
     this->handler->Setup(hwnd);
     
     // Get a device context so we can use OpenGL
     hdc = GetDC(hwnd);
     if(hdc == NULL)
-        throw LSE_Exception(__FILE__, __LINE__, LSE_GL_CON_FAIL);
+        throw Exception(__FILE__, __LINE__, GL_CON_FAIL);
     
     // Set up all out IO for this window
     //io.Setup(hwnd);
@@ -83,11 +83,11 @@ void* LSE_GLWindow::Execute() {
     
     // Finish setting up our OpenGL context
     if(!SetPixelFormat(hdc, ChoosePixelFormat(hdc, &pfd), &pfd))
-        throw LSE_Exception(__FILE__, __LINE__, LSE_GL_CON_FAIL);
+        throw Exception(__FILE__, __LINE__, GL_CON_FAIL);
     
     hglrc = wglCreateContext(hdc);
     if(hglrc == NULL)
-        throw LSE_Exception(__FILE__, __LINE__, LSE_GL_CON_FAIL);
+        throw Exception(__FILE__, __LINE__, GL_CON_FAIL);
     
     initialized = true;
     
@@ -102,7 +102,7 @@ void* LSE_GLWindow::Execute() {
     }
     catch(std::exception &e) {
         
-        throw LSE_Exception(__FILE__, __LINE__, LSE_OK); // FIXME: need a way to "convert" standard exceptions into LSE exceptions
+        throw Exception(__FILE__, __LINE__, OK); // FIXME: need a way to "convert" standard exceptions into LSE exceptions
     }
     
     return NULL;

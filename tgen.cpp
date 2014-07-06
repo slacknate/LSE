@@ -106,8 +106,8 @@ int main(int argc, char *argv[]) {
                 unsigned int random = 0;
                 ReadRandom(&random, sizeof(unsigned int));
                 random %= RAND_MAX;
-                //LSE_Terrain3D points = LSE_GenTerrain3D(random, 0.0, 0.0, 0.0, width, height, depth, -1.0, 1.0);
-                LSE_Terrain2D points = LSE_GenTerrain2D(random, 0.0, 0.0, width, height, 0.0, 1.0);
+                //Terrain3D points = GenTerrain3D(random, 0.0, 0.0, 0.0, width, height, depth, -1.0, 1.0);
+                Terrain2D points = GenTerrain2D(random, 0.0, 0.0, width, height, 0.0, 1.0);
                 
                 while(!quit) {
                     

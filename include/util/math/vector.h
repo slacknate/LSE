@@ -8,33 +8,33 @@ namespace LSE {
 /*
 
 */
-class LSE_Vector {
+class Vector {
     
     private:
         
-        double i, j, k; // LSE_Vector components
+        double i, j, k; // Vector components
         
     public:
         
-        LSE_Vector();
-        LSE_Vector(double x, double y, double z);
+        Vector();
+        Vector(double x, double y, double z);
         
         double I();
         double J();
         double K();
         double Length();
         void Normalize();
-        void Orthagonalize(LSE_Vector& v);
+        void Orthagonalize(Vector& v);
         
-        LSE_Vector operator*(const double& scalar);
-        LSE_Vector operator/(const double& scalar);
-        LSE_Vector operator+(const LSE_Vector& other);
-        LSE_Vector operator-(const LSE_Vector& other);
-        double operator^(LSE_Vector& other);
-        double operator*(const LSE_Vector& other);
-        LSE_Vector operator%(const LSE_Vector& other);
-        bool operator==(const LSE_Vector& other);
-        bool operator!=(const LSE_Vector& other);
+        Vector operator*(const double& scalar);
+        Vector operator/(const double& scalar);
+        Vector operator+(const Vector& other);
+        Vector operator-(const Vector& other);
+        double operator^(Vector& other);
+        double operator*(const Vector& other);
+        Vector operator%(const Vector& other);
+        bool operator==(const Vector& other);
+        bool operator!=(const Vector& other);
 };
 
 }

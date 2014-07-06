@@ -2,22 +2,22 @@
 using namespace LSE;
 
 /*
-LSE_Thread event table.
+Thread event table.
 */
-LSE_EVTMAP(LSE_Thread) ThreadMap[] = {
+EVTMAP(Thread) ThreadMap[] = {
     
-    LSE_EVTFUNC(LSE_QUIT, LSE_Thread::ID_QUIT, LSE_Thread::OnQuit)
+    EVTFUNC(QUIT, Thread::ID_QUIT, Thread::OnQuit)
 };
 
 /*
 Event handler implementation.
 */
-LSE_EVTIMP(LSE_Thread, ThreadMap)
+EVTIMP(Thread, ThreadMap)
 
 /*
 Initialize our thread to a non-running state.
 */
-LSE_Thread::LSE_Thread() {
+Thread::Thread() {
     
     execute = false;
 }
@@ -25,18 +25,18 @@ LSE_Thread::LSE_Thread() {
 /*
 Run the user defined method in the new thread.
 */
-void* LSE_Thread::ThreadMethod(void *arg) {
+void* Thread::ThreadMethod(void *arg) {
     
-    LSE_Thread *t = (LSE_Thread *)arg;
+    Thread *t = (Thread *)arg;
     return t->Execute();
 }
 
 /*
 Run the thread.
 */
-bool LSE_Thread::Start() {
+bool Thread::Start() {
     
-    int threadError = pthread_create(&thread, NULL, &LSE_Thread::ThreadMethod, this);
+    int threadError = pthread_create(&thread, NULL, &Thread::ThreadMethod, this);
     if(threadError != 0)
         ERRNO("Error starting thread");
     else
@@ -48,7 +48,7 @@ bool LSE_Thread::Start() {
 /*
 Detach the thread from the calling thread.
 */
-bool LSE_Thread::Detach() {
+bool Thread::Detach() {
     
     int threadError = pthread_detach(thread);
     if(threadError != 0)
@@ -60,7 +60,7 @@ bool LSE_Thread::Detach() {
 /*
 Join the thread to the calling thread.
 */
-bool LSE_Thread::Join() {
+bool Thread::Join() {
     
     execute = false;
     
@@ -74,7 +74,7 @@ bool LSE_Thread::Join() {
 /*
 
 */
-void* LSE_Thread::Execute() { 
+void* Thread::Execute() { 
     
     return NULL;
 }
@@ -83,7 +83,7 @@ void* LSE_Thread::Execute() {
 Give the user the ability to terminate
 a detached thread.
 */
-bool LSE_Thread::OnQuit(LSE_Object *, unsigned int, unsigned int, void *) {
+bool Thread::OnQuit(Object *, unsigned int, unsigned int, void *) {
     
     execute = false;
     return true;

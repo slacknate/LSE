@@ -5,7 +5,7 @@
 
 namespace LSE {
     
-void LSE_InitSignals(LSE_Engine *engine);
+void InitSignals(Engine *engine);
 
 }
 

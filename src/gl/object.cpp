@@ -5,10 +5,10 @@ using namespace LSE;
 /*
 Initialize our object to a position.
 */
-LSE_GLObject::LSE_GLObject(double x, double y, double z) : LSE_PHObject(x, y, z) {
+GLObject::GLObject(double x, double y, double z) : PHObject(x, y, z) {
     
-    program.AddShader(LSE_GetObjShaders(SHADER_VERT), SHADER_VERT);
-    program.AddShader(LSE_GetObjShaders(SHADER_FRAG), SHADER_FRAG);
+    program.AddShader(GetObjShaders(SHADER_VERT), SHADER_VERT);
+    program.AddShader(GetObjShaders(SHADER_FRAG), SHADER_FRAG);
         
     program.BindAttrib(VERT_POSITION, "VERT_POSITION");
     program.BindAttrib(VERT_NORMAL, "VERT_NORMAL");
@@ -16,17 +16,17 @@ LSE_GLObject::LSE_GLObject(double x, double y, double z) : LSE_PHObject(x, y, z)
     program.BindAttrib(VERT_TEX_COORD, "VERT_TEX_COORD");
         
     if(!program.Finalize())
-        throw LSE_Exception(__FILE__, __LINE__, LSE_GL_PROG_FAIL);
+        throw Exception(__FILE__, __LINE__, GL_PROG_FAIL);
         
-    program.BindUniform(LSE_MAT4, "VIEW_MAT", 1, GL_FALSE, &LSE_VIEW_MATRIX[0]);
-    program.BindUniform(LSE_MAT4, "PROJ_MAT", 1, GL_FALSE, &LSE_PROJ_MATRIX[0]);
-    program.BindUniform(LSE_MAT4, "ROT_MAT", 1, GL_FALSE, quat.GetMatrix());
+    program.BindUniform(MAT4, "VIEW_MAT", 1, GL_FALSE, &VIEW_MATRIX[0]);
+    program.BindUniform(MAT4, "PROJ_MAT", 1, GL_FALSE, &PROJ_MATRIX[0]);
+    program.BindUniform(MAT4, "ROT_MAT", 1, GL_FALSE, quat.GetMatrix());
 }
 
 /*
 
 */
-LSE_GLProgram* LSE_GLObject::GetProgram() {
+GLProgram* GLObject::GetProgram() {
     
     return &program;
 }
@@ -34,7 +34,7 @@ LSE_GLProgram* LSE_GLObject::GetProgram() {
 /*
 
 */
-void LSE_GLObject::Move(double dX, double dY, double dZ) {
+void GLObject::Move(double dX, double dY, double dZ) {
     
     pX += dX;
     pY += dY;
@@ -44,7 +44,7 @@ void LSE_GLObject::Move(double dX, double dY, double dZ) {
 /*
 Change this objects orientation.
 */
-void LSE_GLObject::Transform(LSE_Quaternion& q) {
+void GLObject::Transform(Quaternion& q) {
     
     quat = q * quat;
     quat.Normalize();
@@ -55,7 +55,7 @@ Draw our object on an OpenGL canvas.
 Make sure to only attempt to draw the
 object when we have valid coordinates.
 */
-void LSE_GLObject::Render() {
+void GLObject::Render() {
     
     //  isolate this object from the rest 
     //glPushMatrix();
@@ -66,7 +66,7 @@ void LSE_GLObject::Render() {
     //  translate to our position -> replace, this shit is deprecated (AKA we need to do some matrix schtuff!)
     glTranslated(pX, pY, pZ);
     
-    LSE_Quaternion q(0.0, 0.0, 0.1, 10.0*cos(PI/180.0));
+    Quaternion q(0.0, 0.0, 0.1, 10.0*cos(PI/180.0));
     q.Normalize();
     Transform(q);
     

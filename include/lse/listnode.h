@@ -9,7 +9,7 @@ allow for friend class relationship
 of same template type.
 */
 // TODO: determine if the list node class can be refactored to avoid this
-class LSE_List;
+class List;
 
 /*
 List node class.
@@ -19,33 +19,33 @@ stored in a node, a copy is
 made in its own allocated
 memory space.
 */
-class LSE_ListNode {
+class ListNode {
 
     /*
-    Force the user to add/remove nodes with LSE_List methods,
+    Force the user to add/remove nodes with List methods,
     as the SetPrev() and SetNext() methods are private to
     this class.
     */   
-    friend class LSE_List;
+    friend class List;
     
     private:
         
-        LSE_ListNode *prev, *next; // list element pointers
+        ListNode *prev, *next; // list element pointers
         void *data; // data pointer
     
     public:
         
-        LSE_ListNode();
-        LSE_ListNode(const LSE_ListNode& other);
-        LSE_ListNode(void *d);
+        ListNode();
+        ListNode(const ListNode& other);
+        ListNode(void *d);
         
-        ~LSE_ListNode();
+        ~ListNode();
 
         void SetData(void *d);
         void* GetData() const;
 
-        LSE_ListNode* GetPrev() const;
-        LSE_ListNode* GetNext() const;
+        ListNode* GetPrev() const;
+        ListNode* GetNext() const;
 };
 
 }

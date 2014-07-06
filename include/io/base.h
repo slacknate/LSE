@@ -8,17 +8,17 @@ namespace LSE {
 /*
 
 */
-class LSE_IOHandler_Base : public LSE_Object {
+class IOHandler_Base : public Object {
     
     private:
         
-        static LSE_Object *engine;
+        static Object *engine;
         
     public:
         
-        LSE_IOHandler_Base(LSE_Object *e);
+        IOHandler_Base(Object *e);
         
-        static void HandleEvent(LSE_Object *sender, unsigned int type, unsigned int id, void *ptr);
+        static void HandleEvent(Object *sender, unsigned int type, unsigned int id, void *ptr);
 };
 
 }

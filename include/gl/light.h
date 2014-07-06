@@ -5,7 +5,7 @@
 
 namespace LSE {
 
-class LSE_GLLight : LSE_Object {
+class GLLight : Object {
     
     private:
         
@@ -13,7 +13,7 @@ class LSE_GLLight : LSE_Object {
         
     public:
         
-        LSE_GLLight();
+        GLLight();
         
         void Render();
         

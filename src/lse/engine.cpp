@@ -3,44 +3,40 @@
 using namespace LSE;
 
 /*
-LSE_Engine event table.
+Engine event table.
 */
-LSE_EVTMAP(LSE_Engine) EngineMap[] = {
+EVTMAP(Engine) EngineMap[] = {
     
-    LSE_EVTFUNC(LSE_ANY, LSE_ANY, LSE_Engine::OnEvent),
-    LSE_EVTFUNC(LSE_QUIT, LSE_Engine::ID_QUIT, LSE_Engine::OnQuit)
+    EVTFUNC(ANY, ANY, Engine::OnEvent),
+    EVTFUNC(QUIT, Engine::ID_QUIT, Engine::OnQuit)
 };
 
 /*
 Event handler implementation.
 */
-LSE_EVTIMP(LSE_Engine, EngineMap)
-
-/*
-Engine-wide variables.
-*/
-LSE_LogLevel LSE_Engine::log_level = LOG_LEVEL_DEBUG;
+EVTIMP(Engine, EngineMap)
 
 /*
 
 */
-LSE_Engine::LSE_Engine(int argc, char *argv[]) : handler(this) {
+Engine::Engine(int argc, char *argv[]) : handler(this) {
     
     window = NULL;
     messgLog = errorLog = NULL;
     run = false;
-    status = LSE_OK;
+    status = OK;
     keyFocus = mouseFocus = NULL;
     
 //    CreateLogs();
     
-    LSE_InitSignals(this);
+    LOG_LEVEL = LOG_LEVEL_VERBOSE;
+    InitSignals(this);
 }
 
 /*
 
 */
-LSE_Engine::~LSE_Engine() {
+Engine::~Engine() {
     
     eventList.Clear();
     CloseLogs();
@@ -49,16 +45,16 @@ LSE_Engine::~LSE_Engine() {
 /*
 
 */
-void LSE_Engine::InitWindow(const char *const windowTitle, unsigned int mask, int width, int height, double angle, double zi, double za) {
+void Engine::InitWindow(const char *const windowTitle, unsigned int mask, int width, int height, double angle, double zi, double za) {
     
-    window = new LSE_GLWindow(windowTitle, mask, width, height, angle, zi, za);
+    window = new GLWindow(windowTitle, mask, width, height, angle, zi, za);
     run = true;
 }
 
 /*
 Create message and error logs.
 */
-void LSE_Engine::CreateLogs() {
+void Engine::CreateLogs() {
     
     time_t t;
     time(&t);
@@ -129,7 +125,7 @@ void LSE_Engine::CreateLogs() {
 /*
 
 */
-void LSE_Engine::CloseLogs() {
+void Engine::CloseLogs() {
     
     fprintf(stdout, "\n--------------------");
     fprintf(stderr, "\n--------------------");
@@ -162,22 +158,22 @@ void LSE_Engine::CloseLogs() {
 /*
 
 */
-void* LSE_Engine::Execute() {
+void* Engine::Execute() {
     
     while(run) {
         
         event_sem.Wait();
             
-        LSE_ListNode *node = eventList.PopBack();
-        LSE_Event *event = (LSE_Event *)node->GetData();
+        ListNode *node = eventList.PopBack();
+        Event *event = (Event *)node->GetData();
             
         switch(event->type) {
                 
-            case LSE_KEYBOARD:
-                //keyFocus->Dispatch(this, LSE_KEYBOARD, LSE_ANY, event);
+            case KEYBOARD:
+                //keyFocus->Dispatch(this, KEYBOARD, ANY, event);
                 break;
-            case LSE_MOUSE:
-                //mouseFocus->Dispatch(this, LSE_MOUSE, LSE_ANY, event);
+            case MOUSE:
+                //mouseFocus->Dispatch(this, MOUSE, ANY, event);
                 break;
             default:
                 break;
@@ -193,39 +189,47 @@ void* LSE_Engine::Execute() {
 /*
 Run the engine.
 We set the engine pointer of 
-the LSE_GLContext object, and 
+the GLContext object, and 
 begin the context event loop thread.
 */
-int LSE_Engine::Run() {
+int Engine::Run() {
     
     if(window != NULL) {
         
         window->SetupIO(&this->handler);
         window->Start();
         
-        while(!window->Ready() && LSE_STATUS != LSE_GL_INIT_FAIL);
+        while(!window->Ready() && StatusCode() != GL_INIT_FAIL); // is there a way to make this semaphore bound?
         
-        if(LSE_STATUS != LSE_GL_INIT_FAIL) {
+        if(StatusCode() != GL_INIT_FAIL) {
             
-            window->GLInit(); 
-            ::GLInit();
-            ::InitScene(this->window);           
-            this->Start();
+            try {
+
+                window->GLInit(); 
+                ::GLInit();
+                ::InitScene(this->window);           
+                this->Start();
             
-            while(run)
-                window->Render();
+                while(run)
+                    window->Render();
                 
-            this->Join();
+                this->Join();
+                
+            }
+            catch(Exception &e) {
+                
+                LOG(LOG_LEVEL_ERROR, e.what());
+            }
         }
         else {
             
-            if(LSE_GL_VERSION < LSE_MIN_GL_VERSION)
+            if(GLVersion() < MIN_GL_VERSION)
                 LOG(LOG_LEVEL_ERROR, "OpenGL version too low.");
         
-            if(LSE_GL_MAX_VERT_ATTRIB < LSE_GL_MIN_VERT_ATTRIB)
+            if(MaxGLVertAttrib() < GL_MIN_VERT_ATTRIB)
                 LOG(LOG_LEVEL_ERROR, "Too few bindable vertex attributes available.");
                 
-            if(LSE_GL_MAX_COLOR_ATTACH < LSE_GL_MIN_COLOR_ATTACH)
+            if(MaxFBOColorAttachments() < GL_MIN_COLOR_ATTACH)
                 LOG(LOG_LEVEL_ERROR, "Too few bindable Frame buffer object color attachmentments available.");
         }
         
@@ -242,11 +246,11 @@ int LSE_Engine::Run() {
 /*
 Post an event to the event queue.
 */
-bool LSE_Engine::OnEvent(LSE_Object *, unsigned int, unsigned int, void *ptr) {
+bool Engine::OnEvent(Object *, unsigned int, unsigned int, void *ptr) {
     
     if(ptr != NULL) {
         
-        LSE_Event *event = (LSE_Event *)ptr;
+        Event *event = (Event *)ptr;
         eventList.PushFront(event);
         
         event_sem.Post();
@@ -258,7 +262,7 @@ bool LSE_Engine::OnEvent(LSE_Object *, unsigned int, unsigned int, void *ptr) {
 /*
 Quit the application.
 */
-bool LSE_Engine::OnQuit(LSE_Object *, unsigned int, unsigned int, void *) {
+bool Engine::OnQuit(Object *, unsigned int, unsigned int, void *) {
     
     run = false;
     return true;

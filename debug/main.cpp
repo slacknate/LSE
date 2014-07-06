@@ -6,12 +6,12 @@ using namespace LSE;
 /*
 Initialize our scene.
 */
-void InitScene(LSE_GLWindow *window) {
+void InitScene(GLWindow *window) {
     
     TestPrism *prism = new TestPrism(window, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
     window->PushGL(prism);
     
-    //LSE_GLLight *light = new LSE_GLLight();
+    //GLLight *light = new GLLight();
     //window->PushLight(light);
 }
 
@@ -32,7 +32,7 @@ render. Run the engine.
 */
 int main(int argc, char *argv[]) {
     
-    LSE_Engine engine(argc, argv);
+    Engine engine(argc, argv);
     
     int mask = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT;
     engine.InitWindow("Engine", mask, 640, 480, 90.0, 1.0, 20.0); 

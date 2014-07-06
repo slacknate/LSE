@@ -8,9 +8,9 @@
 TODO:
     why do some sample rates cause segfaults?
 */
-LSE_Terrain3D LSE_InterpNoise3D(float startX, float startY, float startZ, int width, int height, int depth, int sampleRate, float low, float high, anl::CImplicitFractal& fractal) {
+Terrain3D InterpNoise3D(float startX, float startY, float startZ, int width, int height, int depth, int sampleRate, float low, float high, anl::CImplicitFractal& fractal) {
     
-    LSE_Terrain3D points = NULL;
+    Terrain3D points = NULL;
     
     if(sampleRate > 1) {
         
@@ -102,7 +102,7 @@ LSE_Terrain3D LSE_InterpNoise3D(float startX, float startY, float startZ, int wi
                                 float x = float(w - p1X)/float(sampleRate);
                                 float y = float(h - p1Y)/float(sampleRate);
                                 
-                                points[w][h][d] = LSE_BicubicInterpolate(bciInterpPoints, x, y);
+                                points[w][h][d] = BicubicInterpolate(bciInterpPoints, x, y);
                             }
                         }
                         
@@ -204,7 +204,7 @@ LSE_Terrain3D LSE_InterpNoise3D(float startX, float startY, float startZ, int wi
                                 float x = float(w - p1X)/float(sampleRate);
                                 float y = float(h - p1Y)/float(sampleRate);
                                 float z = float(d - p1Z)/float(sampleRate);
-                                points[w][h][d] = LSE_TricubicInterpolate(interpPoints, x, y, z);
+                                points[w][h][d] = TricubicInterpolate(interpPoints, x, y, z);
                             }
                         }
                     }
@@ -216,7 +216,7 @@ LSE_Terrain3D LSE_InterpNoise3D(float startX, float startY, float startZ, int wi
     return points;
 }
 
-LSE_Terrain3D LSE_GenTerrain3D(int seed, float startX, float startY, float startZ, int width, int height, int depth, float low, float high) {
+Terrain3D GenTerrain3D(int seed, float startX, float startY, float startZ, int width, int height, int depth, float low, float high) {
     
     int sampleRates[4];
     sampleRates[0] = 8;
@@ -252,12 +252,12 @@ LSE_Terrain3D LSE_GenTerrain3D(int seed, float startX, float startY, float start
 	f3.setGain(5357.891);
 	f3.setLacunarity(double(sampleRates[3]));
     
-    LSE_Terrain3D p0 = LSE_InterpNoise3D(startX, startY, startZ, width, height, depth, sampleRates[0], low, high, f0);
-    LSE_Terrain3D p1 = LSE_InterpNoise3D(startX, startY, startZ, width, height, depth, sampleRates[1], low, high, f1);
-    LSE_Terrain3D p2 = LSE_InterpNoise3D(startX, startY, startZ, width, height, depth, sampleRates[2], low, high, f2);
-    LSE_Terrain3D p3 = LSE_InterpNoise3D(startX, startY, startZ, width, height, depth, sampleRates[3], low, high, f3);
+    Terrain3D p0 = InterpNoise3D(startX, startY, startZ, width, height, depth, sampleRates[0], low, high, f0);
+    Terrain3D p1 = InterpNoise3D(startX, startY, startZ, width, height, depth, sampleRates[1], low, high, f1);
+    Terrain3D p2 = InterpNoise3D(startX, startY, startZ, width, height, depth, sampleRates[2], low, high, f2);
+    Terrain3D p3 = InterpNoise3D(startX, startY, startZ, width, height, depth, sampleRates[3], low, high, f3);
     
-    LSE_Terrain3D points = NULL;
+    Terrain3D points = NULL;
     
     if(p0 && p1 && p2 && p3) {
         
@@ -309,15 +309,15 @@ LSE_Terrain3D LSE_GenTerrain3D(int seed, float startX, float startY, float start
         }
     }
     
-    LSE_Free3D(&p0, width, height, sampleRates[0]);
-    LSE_Free3D(&p1, width, height, sampleRates[1]);
-    LSE_Free3D(&p2, width, height, sampleRates[2]);
-    LSE_Free3D(&p3, width, height, sampleRates[3]);
+    Free3D(&p0, width, height, sampleRates[0]);
+    Free3D(&p1, width, height, sampleRates[1]);
+    Free3D(&p2, width, height, sampleRates[2]);
+    Free3D(&p3, width, height, sampleRates[3]);
     
     return points;
 }
 
-void LSE_Free3D(LSE_Terrain3D *points, int width, int height, int sampleRate) {
+void Free3D(Terrain3D *points, int width, int height, int sampleRate) {
     
     if(points) {
     

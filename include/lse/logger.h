@@ -15,9 +15,9 @@ typedef enum {
     LOG_LEVEL_ERROR,
     LOG_LEVEL_VERBOSE,
     LOG_LEVEL_RAW
-} LSE_LogLevel;
+} LogLevel;
 
-void LOG(LSE_LogLevel, ...);
+void LOG(LogLevel, ...);
 void ERRNO(const char *const);
 
 }

@@ -5,7 +5,7 @@ using namespace LSE;
 Initialize our quad. Store size attributes
 and allocate all necessary memory.
 */
-LSE_GLRectangle::LSE_GLRectangle(double x, double y, double z, double w, double h)  : LSE_GLPrimitive(x, y, z) {
+GLRectangle::GLRectangle(double x, double y, double z, double w, double h)  : GLPrimitive(x, y, z) {
     
     width = w;
     height = h;
@@ -16,7 +16,7 @@ LSE_GLRectangle::LSE_GLRectangle(double x, double y, double z, double w, double 
 /*
 Predefined quad vertices.
 */
-void LSE_GLRectangle::CalcVertices() {
+void GLRectangle::CalcVertices() {
     
     // v0
     vertices[0] = -width/2.0;
@@ -43,7 +43,7 @@ void LSE_GLRectangle::CalcVertices() {
 Tell OpenGL which vertices to use,
 and where.
 */
-void LSE_GLRectangle::CalcIndices() {
+void GLRectangle::CalcIndices() {
     
     indices[0] = 0;
     indices[1] = 1;
@@ -56,7 +56,7 @@ void LSE_GLRectangle::CalcIndices() {
 /*
 
 */
-void LSE_GLRectangle::CalcTexCoords() {
+void GLRectangle::CalcTexCoords() {
     
     // v0
     texCoords[0] = 0;

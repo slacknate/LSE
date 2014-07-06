@@ -5,7 +5,7 @@ using namespace LSE;
 /*
 Initialize a "zero" vector.
 */
-LSE_Vector::LSE_Vector() {
+Vector::Vector() {
     
     this->i = 0.0;
     this->j = 0.0;
@@ -15,7 +15,7 @@ LSE_Vector::LSE_Vector() {
 /*
 Initialize our vector.
 */
-LSE_Vector::LSE_Vector(double x, double y, double z) {
+Vector::Vector(double x, double y, double z) {
     
     this->i = x;
     this->j = y;
@@ -25,7 +25,7 @@ LSE_Vector::LSE_Vector(double x, double y, double z) {
 /*
 Get the X component.
 */
-double LSE_Vector::I() {
+double Vector::I() {
     
     return this->i;
 }
@@ -33,7 +33,7 @@ double LSE_Vector::I() {
 /*
 Get the Y component.
 */
-double LSE_Vector::J() {
+double Vector::J() {
     
     return this->j;
 }
@@ -41,7 +41,7 @@ double LSE_Vector::J() {
 /*
 Get the Z component.
 */
-double LSE_Vector::K() {
+double Vector::K() {
     
     return this->k;
 }
@@ -49,7 +49,7 @@ double LSE_Vector::K() {
 /*
 Get the length of the vector.
 */
-double LSE_Vector::Length() {
+double Vector::Length() {
     
     return sqrt(pow(this->i, 2.0) + pow(this->j, 2.0) + pow(this->k, 2.0));
 }
@@ -57,7 +57,7 @@ double LSE_Vector::Length() {
 /*
 Make this vector a unit vector in its current direction.
 */
-void LSE_Vector::Normalize() {
+void Vector::Normalize() {
     
     double size = this->Length();
     if(size > 0) {
@@ -71,7 +71,7 @@ void LSE_Vector::Normalize() {
 /*
 Words. Fancy words. That describe orthagonalization. fix me
 */
-void LSE_Vector::Orthagonalize(LSE_Vector& v) {
+void Vector::Orthagonalize(Vector& v) {
     
     
 }
@@ -79,39 +79,39 @@ void LSE_Vector::Orthagonalize(LSE_Vector& v) {
 /*
 Vector scalar multiplication.
 */
-LSE_Vector LSE_Vector::operator*(const double& scalar) {
+Vector Vector::operator*(const double& scalar) {
     
-    return LSE_Vector(this->i * scalar, this->j * scalar, this->k * scalar);
+    return Vector(this->i * scalar, this->j * scalar, this->k * scalar);
 }
 
 /*
 Vector scalar division.
 */
-LSE_Vector LSE_Vector::operator/(const double& scalar) {
+Vector Vector::operator/(const double& scalar) {
     
-    return LSE_Vector(this->i / scalar, this->j / scalar, this->k / scalar);
+    return Vector(this->i / scalar, this->j / scalar, this->k / scalar);
 }
 
 /*
 Vector addition.
 */
-LSE_Vector LSE_Vector::operator+(const LSE_Vector& other) {
+Vector Vector::operator+(const Vector& other) {
     
-    return LSE_Vector(this->i + other.i, this->j + other.j, this->k + other.k);
+    return Vector(this->i + other.i, this->j + other.j, this->k + other.k);
 }
 
 /*
 Vector subtraction.
 */
-LSE_Vector LSE_Vector::operator-(const LSE_Vector& other) {
+Vector Vector::operator-(const Vector& other) {
     
-    return LSE_Vector(this->i - other.i, this->j - other.j, this->k - other.k);
+    return Vector(this->i - other.i, this->j - other.j, this->k - other.k);
 }
 
 /*
 Get the angle between two vector, in radians.
 */
-double LSE_Vector::operator^(LSE_Vector& other) {
+double Vector::operator^(Vector& other) {
     
     return acos((float)((*this * other)/(this->Length() * other.Length())));
 }
@@ -119,7 +119,7 @@ double LSE_Vector::operator^(LSE_Vector& other) {
 /*
 Get the dot product of two vector.
 */
-double LSE_Vector::operator*(const LSE_Vector& other) {
+double Vector::operator*(const Vector& other) {
     
     return (this->i * other.i) + (this->j * other.j) + (this->k * other.k);
 }
@@ -127,21 +127,21 @@ double LSE_Vector::operator*(const LSE_Vector& other) {
 /*
 Get the cross product of two vector.
 */
-LSE_Vector LSE_Vector::operator%(const LSE_Vector& other) {
+Vector Vector::operator%(const Vector& other) {
     
     double x = (this->j * other.k) - (this->k * other.j);
     double y = (this->k * other.i) - (this->i * other.k);
     double z = (this->i * other.j) - (this->j * other.i);
     
-    return LSE_Vector(x, y, z);
+    return Vector(x, y, z);
 }
 
-bool LSE_Vector::operator==(const LSE_Vector& other) {
+bool Vector::operator==(const Vector& other) {
     
     return (this->i == other.i && this->j == other.j && this->k == other.k);
 }
 
-bool LSE_Vector::operator!=(const LSE_Vector& other) {
+bool Vector::operator!=(const Vector& other) {
     
     return (this->i != other.i || this->j != other.j || this->k != other.k);
 }

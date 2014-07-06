@@ -4,20 +4,20 @@ using namespace LSE;
 /*
 
 */
-LSE_Matrix::LSE_Matrix(unsigned int r, unsigned int c) {
+Matrix::Matrix(unsigned int r, unsigned int c) {
     
     rows = r;
     columns = c;
     
     data = new (std::nothrow) float [rows * columns];
     if(data == NULL)
-        LSE_ERROR_LOG("Failed to allocate memory for matrix data.\n");
+        ERROR_LOG("Failed to allocate memory for matrix data.\n");
 }
 
 /*
 Create a copy of a pre-existing matrix.
 */
-LSE_Matrix::LSE_Matrix(const LSE_Matrix& other) {
+Matrix::Matrix(const Matrix& other) {
     
     rows = other.rows;
     columns = other.columns;
@@ -29,14 +29,14 @@ LSE_Matrix::LSE_Matrix(const LSE_Matrix& other) {
     }
     else {
         
-        LSE_ERROR_LOG("Failed to allocate memory for matrix data.\n");
+        ERROR_LOG("Failed to allocate memory for matrix data.\n");
     }
 }
 
 /*
 
 */
-LSE_Matrix::~LSE_Matrix() {
+Matrix::~Matrix() {
     
     if(data != NULL)
         delete[] data;
@@ -45,7 +45,7 @@ LSE_Matrix::~LSE_Matrix() {
 /*
 Return the array which stores our data.
 */
-float* LSE_Matrix::RawMatrix() {
+float* Matrix::RawMatrix() {
     
     return data;
 }
@@ -53,7 +53,7 @@ float* LSE_Matrix::RawMatrix() {
 /*
  
 */  
-LSE_Matrix LSE_Matrix::Inverse() {
+Matrix Matrix::Inverse() {
     
     if(data != NULL) {
         
@@ -68,7 +68,7 @@ LSE_Matrix LSE_Matrix::Inverse() {
 /*
  
 */  
-LSE_Matrix LSE_Matrix::Transpose() {
+Matrix Matrix::Transpose() {
     
     if(data != NULL) {
         
@@ -83,7 +83,7 @@ LSE_Matrix LSE_Matrix::Transpose() {
 /*
 
 */
-LSE_Matrix LSE_Matrix::TopTriangular() {
+Matrix Matrix::TopTriangular() {
     
     
 }
@@ -91,7 +91,7 @@ LSE_Matrix LSE_Matrix::TopTriangular() {
 /*
 
 */
-LSE_Matrix LSE_Matrix::BotTriangular() {
+Matrix Matrix::BotTriangular() {
     
     
 }
@@ -99,7 +99,7 @@ LSE_Matrix LSE_Matrix::BotTriangular() {
 /*
  
 */     
-float LSE_Matrix::Determinant() {
+float Matrix::Determinant() {
     
     if(data != NULL) {
         
@@ -114,7 +114,7 @@ float LSE_Matrix::Determinant() {
 /*
  
 */       
-void LSE_Matrix::operator*(const double& scalar) {
+void Matrix::operator*(const double& scalar) {
     
     if(data != NULL) {
         
@@ -130,7 +130,7 @@ void LSE_Matrix::operator*(const double& scalar) {
 /*
  
 */  
-void LSE_Matrix::operator/(const double& scalar) {
+void Matrix::operator/(const double& scalar) {
     
     if(data != NULL) {
         
@@ -146,13 +146,13 @@ void LSE_Matrix::operator/(const double& scalar) {
 /*
  
 */  
-LSE_Matrix LSE_Matrix::operator+(const LSE_Matrix& other) {
+Matrix Matrix::operator+(const Matrix& other) {
     
     if(data != NULL) {
         
         if(this->rows == other.rows && this->columns == other.columns) {
             
-            LSE_Matrix matrix(rows, columns);
+            Matrix matrix(rows, columns);
             
             for(int i = 0; i < rows * columns; ++i)
                 matrix.data[i] = this->data[i] + other.data[i];
@@ -173,13 +173,13 @@ LSE_Matrix LSE_Matrix::operator+(const LSE_Matrix& other) {
 /*
  
 */
-LSE_Matrix LSE_Matrix::operator-(const LSE_Matrix& other) {
+Matrix Matrix::operator-(const Matrix& other) {
     
     if(data != NULL) {
         
         if(this->rows == other.rows && this->columns == other.columns) {
             
-            LSE_Matrix matrix(rows, columns);
+            Matrix matrix(rows, columns);
             
             for(int i = 0; i < rows * columns; ++i)
                 matrix.data[i] = this->data[i] - other.data[i];
@@ -200,13 +200,13 @@ LSE_Matrix LSE_Matrix::operator-(const LSE_Matrix& other) {
 /*
  
 */
-LSE_Matrix LSE_Matrix::operator*(const LSE_Matrix& other) {
+Matrix Matrix::operator*(const Matrix& other) {
     
     if(data != NULL) {
         
         if(this->columns == other.rows) {
             
-            LSE_Matrix matrix(this->rows, other.columns);
+            Matrix matrix(this->rows, other.columns);
             
             for(int i = 0; i < other.columns; ++i) {
                 
@@ -232,7 +232,7 @@ LSE_Matrix LSE_Matrix::operator*(const LSE_Matrix& other) {
 /*
 "Divide" this matrix by another. We define matrix divison "A/B" as "A(B^-1)"
 */
-LSE_Matrix LSE_Matrix::operator/(LSE_Matrix& other) {
+Matrix Matrix::operator/(Matrix& other) {
     
     return ((*this) * other.Inverse());
 }
@@ -240,7 +240,7 @@ LSE_Matrix LSE_Matrix::operator/(LSE_Matrix& other) {
 /*
  
 */
-float* LSE_Matrix::operator[](const int& rIndex) {
+float* Matrix::operator[](const int& rIndex) {
     
     if(data != NULL) {
         
@@ -262,7 +262,7 @@ float* LSE_Matrix::operator[](const int& rIndex) {
 /*
  
 */
-bool LSE_Matrix::operator==(const LSE_Matrix& other) {
+bool Matrix::operator==(const Matrix& other) {
     
     if(data != NULL) {
         
@@ -277,7 +277,7 @@ bool LSE_Matrix::operator==(const LSE_Matrix& other) {
 /*
  
 */
-bool LSE_Matrix::operator!=(const LSE_Matrix& other) {
+bool Matrix::operator!=(const Matrix& other) {
     
     if(data != NULL) {
         

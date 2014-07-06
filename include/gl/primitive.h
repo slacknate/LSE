@@ -15,7 +15,7 @@ namespace LSE {
 /*
 Base class for OpenGL 2D and 3D primitives.
 */
-class LSE_GLPrimitive : public LSE_GLObject {
+class GLPrimitive : public GLObject {
     
     protected:        
         
@@ -28,8 +28,8 @@ class LSE_GLPrimitive : public LSE_GLObject {
         int *indices;
         bool initialized; // true when memory allocation has succeeded and all vertices and normals have been calculated
         
-        bool SameSide(LSE_Vertex &vertA, LSE_Vertex &vertB, LSE_Vertex &vertC, LSE_Vertex &vertD);
-        bool InTriangle(LSE_Vertex &vertA, LSE_Vertex &vertB, LSE_Vertex &vertC, LSE_Vertex &ref, double x, double y, double z);
+        bool SameSide(Vertex &vertA, Vertex &vertB, Vertex &vertC, Vertex &vertD);
+        bool InTriangle(Vertex &vertA, Vertex &vertB, Vertex &vertC, Vertex &ref, double x, double y, double z);
         void CalcNormals();
         void MemAllocate(int nv, int ne);
         
@@ -40,14 +40,14 @@ class LSE_GLPrimitive : public LSE_GLObject {
         
     public:
         
-        LSE_GLPrimitive(double x, double y, double z);
-        ~LSE_GLPrimitive();
+        GLPrimitive(double x, double y, double z);
+        ~GLPrimitive();
         
-        //void Transform(LSE_Quaternion& q);
+        //void Transform(Quaternion& q);
         void Draw();
         void RenderNormals();
         bool Hit(double x, double y, double z);
-        LSE_Vector GetNormalAt(double x, double y, double z);
+        Vector GetNormalAt(double x, double y, double z);
 };
 
 }

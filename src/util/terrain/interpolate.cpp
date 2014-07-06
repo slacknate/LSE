@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include "util/terrain/interpolate.h"
 
-float LSE_CubicInterpolate(float *interp, float x) {
+float CubicInterpolate(float *interp, float x) {
 
     if(interp != NULL) {
 
@@ -19,35 +19,35 @@ float LSE_CubicInterpolate(float *interp, float x) {
     return 0.0;
 }
 
-float LSE_BicubicInterpolate(float *interp, float x, float y) {
+float BicubicInterpolate(float *interp, float x, float y) {
     
     if(interp != NULL) {
         
         float columns[4];
     
-        columns[0] = LSE_CubicInterpolate(&interp[0], y);
-        columns[1] = LSE_CubicInterpolate(&interp[4], y);
-        columns[2] = LSE_CubicInterpolate(&interp[8], y);
-        columns[3] = LSE_CubicInterpolate(&interp[12], y);
+        columns[0] = CubicInterpolate(&interp[0], y);
+        columns[1] = CubicInterpolate(&interp[4], y);
+        columns[2] = CubicInterpolate(&interp[8], y);
+        columns[3] = CubicInterpolate(&interp[12], y);
         
-        return LSE_CubicInterpolate(columns, x);
+        return CubicInterpolate(columns, x);
     }
     
     return 0.0;
 }
 
-float LSE_TricubicInterpolate(float *interp, float x, float y, float z) {
+float TricubicInterpolate(float *interp, float x, float y, float z) {
     
     if(interp != NULL) {
 
         float columns[4];
     
-        columns[0] = LSE_BicubicInterpolate(&interp[0], x, y);
-        columns[1] = LSE_BicubicInterpolate(&interp[16], x, y);
-        columns[2] = LSE_BicubicInterpolate(&interp[32], x, y);
-        columns[3] = LSE_BicubicInterpolate(&interp[48], x, y);
+        columns[0] = BicubicInterpolate(&interp[0], x, y);
+        columns[1] = BicubicInterpolate(&interp[16], x, y);
+        columns[2] = BicubicInterpolate(&interp[32], x, y);
+        columns[3] = BicubicInterpolate(&interp[48], x, y);
     
-        return LSE_CubicInterpolate(columns, z);
+        return CubicInterpolate(columns, z);
     }
     
     return 0.0;

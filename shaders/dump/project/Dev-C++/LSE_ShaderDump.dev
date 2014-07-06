@@ -1,5 +1,5 @@
 [Project]
-FileName=LSE_ShaderDump.dev
+FileName=ShaderDump.dev
 Name=Project1
 UnitCount=1
 Type=1
@@ -18,7 +18,7 @@ Icon=
 ExeOutput=..\..\bin
 ObjectOutput=..\..\obj
 OverrideOutput=0
-OverrideOutputName=LSE_ShaderDump.exe
+OverrideOutputName=ShaderDump.exe
 HostApplication=
 Folders=
 CommandLine="C:\Dev-Cpp\OpenGL\platformer\shaders\dump\shaders" shader  "C:\Dev-Cpp\OpenGL\platformer\shaders\dump\out" "C:\Dev-Cpp\OpenGL\platformer\shaders\dump\out"
