@@ -280,7 +280,7 @@ void IOHandler::RegisterInput(HWND hwnd, unsigned short page, unsigned short id)
     
     raw_io.usUsagePage = page; 
     raw_io.usUsage = id; 
-    raw_io.dwFlags = RIDEV_NOLEGACY;
+    raw_io.dwFlags = 0;
     raw_io.hwndTarget = hwnd;
 
     if(RegisterRawInputDevices(&raw_io, 1, sizeof(RAWINPUTDEVICE)) == false)
@@ -310,7 +310,9 @@ LRESULT CALLBACK IOHandler::WindowHandler(HWND hwnd, unsigned int message, WPARA
             // close our window
             PostQuitMessage(0);
             // terminate the engine
-            IOHandler_Base::HandleEvent(NULL, QUIT, Engine::ID_QUIT, NULL);
+            
+            QuitEvent *quit_event = new QuitEvent();
+            IOHandler_Base::HandleEvent(NULL, EVENT_QUIT, Engine::ID_QUIT, quit_event);
             break;
             
         case WM_INPUT:
@@ -319,7 +321,7 @@ LRESULT CALLBACK IOHandler::WindowHandler(HWND hwnd, unsigned int message, WPARA
             unsigned int num_bytes;
             GetRawInputData(r_input, RID_INPUT, NULL, &num_bytes, sizeof(RAWINPUTHEADER));
             
-            BYTE *raw_memory = new BYTE[num_bytes];
+            BYTE *raw_memory = new (std::nothrow) BYTE[num_bytes];
             if(raw_memory == NULL) {
                 
                 LOG(LOG_LEVEL_ERROR, "raw_memory is NULL!"); // TODO: proper error handling/logging
@@ -357,7 +359,7 @@ LRESULT CALLBACK IOHandler::WindowHandler(HWND hwnd, unsigned int message, WPARA
                 key_event->key = vkey_to_lkey(r_keyboard->VKey, r_keyboard->MakeCode, left_right);
                 key_event->state = key_state;
                 
-                IOHandler_Base::HandleEvent(NULL, KEYBOARD, ANY, key_event);
+                IOHandler_Base::HandleEvent(NULL, EVENT_KEYBOARD, ID_ANY, key_event);
             }
             else if(raw_input->header.dwType == RIM_TYPEMOUSE) {
             
@@ -392,11 +394,11 @@ LRESULT CALLBACK IOHandler::WindowHandler(HWND hwnd, unsigned int message, WPARA
                     LOG(LOG_LEVEL_ERROR, "Invalid mouse state"); // TODO: real error handling
                 }
                 
-                IOHandler_Base::HandleEvent(NULL, MOUSE, ANY, mouse_event);
+                IOHandler_Base::HandleEvent(NULL, EVENT_MOUSE, ID_ANY, mouse_event);
             }
             else if(raw_input->header.dwType == RIM_TYPEHID) {
                 
-                LOG(LOG_LEVEL_DEBUG, "HID device support not implemented"); // TODO: real error handling
+                LOG(LOG_LEVEL_DEBUG, "HID device support not implemented");
             }
             else {
                 
@@ -409,12 +411,14 @@ LRESULT CALLBACK IOHandler::WindowHandler(HWND hwnd, unsigned int message, WPARA
             RECT *new_size = (RECT *)lParam;
             unsigned int new_width = new_size->right - new_size->left;
             unsigned int new_height = new_size->bottom - new_size->top;
+            result = true; // according to the MSDN docs this message type should return TRUE
             break;
             
         case WM_MOVING:
             RECT *new_pos = (RECT *)lParam;
             unsigned int new_x_pos = new_pos->left;
             unsigned int new_y_pos = new_pos->top;
+            result = true; // according to the MSDN docs this message type should return TRUE
             break;
         
         default:

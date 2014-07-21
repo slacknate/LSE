@@ -3,8 +3,8 @@ using namespace LSE;
 
 EVTMAP(TestPrism) PrismMap[] = {
     
-    EVTFUNC(MOUSE,      TestPrism::ID_MOUSE,    TestPrism::OnMouseMotion),
-    EVTFUNC(KEYBOARD,   TestPrism::ID_KEY,      TestPrism::OnKey)
+    EVTFUNC(EVENT_MOUSE,      TestPrism::ID_MOUSE,    TestPrism::OnMouseMotion),
+    EVTFUNC(EVENT_KEYBOARD,   TestPrism::ID_KEY,      TestPrism::OnKey)
 };
 
 EVTIMP(TestPrism, PrismMap);

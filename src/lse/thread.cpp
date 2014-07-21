@@ -6,7 +6,7 @@ Thread event table.
 */
 EVTMAP(Thread) ThreadMap[] = {
     
-    EVTFUNC(QUIT, Thread::ID_QUIT, Thread::OnQuit)
+    EVTFUNC(EVENT_QUIT, Thread::ID_QUIT, Thread::OnQuit)
 };
 
 /*

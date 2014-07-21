@@ -7,8 +7,8 @@ Engine event table.
 */
 EVTMAP(Engine) EngineMap[] = {
     
-    EVTFUNC(ANY, ANY, Engine::OnEvent),
-    EVTFUNC(QUIT, Engine::ID_QUIT, Engine::OnQuit)
+    EVTFUNC(EVENT_QUIT, Engine::ID_QUIT, Engine::OnQuit),
+    EVTFUNC(EVENT_ANY,  ID_ANY,          Engine::OnEvent)
 };
 
 /*
@@ -27,10 +27,10 @@ Engine::Engine(int argc, char *argv[]) : handler(this) {
     status = OK;
     keyFocus = mouseFocus = NULL;
     
-//    CreateLogs();
+    CreateLogs();
     
-    LOG_LEVEL = LOG_LEVEL_VERBOSE;
-    InitSignals(this);
+    ::LOG_LEVEL = LOG_LEVEL_VERBOSE;
+    ::InitSignals(this);
 }
 
 /*
@@ -165,22 +165,29 @@ void* Engine::Execute() {
         event_sem.Wait();
             
         ListNode *node = eventList.PopBack();
-        Event *event = (Event *)node->GetData();
+        if(node) {
             
-        switch(event->type) {
+            Event *event = (Event *)node->GetData();
+            LOG(LOG_LEVEL_DEBUG, "Popping %s event off queue.", event->name);
+            
+            switch(event->type) {
                 
-            case KEYBOARD:
-                //keyFocus->Dispatch(this, KEYBOARD, ANY, event);
-                break;
-            case MOUSE:
-                //mouseFocus->Dispatch(this, MOUSE, ANY, event);
-                break;
-            default:
-                break;
-        }
+                case EVENT_KEYBOARD:
+                    //keyFocus->Dispatch(this, KEYBOARD, ANY, event);
+                    break;
+                case EVENT_MOUSE:
+                    //mouseFocus->Dispatch(this, MOUSE, ANY, event);
+                    break;
+                default:
+                    break;
+            }
             
-        delete event;
-        delete node;
+            delete node;
+        }
+        else {
+            
+            LOG(LOG_LEVEL_DEBUG, "No events in queue to pop.");
+        }
     }
     
     return NULL;
@@ -214,7 +221,6 @@ int Engine::Run() {
                     window->Render();
                 
                 this->Join();
-                
             }
             catch(Exception &e) {
                 
@@ -251,9 +257,14 @@ bool Engine::OnEvent(Object *, unsigned int, unsigned int, void *ptr) {
     if(ptr != NULL) {
         
         Event *event = (Event *)ptr;
+        LOG(LOG_LEVEL_DEBUG, "Adding %s event to queue.", event->name);
         eventList.PushFront(event);
         
         event_sem.Post();
+    }
+    else {
+        
+        LOG(LOG_LEVEL_DEBUG, "NULL event received.");
     }
     
     return ptr != NULL;
@@ -262,8 +273,15 @@ bool Engine::OnEvent(Object *, unsigned int, unsigned int, void *ptr) {
 /*
 Quit the application.
 */
-bool Engine::OnQuit(Object *, unsigned int, unsigned int, void *) {
+bool Engine::OnQuit(Object *, unsigned int, unsigned int, void *ptr) {
     
-    run = false;
+    LOG(LOG_LEVEL_DEBUG, "Received quit event. Stopping event loop.");
+    this->run = false;
+    
+    Event *event = (Event *)ptr;
+    LOG(LOG_LEVEL_DEBUG, "Sending quit event to event queue.");
+    eventList.PushFront(event);
+        
+    event_sem.Post();
     return true;
 }

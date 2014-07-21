@@ -1,7 +1,7 @@
 [Project]
 FileName=engine.dev
 Name=engine
-UnitCount=92
+UnitCount=93
 Type=1
 Ver=1
 ObjFiles=
@@ -958,9 +958,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit93]
-FileName=..\..\include\lse\globals.h
+FileName=..\..\src\lse\event.cpp
 CompileCpp=1
-Folder=include/lse
+Folder=src/lse
 Compile=1
 Link=1
 Priority=1000

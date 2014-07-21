@@ -4,7 +4,7 @@ using namespace LSE;
 
 EVTMAP(TestCam) CamMap[] = {
     
-    EVTFUNC(KEYBOARD, TestCam::ID_KEY, TestCam::OnKey)
+    EVTFUNC(EVENT_KEYBOARD, TestCam::ID_KEY, TestCam::OnKey)
 };
 
 EVTIMP(TestCam, CamMap);

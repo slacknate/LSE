@@ -10,41 +10,48 @@ LSE Event types.
 */
 typedef enum {
     
-    ANY = 0,
-    KEYBOARD,
-    MOUSE,
-    INPUTOTHER,
-    VIDEO,
-    USER,
-    SYSTEM,
-    QUIT
+    EVENT_ANY = 0,
+    EVENT_KEYBOARD,
+    EVENT_MOUSE,
+    EVENT_INPUTOTHER,
+    EVENT_VIDEO,
+    EVENT_USER,
+    EVENT_SYSTEM,
+    EVENT_QUIT
 }EventType;
 
 /*
-Event structures.
+Base event class.
 */
 class Event {
     
     public:
         
         EventType type;
+        const char *const name;
+        
+        Event(EventType _type, const char *const _name);
 };
 
-class KeyEvent : Event {
+
+/*
+Event objects for keyboard input.
+*/
+class KeyEvent : public Event {
     
     public:
         
         bool state;
         unsigned int key;
         
-        KeyEvent() {
-            
-            this->type = KEYBOARD;
-            this->key = KEY_INVALID; 
-        }
+        KeyEvent();
 };
 
-class MouseEvent : Event {
+
+/*
+Event object for mouse input.
+*/
+class MouseEvent : public Event {
     
     public:
         
@@ -53,38 +60,45 @@ class MouseEvent : Event {
         bool state;
         unsigned int button;
         
-        MouseEvent() {
-            
-            this->type = MOUSE;
-            this->button = MOUSE_INVALID;
-            this->dX = this->dY = this->dW = 0;
-        }
+        MouseEvent();
 };
+
 
 typedef struct {
     
     
 }IOEvent;
 
+
 typedef struct {
     
     
 }VideoEvent;
+
 
 typedef struct {
     
     
 }UserEvent;
 
+
 typedef struct {
     
     
 }SysEvent;
 
-typedef struct {
+
+/*
+Event object for system/thread quit.
+*/
+class QuitEvent : public Event {
     
-    
-}QuitEvent;
+    public:
+        
+        unsigned int status;
+        
+        QuitEvent();
+};
 
 }
 
