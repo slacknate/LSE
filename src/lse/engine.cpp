@@ -168,7 +168,7 @@ void* Engine::Execute() {
         if(node) {
             
             Event *event = (Event *)node->GetData();
-            LOG(LOG_LEVEL_DEBUG, "Popping %s event off queue.", event->name);
+            LOG(LOG_LEVEL_VERBOSE, "Popping %s event off queue.", event->name);
             
             switch(event->type) {
                 
@@ -186,7 +186,7 @@ void* Engine::Execute() {
         }
         else {
             
-            LOG(LOG_LEVEL_DEBUG, "No events in queue to pop.");
+            LOG(LOG_LEVEL_VERBOSE, "No events in queue to pop.");
         }
     }
     
@@ -257,14 +257,14 @@ bool Engine::OnEvent(Object *, unsigned int, unsigned int, void *ptr) {
     if(ptr != NULL) {
         
         Event *event = (Event *)ptr;
-        LOG(LOG_LEVEL_DEBUG, "Adding %s event to queue.", event->name);
+        LOG(LOG_LEVEL_VERBOSE, "Adding %s event to queue.", event->name);
         eventList.PushFront(event);
         
         event_sem.Post();
     }
     else {
         
-        LOG(LOG_LEVEL_DEBUG, "NULL event received.");
+        LOG(LOG_LEVEL_VERBOSE, "NULL event received.");
     }
     
     return ptr != NULL;

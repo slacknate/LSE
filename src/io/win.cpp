@@ -307,6 +307,8 @@ LRESULT CALLBACK IOHandler::WindowHandler(HWND hwnd, unsigned int message, WPARA
         
         case WM_CLOSE:
         case WM_DESTROY:
+            LOG(LOG_LEVEL_DEBUG, "Window close message received. Sending quit event to engine.");
+            
             // close our window
             PostQuitMessage(0);
             // terminate the engine
