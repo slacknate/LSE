@@ -15,7 +15,7 @@ const char *const LOG_LEVEL_PREFIXS[] = {
     "R",
 };
 
-char* replace_newlines(unsigned int prefix_len, const char *format) {
+char* indent_newlines(unsigned int prefix_len, const char *format) {
     
     char prefix_buffer[prefix_len];
     memset(prefix_buffer, ' ', prefix_len);
@@ -30,8 +30,10 @@ char* replace_newlines(unsigned int prefix_len, const char *format) {
     
     unsigned int new_format_len = (num_newlines * prefix_len) + format_len + 1;
     char *new_format = new (std::nothrow) char[new_format_len];
-    if(new_format == NULL)
-        ; // uhhh... do we log this? wont that be some SERIOUS RECURSION BRO?!
+    if(new_format == NULL) {
+        
+         // FIXME: uhhh... do we log this? wont that be some SERIOUS RECURSION BRO?!
+    }
     
     memset(new_format, 0, new_format_len);
     
@@ -74,7 +76,7 @@ void write_log(LogLevel log_level, FILE *stream, va_list &arg_list) {
             }
             
             const char *format = va_arg(arg_list, const char *);
-            char *indented_format = replace_newlines(prefix_len, format);
+            char *indented_format = indent_newlines(prefix_len, format);
             
             vfprintf(stream, indented_format, arg_list);
             fprintf(stream, "\n");

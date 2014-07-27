@@ -1,10 +1,10 @@
-#ifndef LSE_TABLE_ENTRY_H
-#define LSE_TABLE_ENTRY_H
+#ifndef LSE_EVENT_TABLE_ENTRY_H
+#define LSE_EVENT_TABLE_ENTRY_H
 
 namespace LSE {
 
 /*
-
+Constant that will match against any ID for an event handler.
 */    
 const unsigned int ID_ANY = 0;
     

@@ -8,7 +8,7 @@ namespace LSE {
 /*
 LSE Event types.
 */
-typedef enum {
+enum EventType : unsigned int {
     
     EVENT_ANY = 0,
     EVENT_KEYBOARD,
@@ -18,7 +18,7 @@ typedef enum {
     EVENT_USER,
     EVENT_SYSTEM,
     EVENT_QUIT
-}EventType;
+};
 
 /*
 Base event class.
