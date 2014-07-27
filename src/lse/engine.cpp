@@ -5,16 +5,11 @@ using namespace LSE;
 /*
 Engine event table.
 */
-EVTMAP(Engine) EngineMap[] = {
+const EngineEventTable Engine::table = EngineEventTable({
     
-    EVTFUNC(EVENT_QUIT, Engine::ID_QUIT, Engine::OnQuit),
-    EVTFUNC(EVENT_ANY,  ID_ANY,          Engine::OnEvent)
-};
-
-/*
-Event handler implementation.
-*/
-EVTIMP(Engine, EngineMap)
+    EngineTableEntry(EVENT_QUIT, Engine::ID_QUIT, &Engine::OnQuit),
+    EngineTableEntry(EVENT_ANY,  ID_ANY,          &Engine::OnEvent)
+});
 
 /*
 
@@ -27,10 +22,12 @@ Engine::Engine(int argc, char *argv[]) : handler(this) {
     status = OK;
     keyFocus = mouseFocus = NULL;
     
-    CreateLogs();
+    //this->CreateLogs();
     
-    ::LOG_LEVEL = LOG_LEVEL_VERBOSE;
+    ::LOG_LEVEL = LOG_LEVEL_DEBUG;
     ::InitSignals(this);
+    
+    this->register_table(&Engine::table);
 }
 
 /*
@@ -38,8 +35,8 @@ Engine::Engine(int argc, char *argv[]) : handler(this) {
 */
 Engine::~Engine() {
     
-    eventList.Clear();
-    CloseLogs();
+    this->eventList.Clear();
+    this->CloseLogs();
 }
 
 /*
@@ -160,10 +157,12 @@ void Engine::CloseLogs() {
 */
 void* Engine::Execute() {
     
+    LOG(LOG_LEVEL_DEBUG, "Event queue thread started.");
+    
     while(run) {
         
         event_sem.Wait();
-            
+        
         ListNode *node = eventList.PopBack();
         if(node) {
             
@@ -173,22 +172,26 @@ void* Engine::Execute() {
             switch(event->type) {
                 
                 case EVENT_KEYBOARD:
-                    //keyFocus->Dispatch(this, KEYBOARD, ANY, event);
+                    if(keyFocus)
+                        keyFocus->Dispatch(this, EVENT_KEYBOARD, ID_ANY, event);
                     break;
                 case EVENT_MOUSE:
-                    //mouseFocus->Dispatch(this, MOUSE, ANY, event);
+                    if(mouseFocus)
+                        mouseFocus->Dispatch(this, EVENT_MOUSE, ID_ANY, event);
                     break;
                 default:
                     break;
             }
             
-            delete node;
+            //delete node;
         }
         else {
             
             LOG(LOG_LEVEL_VERBOSE, "No events in queue to pop.");
         }
     }
+    
+    LOG(LOG_LEVEL_DEBUG, "Event queue thread terminating.");
     
     return NULL;
 }
@@ -252,7 +255,7 @@ int Engine::Run() {
 /*
 Post an event to the event queue.
 */
-bool Engine::OnEvent(Object *, unsigned int, unsigned int, void *ptr) {
+int Engine::OnEvent(Object *, unsigned int, unsigned int, void *ptr) {
     
     if(ptr != NULL) {
         
@@ -273,7 +276,7 @@ bool Engine::OnEvent(Object *, unsigned int, unsigned int, void *ptr) {
 /*
 Quit the application.
 */
-bool Engine::OnQuit(Object *, unsigned int, unsigned int, void *ptr) {
+int Engine::OnQuit(Object *, unsigned int, unsigned int, void *ptr) {
     
     LOG(LOG_LEVEL_DEBUG, "Received quit event. Stopping event loop.");
     this->run = false;

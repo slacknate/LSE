@@ -1,7 +1,7 @@
 [Project]
 FileName=engine.dev
 Name=engine
-UnitCount=93
+UnitCount=96
 Type=1
 Ver=1
 ObjFiles=
@@ -20,7 +20,7 @@ ObjectOutput=
 OverrideOutput=1
 OverrideOutputName=engine.exe
 HostApplication=
-Folders=debug,include,include/gl,include/gui,include/gui/screen,include/gui/window,include/io,include/lse,include/phy,include/util,include/util/math,include/util/terrain,shaders,src,src/gl,src/gui,src/gui/screen,src/gui/window,src/io,src/lse,src/phy,src/util,src/util/math,src/util/terrain
+Folders=debug,include,include/gl,include/gui,include/gui/screen,include/gui/window,include/io,include/lse,include/lse/event,include/phy,include/util,include/util/math,include/util/terrain,shaders,src,src/gl,src/gui,src/gui/screen,src/gui/window,src/io,src/lse,src/lse/event,src/phy,src/util,src/util/math,src/util/terrain
 CommandLine=
 UseCustomMakefile=1
 CustomMakefile=makefile
@@ -487,16 +487,6 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit53]
-FileName=..\..\include\lse\event.h
-CompileCpp=1
-Folder=include/lse
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [Unit52]
 FileName=..\..\include\lse\engine.h
 CompileCpp=1
@@ -508,7 +498,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit55]
-FileName=..\..\include\lse\list.h
+FileName=..\..\include\lse\listnode.h
 CompileCpp=1
 Folder=include/lse
 Compile=1
@@ -518,7 +508,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit56]
-FileName=..\..\include\lse\listnode.h
+FileName=..\..\include\lse\mutex.h
 CompileCpp=1
 Folder=include/lse
 Compile=1
@@ -538,16 +528,6 @@ BuildCmd=
 CompileCpp=1
 
 [Unit57]
-FileName=..\..\include\lse\mutex.h
-Folder=include/lse
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-CompileCpp=1
-
-[Unit58]
 FileName=..\..\include\lse\object.h
 Folder=include/lse
 Compile=1
@@ -557,8 +537,18 @@ OverrideBuildCmd=0
 BuildCmd=
 CompileCpp=1
 
-[Unit59]
+[Unit58]
 FileName=..\..\include\lse\semaphore.h
+Folder=include/lse
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+CompileCpp=1
+
+[Unit59]
+FileName=..\..\include\lse\signals.h
 CompileCpp=1
 Folder=include/lse
 Compile=1
@@ -568,7 +558,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit60]
-FileName=..\..\include\lse\signals.h
+FileName=..\..\include\lse\thread.h
 CompileCpp=1
 Folder=include/lse
 Compile=1
@@ -598,16 +588,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit61]
-FileName=..\..\include\lse\thread.h
-CompileCpp=1
-Folder=include/lse
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit62]
 FileName=..\..\include\gl\light.h
 CompileCpp=1
 Folder=include/gl
@@ -617,17 +597,17 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit63]
+[Unit62]
 FileName=..\..\include\gl\material.h
+CompileCpp=1
 Folder=include/gl
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
-CompileCpp=1
 
-[Unit64]
+[Unit63]
 FileName=..\..\include\gl\model.h
 Folder=include/gl
 Compile=1
@@ -637,8 +617,18 @@ OverrideBuildCmd=0
 BuildCmd=
 CompileCpp=1
 
-[Unit65]
+[Unit64]
 FileName=..\..\include\gl\object.h
+Folder=include/gl
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+CompileCpp=1
+
+[Unit65]
+FileName=..\..\include\gl\primitive.h
 Folder=include/gl
 Compile=1
 Link=1
@@ -658,7 +648,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit54]
-FileName=..\..\include\lse\exception.h
+FileName=..\..\include\lse\list.h
 CompileCpp=1
 Folder=include/lse
 Compile=1
@@ -668,16 +658,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit66]
-FileName=..\..\include\gl\primitive.h
-CompileCpp=1
-Folder=include/gl
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit67]
 FileName=..\..\include\gl\program.h
 CompileCpp=1
 Folder=include/gl
@@ -687,7 +667,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit68]
+[Unit67]
 FileName=..\..\include\gl\rectangle.h
 CompileCpp=1
 Folder=include/gl
@@ -697,8 +677,18 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit69]
+[Unit68]
 FileName=..\..\include\gl\rectprism.h
+CompileCpp=1
+Folder=include/gl
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit69]
+FileName=..\..\include\gl\shaders.h
 CompileCpp=1
 Folder=include/gl
 Compile=1
@@ -728,16 +718,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit71]
-FileName=..\..\include\gl\vertex.h
-CompileCpp=1
-Folder=include/gl
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit72]
 FileName=..\..\src\io\mac.cpp
 CompileCpp=1
 Folder=src/io
@@ -747,7 +727,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit73]
+[Unit72]
 FileName=..\..\src\io\nix.cpp
 CompileCpp=1
 Folder=src/io
@@ -757,7 +737,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit74]
+[Unit73]
 FileName=..\..\src\lse\list.cpp
 CompileCpp=1
 Folder=src/lse
@@ -767,7 +747,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit75]
+[Unit74]
 FileName=..\..\src\lse\listnode.cpp
 CompileCpp=1
 Folder=src/lse
@@ -777,7 +757,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit76]
+[Unit75]
 FileName=..\..\src\gui\window\base.cpp
 CompileCpp=1
 Folder=src/gui/window
@@ -787,7 +767,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit77]
+[Unit76]
 FileName=..\..\src\gui\window\mac.cpp
 CompileCpp=1
 Folder=src/gui/window
@@ -797,17 +777,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit70]
-FileName=..\..\include\gl\shaders.h
-CompileCpp=1
-Folder=include/gl
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit78]
+[Unit77]
 FileName=..\..\src\gui\window\nix.cpp
 CompileCpp=1
 Folder=src/gui/window
@@ -817,7 +787,17 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit79]
+[Unit70]
+FileName=..\..\include\gl\vertex.h
+CompileCpp=1
+Folder=include/gl
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit78]
 FileName=..\..\src\gui\window\win.cpp
 CompileCpp=1
 Folder=src/gui/window
@@ -827,7 +807,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit80]
+[Unit79]
 FileName=..\..\src\gui\screen\screen.cpp
 CompileCpp=1
 Folder=src/gui/screen
@@ -837,7 +817,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit81]
+[Unit80]
 FileName=..\..\src\gui\screen\shaders.cpp
 CompileCpp=1
 Folder=src/gui/screen
@@ -847,7 +827,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit82]
+[Unit81]
 FileName=..\..\include\gui\screen\screen.h
 CompileCpp=1
 Folder=include/gui/screen
@@ -857,7 +837,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit83]
+[Unit82]
 FileName=..\..\include\gui\screen\shaders.h
 CompileCpp=1
 Folder=include/gui/screen
@@ -867,7 +847,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit84]
+[Unit83]
 FileName=..\..\include\gui\window\base.h
 CompileCpp=1
 Folder=include/gui/window
@@ -877,7 +857,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit85]
+[Unit84]
 FileName=..\..\include\gui\window\mac.h
 CompileCpp=1
 Folder=include/gui/window
@@ -887,27 +867,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit88]
-FileName=..\..\include\gui\window\window.h
-CompileCpp=1
-Folder=include/gui/window
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit87]
-FileName=..\..\include\gui\window\win.h
-CompileCpp=1
-Folder=include/gui/window
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit86]
+[Unit85]
 FileName=..\..\include\gui\window\nix.h
 CompileCpp=1
 Folder=include/gui/window
@@ -917,7 +877,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit89]
+[Unit88]
 FileName=..\..\src\lse\logger.cpp
 CompileCpp=1
 Folder=src/lse
@@ -927,17 +887,27 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit91]
-FileName=..\..\src\lse\globals.cpp
+[Unit87]
+FileName=..\..\include\gui\window\window.h
 CompileCpp=1
-Folder=src/lse
+Folder=include/gui/window
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit90]
+[Unit86]
+FileName=..\..\include\gui\window\win.h
+CompileCpp=1
+Folder=include/gui/window
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit89]
 FileName=..\..\include\lse\logger.h
 CompileCpp=1
 Folder=include/lse
@@ -947,7 +917,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit92]
+[Unit91]
 FileName=..\..\include\lse\globals.h
 CompileCpp=1
 Folder=include/lse
@@ -957,10 +927,20 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit93]
-FileName=..\..\src\lse\event.cpp
+[Unit90]
+FileName=..\..\src\lse\globals.cpp
 CompileCpp=1
 Folder=src/lse
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit93]
+FileName=..\..\include\lse\event\types.h
+CompileCpp=1
+Folder=include/lse/event
 Compile=1
 Link=1
 Priority=1000
@@ -971,6 +951,56 @@ BuildCmd=
 FileName=..\..\src\lse\semaphore.cpp
 CompileCpp=1
 Folder=src/lse
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit53]
+FileName=..\..\include\lse\exception.h
+CompileCpp=1
+Folder=include/lse
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit92]
+FileName=..\..\include\lse\event\table.h
+CompileCpp=1
+Folder=include/lse/event
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit95]
+FileName=..\..\src\lse\object.cpp
+CompileCpp=1
+Folder=src/lse
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit96]
+FileName=..\..\include\lse\event\entry.h
+CompileCpp=1
+Folder=include/lse/event
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit94]
+FileName=..\..\src\lse\event\types.cpp
+CompileCpp=1
+Folder=src/lse/event
 Compile=1
 Link=1
 Priority=1000

@@ -49,6 +49,9 @@ char* replace_newlines(unsigned int prefix_len, const char *format) {
     return new_format;
 }
 
+/*
+TODO: use strftime, auto newline around 80 characters
+*/
 void write_log(LogLevel log_level, FILE *stream, va_list &arg_list) {
     
     if(log_level <= LOG_LEVEL) {

@@ -1,6 +1,9 @@
 #ifndef LSE_EXCEPTION_H
 #define LSE_EXCEPTION_H
 
+/*
+TODO: move these includes to the .cpp file?
+*/
 #include <iostream>
 #include <stdexcept>
 #include <exception>
@@ -28,7 +31,7 @@ class Exception {
         Exception(const char *f, int l, int c) throw();
         
         const char* what() const throw();
-        const int code() const throw();
+        int code() const throw();
 };
 
 }

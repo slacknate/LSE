@@ -1,5 +1,5 @@
-#ifndef LSE_EVENT_H
-#define LSE_EVENT_H
+#ifndef LSE_EVENT_TYPES_H
+#define LSE_EVENT_TYPES_H
 
 #include "lse/defs.h"
 

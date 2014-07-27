@@ -1,4 +1,5 @@
 #include <cstdarg>
+#include <cstring>
 #include "gl/program.h"
 using namespace LSE;
 
@@ -253,13 +254,13 @@ int GLProgram::AddShader(const char *buffer, ShaderType lseType) {
                     memset(sl_version_str, 0, 64);
                     snprintf((char *)sl_version_str, 64, "%d", SLVersion());
                     
-                    int size[] = { 9, strlen(sl_version_str), 1, strlen(shaderSource) };
+                    unsigned int size[] = { 9, strlen(sl_version_str), 1, strlen(shaderSource) };
                     const char *const sourceWithVersion[] = { "#version ", sl_version_str, "\n", shaderSource };
                     
                     LOG(LOG_LEVEL_DEBUG, "Prepending GLSL version '%s' to shader source.", sl_version_str);
                     
                     // send the shader source code to the GPU, and compile it
-                    glShaderSource(shaderID, 4, (const char**)sourceWithVersion, size);
+                    glShaderSource(shaderID, 4, (const char**)sourceWithVersion, (int *)size);
                     glCompileShader(shaderID);
                         
                     if(ValidateShader(buffer, shaderID, lseType)) {
@@ -308,13 +309,13 @@ int GLProgram::AddShader(const char *buffer, ShaderType lseType) {
                 memset(sl_version_str, 0, 64);
                 snprintf((char *)sl_version_str, 64, "%d", SLVersion());
                 
-                int size[] = { 9, strlen(sl_version_str), 1, strlen(buffer) };
+                unsigned int size[] = { 9, strlen(sl_version_str), 1, strlen(buffer) };
                 const char *const sourceWithVersion[] = { "#version ", sl_version_str, "\n", buffer };
                 
                 LOG(LOG_LEVEL_DEBUG, "Prepending GLSL version '%s' to shader source.", sl_version_str);
                 
                 // send the shader source code to the GPU, and compile it
-                glShaderSource(shaderID, 4, (const char**)sourceWithVersion, size);
+                glShaderSource(shaderID, 4, (const char**)sourceWithVersion, (int *)size);
                 glCompileShader(shaderID);
                         
                 if(ValidateShader(NULL, shaderID, lseType)) {

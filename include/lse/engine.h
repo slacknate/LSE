@@ -12,10 +12,9 @@ namespace LSE {
 */
 class Engine : public Thread {
     
-    // event map type and handler declaration
-    DECLARE(Engine)
-    
     private:
+        
+        static const EventTable<Engine> table;
         
         List eventList; // 
         Object *keyFocus, *mouseFocus;
@@ -45,9 +44,12 @@ class Engine : public Thread {
             ID_EVENT
         };
         
-        bool OnEvent(Object *sender, unsigned int type, unsigned int id, void *ptr);
-        bool OnQuit(Object *sender, unsigned int type, unsigned int id, void *ptr);
+        int OnEvent(Object *sender, unsigned int type, unsigned int id, void *ptr);
+        int OnQuit(Object *sender, unsigned int type, unsigned int id, void *ptr);
 };
+
+typedef EventTable<Engine> EngineEventTable;
+typedef EventTableEntry<Engine> EngineTableEntry;
 
 }
 

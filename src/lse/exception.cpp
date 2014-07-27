@@ -1,8 +1,12 @@
+#include <cstring>
 #include "lse/exception.h"
 #include "lse/defs.h"
 using namespace LSE;
 
-void call_safe() {
+/*
+TODO: safe way to catch the standard exceptions and make sure we only deal with LSE::Exception
+*/
+/*void call_safe() {
     
     try {
         
@@ -36,7 +40,7 @@ void call_safe() {
     
         throw Exception(__FILE__, __LINE__, LOGIC_ERR);
     }
-}
+}*/
 
 /*
 Create an exception, with a corresponding error message.
@@ -61,7 +65,7 @@ const char* Exception::what() const throw() {
 /*
 Return the error code.
 */
-const int Exception::code() const throw() {
+int Exception::code() const throw() {
     
     return errCode;
 }

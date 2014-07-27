@@ -4,22 +4,19 @@ using namespace LSE;
 /*
 Thread event table.
 */
-EVTMAP(Thread) ThreadMap[] = {
+const ThreadEventTable Thread::table = ThreadEventTable({
     
-    EVTFUNC(EVENT_QUIT, Thread::ID_QUIT, Thread::OnQuit)
-};
-
-/*
-Event handler implementation.
-*/
-EVTIMP(Thread, ThreadMap)
+    ThreadTableEntry(EVENT_QUIT, Thread::ID_QUIT, &Thread::OnQuit)
+});
 
 /*
 Initialize our thread to a non-running state.
 */
 Thread::Thread() {
     
-    execute = false;
+    this->execute = false;
+    
+    this->register_table(&Thread::table);
 }
 
 /*
@@ -83,7 +80,7 @@ void* Thread::Execute() {
 Give the user the ability to terminate
 a detached thread.
 */
-bool Thread::OnQuit(Object *, unsigned int, unsigned int, void *) {
+int Thread::OnQuit(Object *, unsigned int, unsigned int, void *) {
     
     execute = false;
     return true;

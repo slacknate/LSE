@@ -2,12 +2,11 @@
 #include "lse/defs.h"
 using namespace LSE;
 
-EVTMAP(TestCam) CamMap[] = {
+const CamEventTable TestCam::table = CamEventTable({
     
-    EVTFUNC(EVENT_KEYBOARD, TestCam::ID_KEY, TestCam::OnKey)
-};
+    CamTableEntry(EVENT_KEYBOARD, TestCam::ID_KEY, &TestCam::OnKey)
+});
 
-EVTIMP(TestCam, CamMap);
 
 /*
 
@@ -15,13 +14,15 @@ EVTIMP(TestCam, CamMap);
 TestCam::TestCam(GLWindow *w) : Object() {
     
     window = w;
+    
+    this->register_table(&TestCam::table);
 }
 
 /*
 
 */
-bool TestCam::OnKey(Object *, unsigned int, unsigned int, void *) {
+int TestCam::OnKey(Object *, unsigned int, unsigned int, void *) {
             
     printf("Key!\n");
-    return true;
+    return 1;
 }

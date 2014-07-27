@@ -306,7 +306,8 @@ LRESULT CALLBACK IOHandler::WindowHandler(HWND hwnd, unsigned int message, WPARA
     switch(message) {
         
         case WM_CLOSE:
-        case WM_DESTROY:
+        case WM_DESTROY: {
+            
             LOG(LOG_LEVEL_DEBUG, "Window close message received. Sending quit event to engine.");
             
             // close our window
@@ -316,8 +317,9 @@ LRESULT CALLBACK IOHandler::WindowHandler(HWND hwnd, unsigned int message, WPARA
             QuitEvent *quit_event = new QuitEvent();
             IOHandler_Base::HandleEvent(NULL, EVENT_QUIT, Engine::ID_QUIT, quit_event);
             break;
+        }    
+        case WM_INPUT: {
             
-        case WM_INPUT:
             HRAWINPUT r_input = (HRAWINPUT)lParam;
             
             unsigned int num_bytes;
@@ -408,23 +410,27 @@ LRESULT CALLBACK IOHandler::WindowHandler(HWND hwnd, unsigned int message, WPARA
             }
             
             break;
-            
-        case WM_SIZING: // window being resized
+        }  
+        case WM_SIZING: { // window being resized
+        
             RECT *new_size = (RECT *)lParam;
             unsigned int new_width = new_size->right - new_size->left;
             unsigned int new_height = new_size->bottom - new_size->top;
             result = true; // according to the MSDN docs this message type should return TRUE
             break;
+        }
+        case WM_MOVING: {
             
-        case WM_MOVING:
             RECT *new_pos = (RECT *)lParam;
             unsigned int new_x_pos = new_pos->left;
             unsigned int new_y_pos = new_pos->top;
             result = true; // according to the MSDN docs this message type should return TRUE
             break;
-        
-        default:
+        }
+        default: {
+            
             result = DefWindowProc(hwnd, message, wParam, lParam);
+        }
     }
     
     return result;

@@ -9,9 +9,9 @@ namespace LSE {
 // test lse_globject class
 class TestPrism : public GLRectPrism {
     
-    DECLARE(TestPrism)
-    
     private:
+        
+        static const EventTable<TestPrism> table;
         
         GLWindow *window; // system provided opengl context
     
@@ -25,9 +25,12 @@ class TestPrism : public GLRectPrism {
             ID_KEY
         };
         
-        bool OnMouseMotion(Object *sender, unsigned int type, unsigned int id, void *ptr);
-        bool OnKey(Object *o, unsigned int type, unsigned int id, void *ptr);
+        int OnMouseMotion(Object *sender, unsigned int type, unsigned int id, void *ptr);
+        int OnKey(Object *o, unsigned int type, unsigned int id, void *ptr);
 };
+
+typedef EventTable<TestPrism> PrismEventTable;
+typedef EventTableEntry<TestPrism> PrismTableEntry;
 
 }
 

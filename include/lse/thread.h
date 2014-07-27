@@ -13,8 +13,10 @@ background but still respond to events.
 */
 class Thread : public Object {
     
-    DECLARE(Thread)
-       
+    private:
+        
+        static const EventTable<Thread> table;
+    
     protected:
         
         pthread_t thread; // event loop thread ID
@@ -37,8 +39,11 @@ class Thread : public Object {
             ID_QUIT = 1
         };
         
-        bool OnQuit(Object *sender, unsigned int type, unsigned int id, void *ptr);
+        int OnQuit(Object *sender, unsigned int type, unsigned int id, void *ptr);
 };
+
+typedef EventTable<Thread> ThreadEventTable;
+typedef EventTableEntry<Thread> ThreadTableEntry;
 
 }
 

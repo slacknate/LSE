@@ -6,6 +6,15 @@ Defining WINVER and _WIN32_WINNT as 0x501
 tells the compiler that we assume we are
 at least Windows XP.
 */
+
+#ifdef WINVER
+#undef WINVER
+#endif
+
+#ifdef _WIN32_WINNT
+#undef _WIN32_WINNT
+#endif
+
 #define WINVER          0x0501
 #define _WIN32_WINNT    0x0501
 

@@ -140,7 +140,7 @@ const char* StatusID(int code) {
 /*
 Get the OpenGL version as an integer.
 */
-const int GLVersion() {
+int GLVersion() {
     
     static int gl_version = 0;
     
@@ -154,13 +154,13 @@ const int GLVersion() {
         gl_version = (100 * gl_major + 10 * gl_minor); 
     }
     
-    return (const int)gl_version;
+    return gl_version;
 }
 
 /*
 Get the GLSL version as an integer.
 */
-const int SLVersion() {
+int SLVersion() {
     
     static int sl_version = 0;
     
@@ -175,43 +175,43 @@ const int SLVersion() {
             sl_version = gl_version - 170;   
     }
     
-    return (const int)sl_version;
+    return sl_version;
 }
 
 /*
 Fetch max number of vertex attributes.
 */
-const int MaxGLVertAttrib() {
+int MaxGLVertAttrib() {
     
     int gl_max_vert_attr;
     glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &gl_max_vert_attr);
-    return (const int)gl_max_vert_attr;
+    return gl_max_vert_attr;
 }
 
 /*
 Fetch max number of frame buffer object color attachments.
 */
-const int MaxFBOColorAttachments() {
+int MaxFBOColorAttachments() {
     
     int gl_max_color_attach;
     glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &gl_max_color_attach);
-    return (const int)gl_max_color_attach;
+    return gl_max_color_attach;
 }
 
 /*
 
 */
-const char *const GLVendorVersion() {
+const char* GLVendorVersion() {
     
-    return (const char* const)glGetString(GL_VERSION);
+    return (const char *)glGetString(GL_VERSION);
 }
 
 /*
 
 */
-const char *const SLVendorVersion() {
+const char* SLVendorVersion() {
     
-    return (const char* const)glGetString(GL_SHADING_LANGUAGE_VERSION);
+    return (const char *)glGetString(GL_SHADING_LANGUAGE_VERSION);
 }
 
 // fix me -> fetch max number of uniforms

@@ -144,12 +144,12 @@ typedef enum {
 /*
 OpenGL Version and Attribute fetching functions.
 */
-const int GLVersion();
-const char *const GLVendorVersion();
-const int SLVersion();
-const char *const SLVendorVersion();
-const int MaxGLVertAttrib();
-const int MaxFBOColorAttachments();
+int GLVersion();
+const char* GLVendorVersion();
+int SLVersion();
+const char* SLVendorVersion();
+int MaxGLVertAttrib();
+int MaxFBOColorAttachments();
 
 /*
 Utility functions.

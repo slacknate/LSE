@@ -1,13 +1,11 @@
 #include "prism.h"
 using namespace LSE;
 
-EVTMAP(TestPrism) PrismMap[] = {
+const PrismEventTable TestPrism::table = PrismEventTable({
     
-    EVTFUNC(EVENT_MOUSE,      TestPrism::ID_MOUSE,    TestPrism::OnMouseMotion),
-    EVTFUNC(EVENT_KEYBOARD,   TestPrism::ID_KEY,      TestPrism::OnKey)
-};
-
-EVTIMP(TestPrism, PrismMap);
+    PrismTableEntry(EVENT_MOUSE,      TestPrism::ID_MOUSE,    &TestPrism::OnMouseMotion),
+    PrismTableEntry(EVENT_KEYBOARD,   TestPrism::ID_KEY,      &TestPrism::OnKey)
+});
 
 /*
 
@@ -15,12 +13,14 @@ EVTIMP(TestPrism, PrismMap);
 TestPrism::TestPrism(GLWindow *win, double x, double y, double z, double w, double h, double d) : GLRectPrism(x, y, z, w, h, d) {
     
     window = win;
+    
+    this->register_table(&TestPrism::table);
 }
 
 /*
 
 */
-bool TestPrism::OnMouseMotion(Object *, unsigned int, unsigned int, void *) {
+int TestPrism::OnMouseMotion(Object *, unsigned int, unsigned int, void *) {
     
     /*SDL_MouseMotionEvent *event = (SDL_MouseMotionEvent *)ptr;
     if(event != NULL) {
@@ -37,13 +37,13 @@ bool TestPrism::OnMouseMotion(Object *, unsigned int, unsigned int, void *) {
         }
     }*/
     
-    return true;
+    return 1;
 }
 
 /*
 
 */
-bool TestPrism::OnKey(Object *, unsigned int, unsigned int, void *ptr) {
+int TestPrism::OnKey(Object *, unsigned int, unsigned int, void *ptr) {
     
     printf("Key!\n");
     KeyEvent *event = (KeyEvent *)ptr;
@@ -85,5 +85,5 @@ bool TestPrism::OnKey(Object *, unsigned int, unsigned int, void *ptr) {
         foc.x += 0.1;
     }
     
-    return true;
+    return 1;
 }
