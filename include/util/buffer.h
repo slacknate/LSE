@@ -18,7 +18,7 @@ template <class T> class Buffer {
         
         Mutex read_pos_lock; // lock for buffer read position
         Mutex write_pos_lock; // lock for buffer write position
-        Semaphore read_write_sync; // semaphore to ensure buffer read/write chronology
+        Semaphore read_write_sync; // semaphore to ensure the buffer cannot overrite itself
         
         const unsigned int size; // size of the buffer
         
