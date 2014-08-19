@@ -35,7 +35,7 @@ ListNode::ListNode(void *d) {
 */
 ListNode::~ListNode() {
     
-    LOG(LOG_LEVEL_ERROR, "ListNode::~ListNode(): MEMORY LEAK!");
+    //logger.error("ListNode::~ListNode(): MEMORY LEAK!");
     //delete data;
 }
 

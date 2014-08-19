@@ -1,5 +1,6 @@
 #include <new>
 #include <cstdio>
+#include "lse/globals.h"
 #include "gl/primitive.h"
 using namespace LSE;
 
@@ -42,7 +43,7 @@ void GLPrimitive::MemAllocate(int nv, int ne) {
     }
     else {
         
-        LOG(LOG_LEVEL_ERROR, "Failed to allocate memory for vertex, normal, color, texture, or index arrays.");
+        logger.error("Failed to allocate memory for vertex, normal, color, texture, or index arrays.");
         initialized = false;
     }
 }

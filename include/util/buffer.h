@@ -68,7 +68,7 @@ template <class T> class Buffer {
         /*
         Initialze the buffer size, buffer memory, and semaphore initial value.
         */
-        Buffer(unsigned int _size) : size(_size), buffer(new T *[_size]), read_write_sync(_size) {
+        Buffer(unsigned int _size) : read_write_sync(_size), size(_size), buffer(new T *[_size]) {
             
             this->_read_pos = 0;
             this->_write_pos = 0;

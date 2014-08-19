@@ -1,3 +1,4 @@
+#include <cstdio>
 #include "gl/model.h"
 using namespace LSE;
 

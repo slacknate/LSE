@@ -1,5 +1,6 @@
 #include "io/win.h"
 #include "gui/window/win.h"
+#include "lse/exception.h"
 using namespace LSE;
 
 GLWindow::GLWindow(const char *const windowTitle, unsigned int mask,

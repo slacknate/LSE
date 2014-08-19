@@ -1,5 +1,7 @@
 #include "io/win.h"
 #include "lse/engine.h"
+#include "lse/globals.h"
+#include "lse/exception.h"
 using namespace LSE;
 
 /*
@@ -36,7 +38,7 @@ const unsigned short KEYPAD_PAGE   = 0x01;
 */
 unsigned int vkey_to_lkey(unsigned int vkey, unsigned int make_code, unsigned int left_right) {
     
-    LOG(LOG_LEVEL_RAW, "Got vkey code: 0x%.2X, make code: 0x%.2X, left/right flag: 0x%.2X", vkey, make_code, left_right);
+    logger.raw("Got vkey code: 0x%.2X, make code: 0x%.2X, left/right flag: 0x%.2X", vkey, make_code, left_right);
     
     unsigned int lkey = KEY_INVALID;
     
@@ -228,10 +230,10 @@ unsigned int vkey_to_lkey(unsigned int vkey, unsigned int make_code, unsigned in
         case 'Z':
             lkey = vkey; break;
         default:
-            LOG(LOG_LEVEL_ERROR, "Unhandled vkey code: 0x%.2X", vkey);
+            logger.error("Unhandled vkey code: 0x%.2X", vkey);
     }
     
-    LOG(LOG_LEVEL_RAW, "Returning lkey code: 0x%.2X", lkey);
+    logger.raw("Returning lkey code: 0x%.2X", lkey);
     
     return lkey;
 }
@@ -260,7 +262,7 @@ int* vbutton_to_lbutton(unsigned int vbutton) {
         case RI_MOUSE_WHEEL:
             lbutton[0] = MOUSE_WHEEL; lbutton[1] = 0; break; // Why is lbutton[1] = 0?
         default:
-            LOG(LOG_LEVEL_ERROR, "Unhandled vbutton code: 0x%.4X", vbutton);
+            logger.error("Unhandled vbutton code: 0x%.4X", vbutton);
     }
     
     return lbutton;
@@ -308,7 +310,7 @@ LRESULT CALLBACK IOHandler::WindowHandler(HWND hwnd, unsigned int message, WPARA
         case WM_CLOSE:
         case WM_DESTROY: {
             
-            LOG(LOG_LEVEL_DEBUG, "Window close message received. Sending quit event to engine.");
+            logger.debug("Window close message received. Sending quit event to engine.");
             
             // close our window
             PostQuitMessage(0);
@@ -328,13 +330,13 @@ LRESULT CALLBACK IOHandler::WindowHandler(HWND hwnd, unsigned int message, WPARA
             BYTE *raw_memory = new (std::nothrow) BYTE[num_bytes];
             if(raw_memory == NULL) {
                 
-                LOG(LOG_LEVEL_ERROR, "raw_memory is NULL!"); // TODO: proper error handling/logging
+                logger.error("raw_memory is NULL!"); // TODO: proper error handling/logging
                 return 0;
             }
             
             if(GetRawInputData(r_input, RID_INPUT, raw_memory, &num_bytes, sizeof(RAWINPUTHEADER)) != num_bytes) {
                 
-                LOG(LOG_LEVEL_ERROR, "GetRawInputData did not return correct size!"); // TODO: proper error handling/logging
+                logger.error("GetRawInputData did not return correct size!"); // TODO: proper error handling/logging
                 return 0;
             }
 
@@ -357,7 +359,7 @@ LRESULT CALLBACK IOHandler::WindowHandler(HWND hwnd, unsigned int message, WPARA
                     key_state = STATE_DOWN;
                     
                 else
-                    LOG(LOG_LEVEL_ERROR, "Invalid make/break state: %d", make_break); // TODO: real error handling
+                    logger.error("Invalid make/break state: %d", make_break); // TODO: real error handling
                 
                 KeyEvent *key_event = new KeyEvent;
                 key_event->key = vkey_to_lkey(r_keyboard->VKey, r_keyboard->MakeCode, left_right);
@@ -395,18 +397,18 @@ LRESULT CALLBACK IOHandler::WindowHandler(HWND hwnd, unsigned int message, WPARA
                 }
                 else {
                     
-                    LOG(LOG_LEVEL_ERROR, "Invalid mouse state"); // TODO: real error handling
+                    logger.error("Invalid mouse state"); // TODO: real error handling
                 }
                 
                 IOHandler_Base::HandleEvent(NULL, EVENT_MOUSE, ID_ANY, mouse_event);
             }
             else if(raw_input->header.dwType == RIM_TYPEHID) {
                 
-                LOG(LOG_LEVEL_DEBUG, "HID device support not implemented");
+                logger.debug("HID device support not implemented");
             }
             else {
                 
-                LOG(LOG_LEVEL_ERROR, "Invalid raw input type %d", raw_input->header.dwType); // TODO: real error handling
+                logger.error("Invalid raw input type %d", raw_input->header.dwType); // TODO: real error handling
             }
             
             break;

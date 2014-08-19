@@ -1,5 +1,5 @@
 #include "lse/semaphore.h"
-#include "lse/defs.h"
+#include "lse/globals.h"
 using namespace LSE;
 
 /*
@@ -12,7 +12,7 @@ Semaphore::Semaphore(int initial, int shared) {
     
     initialized = !sem_init(&semaphore, shared, initial);
     if(!initialized)
-        ERRNO("Failed to initialize semaphore");
+        logger.errn("Failed to initialize semaphore");
 }
 
 /*
@@ -23,7 +23,7 @@ Semaphore::~Semaphore() {
     if(initialized) {
         
         if(sem_destroy(&semaphore))
-            ERRNO("Failed to destroy semaphore");
+            logger.errn("Failed to destroy semaphore");
     }
 }
 
@@ -35,7 +35,7 @@ void Semaphore::Wait() {
     if(initialized) {
         
         if(sem_wait(&semaphore))
-            ERRNO("Failed to wait on semaphore");
+            logger.errn("Failed to wait on semaphore");
     }
 }
 
@@ -47,7 +47,7 @@ void Semaphore::TryWait() {
     if(initialized) {
         
         if(sem_trywait(&semaphore))
-            ERRNO("Failed to try to wait on semaphore");
+            logger.errn("Failed to try to wait on semaphore");
     }
 }
 
@@ -59,7 +59,7 @@ void Semaphore::Post() {
     if(initialized) {
         
         if(sem_post(&semaphore))
-            ERRNO("Failed to post to semaphore");
+            logger.errn("Failed to post to semaphore");
     }
 }
 
@@ -73,7 +73,7 @@ int Semaphore::Value() {
     if(initialized) {
         
         if(sem_getvalue(&semaphore, &currValue))
-            ERRNO("Failed to get current semaphore value");
+            logger.errn("Failed to get current semaphore value");
     }    
     
     return currValue;

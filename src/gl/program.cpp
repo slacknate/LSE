@@ -1,6 +1,9 @@
+#include <new>
+#include <cstdio>
 #include <cstdarg>
 #include <cstring>
 #include "gl/program.h"
+#include "lse/globals.h"
 using namespace LSE;
 
 /*
@@ -89,17 +92,17 @@ char* GLProgram::ReadShader(const char *fileName) {
                 delete[] shaderSource;
                 shaderSource = NULL;
                 
-                LOG(LOG_LEVEL_ERROR, "An error occurred while reading the shader source.");
+                logger.error("An error occurred while reading the shader source.");
             }
         }
         else {
             
-            LOG(LOG_LEVEL_ERROR, "Failed to allocate memory for shader source.");
+            logger.error("Failed to allocate memory for shader source.");
         }
     }
     else {
             
-        LOG(LOG_LEVEL_ERROR, "Shader source file unable to be read.");
+        logger.error("Shader source file unable to be read.");
     }
     
     return shaderSource;
@@ -147,13 +150,13 @@ GLenum GLProgram::GetShaderType(const char *fileName) {
         else if(!strcmp(extension, "frag"))
             type = GL_FRAGMENT_SHADER;
         else
-            LOG(LOG_LEVEL_ERROR, "Unknown file extension. Unable to determine OpenGL shader type.");
+            logger.error("Unknown file extension. Unable to determine OpenGL shader type.");
             
         delete[] extension;   
     }
     else {
             
-        LOG(LOG_LEVEL_ERROR, "No shader file extension found. Unable to determine OpenGL shader type.");
+        logger.error("No shader file extension found. Unable to determine OpenGL shader type.");
     }
         
     return type;
@@ -177,7 +180,7 @@ GLenum GLProgram::GetShaderType(ShaderType lseType) {
     else if(lseType == SHADER_FRAG)
         glType = GL_FRAGMENT_SHADER;
     else
-        LOG(LOG_LEVEL_ERROR, "Invalid Shader type. Unable to determine OpenGL shader type.");
+        logger.error("Invalid Shader type. Unable to determine OpenGL shader type.");
     
     return glType;
 }
@@ -201,14 +204,14 @@ bool GLProgram::ValidateShader(const char *fileName, unsigned int shaderID, Shad
         else {
             
             if(lseType == SHADER_INVALID)
-                LOG(LOG_LEVEL_ERROR, "Shader read from \"%s\" failed validation:\n%s", fileName, buffer);
+                logger.error("Shader read from \"%s\" failed validation:\n%s", fileName, buffer);
             else
-                LOG(LOG_LEVEL_ERROR, "%s shader read from stream failed validation:\n%s", ShaderString(lseType), buffer);
+                logger.error("%s shader read from stream failed validation:\n%s", ShaderString(lseType), buffer);
         }
     }
     else {
                     
-        LOG(LOG_LEVEL_ERROR, "An error occurred while obtaining the shader log.");
+        logger.error("An error occurred while obtaining the shader logger.");
     }
     
     return false;
@@ -257,7 +260,7 @@ int GLProgram::AddShader(const char *buffer, ShaderType lseType) {
                     unsigned int size[] = { 9, strlen(sl_version_str), 1, strlen(shaderSource) };
                     const char *const sourceWithVersion[] = { "#version ", sl_version_str, "\n", shaderSource };
                     
-                    LOG(LOG_LEVEL_DEBUG, "Prepending GLSL version '%s' to shader source.", sl_version_str);
+                    logger.debug("Prepending GLSL version '%s' to shader source.", sl_version_str);
                     
                     // send the shader source code to the GPU, and compile it
                     glShaderSource(shaderID, 4, (const char**)sourceWithVersion, (int *)size);
@@ -274,11 +277,11 @@ int GLProgram::AddShader(const char *buffer, ShaderType lseType) {
                             *newID = shaderID;
                             shaderIDs.PushBack(newID);
                             
-                            LOG(LOG_LEVEL_DEBUG, "Shader file \"%s\" bound to ID %u and attached to program %u.", buffer, shaderID, progID);
+                            logger.debug("Shader file \"%s\" bound to ID %u and attached to program %u.", buffer, shaderID, progID);
                         }
                         else {
                             
-                            LOG(LOG_LEVEL_ERROR, "Failed to allocate memory for element in shader ID list.");
+                            logger.error("Failed to allocate memory for element in shader ID list.");
                             glDeleteShader(shaderID);
                         }
                     }
@@ -291,9 +294,9 @@ int GLProgram::AddShader(const char *buffer, ShaderType lseType) {
                         
                     int error = glGetError();
                     if(error)
-                        LOG(LOG_LEVEL_ERROR, "An error occurred while creating shader from \"%s\": %s.", buffer, GLErrorString(error));
+                        logger.error("An error occurred while creating shader from \"%s\": %s.", buffer, GLErrorString(error));
                     else
-                        LOG(LOG_LEVEL_ERROR, "An unknown error occurred while creating shader from \"%s.\"", buffer);
+                        logger.error("An unknown error occurred while creating shader from \"%s.\"", buffer);
                 }
             
                 delete[] shaderSource;
@@ -312,7 +315,7 @@ int GLProgram::AddShader(const char *buffer, ShaderType lseType) {
                 unsigned int size[] = { 9, strlen(sl_version_str), 1, strlen(buffer) };
                 const char *const sourceWithVersion[] = { "#version ", sl_version_str, "\n", buffer };
                 
-                LOG(LOG_LEVEL_DEBUG, "Prepending GLSL version '%s' to shader source.", sl_version_str);
+                logger.debug("Prepending GLSL version '%s' to shader source.", sl_version_str);
                 
                 // send the shader source code to the GPU, and compile it
                 glShaderSource(shaderID, 4, (const char**)sourceWithVersion, (int *)size);
@@ -329,11 +332,11 @@ int GLProgram::AddShader(const char *buffer, ShaderType lseType) {
                         *newID = shaderID;
                         shaderIDs.PushBack(newID);
                             
-                        LOG(LOG_LEVEL_DEBUG, "%s shader loaded from stream bound to ID %u and attached to program %u.", ShaderString(lseType), shaderID, progID);
+                        logger.debug("%s shader loaded from stream bound to ID %u and attached to program %u.", ShaderString(lseType), shaderID, progID);
                     }
                     else {
                             
-                        LOG(LOG_LEVEL_ERROR, "Failed to allocate memory for element in shader ID list.");
+                        logger.error("Failed to allocate memory for element in shader ID list.");
                         glDeleteShader(shaderID);
                     }
                 }
@@ -346,15 +349,15 @@ int GLProgram::AddShader(const char *buffer, ShaderType lseType) {
                         
                 int error = glGetError();
                 if(error)
-                    LOG(LOG_LEVEL_ERROR, "An error occurred while creating shader from \"%s\": %s.", buffer, GLErrorString(error));
+                    logger.error("An error occurred while creating shader from \"%s\": %s.", buffer, GLErrorString(error));
                 else
-                    LOG(LOG_LEVEL_ERROR, "An unknown error occurred while creating shader from \"%s.\"", buffer);
+                    logger.error("An unknown error occurred while creating shader from \"%s.\"", buffer);
             }
         }
     }
     else {
         
-       LOG(LOG_LEVEL_ERROR, "Shader input may not be NULL."); 
+       logger.error("Shader input may not be NULL."); 
     }
     
     return shaderID;
@@ -379,7 +382,7 @@ bool GLProgram::RemoveShader(unsigned int shaderID) {
         glDetachShader(progID, shaderID);
         glDeleteShader(shaderID);
         
-        LOG(LOG_LEVEL_DEBUG, "Shader %u was removed from program %u.", shaderID, progID);
+        logger.debug("Shader %u was removed from program %u.", shaderID, progID);
     }
     
     return valid;
@@ -584,7 +587,7 @@ void GLProgram::BindUniform(UniformType type, const char *const name, ...) {
     }
     else {
         
-        LOG(LOG_LEVEL_ERROR, "Cannot bind uniform: unknown type.");
+        logger.error("Cannot bind uniform: unknown type.");
     }
     
     va_end(argList);

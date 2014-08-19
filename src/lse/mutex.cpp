@@ -1,5 +1,5 @@
 #include "lse/mutex.h"
-#include "lse/defs.h"
+#include "lse/globals.h"
 using namespace LSE;
 
 /*
@@ -9,7 +9,7 @@ Mutex::Mutex() {
     
     initialized = !pthread_mutex_init(&mutex, NULL);
     if(!initialized)
-        ERRNO("Failed to initialize mutex");
+        logger.errn("Failed to initialize mutex");
 }
 
 /*
@@ -20,7 +20,7 @@ Mutex::~Mutex() {
     if(initialized) {
         
         if(pthread_mutex_destroy(&mutex))
-            ERRNO("Failed to destroy mutex");
+            logger.errn("Failed to destroy mutex");
     }
 }
 
@@ -32,7 +32,7 @@ void Mutex::Lock() {
     if(initialized) {
         
         if(pthread_mutex_lock(&mutex))
-            ERRNO("Failed to lock mutex");
+            logger.errn("Failed to lock mutex");
     }
 }
 
@@ -44,7 +44,7 @@ void Mutex::TryLock() {
     if(initialized) {
         
         if(pthread_mutex_trylock(&mutex))
-            ERRNO("Failed trying mutex lock");
+            logger.errn("Failed trying mutex lock");
     }
 }
 
@@ -56,6 +56,6 @@ void Mutex::Unlock() {
     if(initialized) {
         
         if(pthread_mutex_unlock(&mutex))
-            ERRNO("Failed to unlock mutex");
+            logger.errn("Failed to unlock mutex");
     }
 }

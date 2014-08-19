@@ -5,7 +5,7 @@
 
 namespace LSE {
 
-extern LogLevel LOG_LEVEL;
+extern Logger logger;
 extern float VIEW_MATRIX[16], PROJ_MATRIX[16];
 
 }

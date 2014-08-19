@@ -1,5 +1,7 @@
 #include "gl/object.h"
 #include "gl/shaders.h"
+#include "lse/globals.h"
+#include "lse/exception.h"
 using namespace LSE;
 
 /*

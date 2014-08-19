@@ -1,5 +1,7 @@
 #include "gui/window/window.h"
 #include "lse/engine.h"
+#include "lse/globals.h"
+#include "lse/exception.h"
 using namespace LSE;
 
 /*
@@ -65,7 +67,7 @@ void GLWindow_Base::GLInit() {
     if(glewStatus != GLEW_OK)
         throw Exception(__FILE__, __LINE__, GL_INIT_FAIL/*, (const char *)glewGetErrorString(glewStatus)*/);
     
-    LOG(LOG_LEVEL_INFO, "GL_VERSION: %s\nGL_SHADING_LANGUAGE_VERSION: %s", GLVendorVersion(), SLVendorVersion());
+    logger.info("GL_VERSION: %s\nGL_SHADING_LANGUAGE_VERSION: %s", GLVendorVersion(), SLVendorVersion());
         
     int glStatus = GLVersion() >= MIN_GL_VERSION && MaxGLVertAttrib() >= GL_MIN_VERT_ATTRIB && MaxFBOColorAttachments() >= GL_MIN_COLOR_ATTACH;
     if(!glStatus)

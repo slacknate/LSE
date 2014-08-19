@@ -1,4 +1,5 @@
 #include "lse/object.h"
+#include "lse/globals.h"
 using namespace LSE;
 
 /*
@@ -34,7 +35,7 @@ int Object::Dispatch(Object *sender, unsigned int type, unsigned int id, void *p
         result = this->table_ptr->Dispatch(this, sender, type, id, ptr); 
         
     else
-        LOG(LOG_LEVEL_ERROR, "This object does not have an event table.\nSkipping event dispatch.");
+        logger.error("This object does not have an event table.\nSkipping event dispatch.");
     
     return result;
 }

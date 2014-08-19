@@ -3,9 +3,9 @@
 namespace LSE {
 
 /*
-System log level.
+System logger.
 */
-LogLevel LOG_LEVEL;
+Logger logger = Logger(LOG_LEVEL_VERBOSE);
 
 /*
 Viewing and projection matrices.

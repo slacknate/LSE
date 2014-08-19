@@ -1,6 +1,6 @@
-#include <cstring>
+#include <sstream>
 #include "lse/exception.h"
-#include "lse/defs.h"
+#include "lse/globals.h"
 using namespace LSE;
 
 /*
@@ -58,8 +58,9 @@ Return the error message.
 */
 const char* Exception::what() const throw() {
     
-    snprintf((char *)output, ERROR_BUFFER_SIZE, "An exception was thrown in \"%s\" at line %d, code %s: %s", fileName, lineNumber, StatusID(errCode), StatusString(errCode));
-    return output;
+    std::stringstream ss;
+    ss << "An exception was thrown in \"" << fileName << "\" at line " << lineNumber << ", code " << StatusID(errCode) << ": " << StatusString(errCode);
+    return ss.str().c_str();
 }
 
 /*

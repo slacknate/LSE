@@ -1,5 +1,7 @@
 #include "gui/screen/screen.h"
 #include "gui/screen/shaders.h"
+#include "lse/globals.h"
+#include "lse/exception.h"
 using namespace LSE;
 
 /*
@@ -164,7 +166,7 @@ void GLScreen::Resize(int w, int h) {
     
     fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     if(fboStatus != GL_FRAMEBUFFER_COMPLETE)
-        LOG(LOG_LEVEL_ERROR, "Frame buffer object creation failed.");
+        logger.error("Frame buffer object creation failed.");
     
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);

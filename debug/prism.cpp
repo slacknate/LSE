@@ -1,3 +1,4 @@
+#include <cstdio>
 #include "prism.h"
 using namespace LSE;
 

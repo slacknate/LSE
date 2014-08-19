@@ -1,4 +1,5 @@
 #include "lse/thread.h"
+#include "lse/globals.h"
 using namespace LSE;
 
 /*
@@ -35,7 +36,8 @@ bool Thread::Start() {
     
     int threadError = pthread_create(&thread, NULL, &Thread::ThreadMethod, this);
     if(threadError != 0)
-        ERRNO("Error starting thread");
+        logger.errn("Error starting thread");
+        
     else
         execute = true;
         
@@ -49,7 +51,7 @@ bool Thread::Detach() {
     
     int threadError = pthread_detach(thread);
     if(threadError != 0)
-        ERRNO("Error detaching thread");
+        logger.errn("Error detaching thread");
         
     return !threadError;
 }
@@ -63,7 +65,7 @@ bool Thread::Join() {
     
     int threadError = pthread_join(thread, NULL);
     if(threadError != 0)
-        ERRNO("Error joining thread");
+        logger.errn("Error joining thread");
         
     return !threadError;
 }

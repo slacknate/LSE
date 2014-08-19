@@ -3,18 +3,12 @@
 
 /*
 OpenGL and Extension Wrangler includes.
+TODO: determine if these includes can be moved into more specialized headers
 */
 #include <gl/glew.h>
 #include <gl/gl.h>
 
-/*
-LSE includes.
-*/
-#include "lse/logger.h"
-#include "lse/globals.h"
-#include "lse/exception.h"
-
-// TODO: convert all defines to enums that are possible; determine what to do with the rest of the defines
+// TODO: move functions into the util src/include directories in well named files
 namespace LSE {
     
 /*
@@ -122,7 +116,7 @@ enum {
 /*
 LSE engine return types.
 */
-typedef enum {
+enum EngineStatus {
     
     OK = 0,
     GL_INIT_FAIL,
@@ -139,7 +133,7 @@ typedef enum {
     GL_CON_FAIL,
     IO_SETUP_FAIL,
     STAT_LAST
-} EngineStatus;
+};
 
 /*
 OpenGL Version and Attribute fetching functions.

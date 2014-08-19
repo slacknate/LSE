@@ -1,10 +1,14 @@
-#include <new>
-#include <ctime>
-#include <cstdarg>
+#include <cerrno>
 #include <cstring>
+#include <iostream>
 #include "lse/logger.h"
 #include "lse/engine.h"
+#include "util/time.h"
+#include "util/memory.h"
 using namespace LSE;
+
+const unsigned int LOG_BUFFER_SIZE = 32;
+const unsigned int LOG_PREFIX_LENGTH = 14;
 
 const char *const LOG_LEVEL_PREFIXS[] = {
     
@@ -15,10 +19,180 @@ const char *const LOG_LEVEL_PREFIXS[] = {
     "R",
 };
 
-char* indent_newlines(unsigned int prefix_len, const char *format) {
+
+/*
+Initialize our log buffers memory.
+*/
+Logger::Logger(LogLevel _level) : level(_level), buffer(LOG_BUFFER_SIZE) {}
+
+
+/*
+Stop the logger write-to-disk thread.
+*/
+bool Logger::Join() {
     
-    char prefix_buffer[prefix_len];
-    memset(prefix_buffer, ' ', prefix_len);
+    execute = false;
+    this->log_sem.Post();
+    return Thread::Join();
+}
+
+
+/*
+Thread to write log events to their respective log files.
+*/
+void* Logger::Execute() {
+    
+    while(this->execute) {
+        
+        this->log_sem.Wait();
+        
+        /*
+        When we stop the logger, the post to the semaphore, but the buffer is
+        empty. Thusly we need to make sure to skip writing a log event if
+        we are terminating the logger.
+        */
+        if(this->execute) {
+            
+            LogEvent *log_event = this->buffer.pop();
+            
+            /*
+            Explode the log event tuple, pass the elements to write_log.
+            */
+            this->write_log(std::get<0>(*log_event), std::get<1>(*log_event), std::get<2>(*log_event), std::get<3>(*log_event));
+            
+            delete log_event;
+        }
+    }
+    
+    return nullptr;
+}
+
+
+/*
+Write a log entry to disk. We only record entries which are
+greater or equal log level to the log level of the logger.
+
+TODO: format properly, auto newline around 80 characters
+*/
+void Logger::write_log(LogLevel log_level, std::ostream &stream, const char *format, va_list *arg_list) {
+    
+    if(log_level <= this->level) {
+        
+        char *time_str = LSE::calloc<char>(TIME_STR_LENGTH);            
+        LSE::get_local_time(time_str);
+            
+        stream << "[" << time_str << "] " << LOG_LEVEL_PREFIXS[log_level] << ": ";
+        stream << format << std::endl;
+            
+        delete[] time_str;
+        delete arg_list;
+    }
+}
+
+
+/*
+
+*/
+void Logger::log_event(LogLevel log_level, std::ostream &stream, const char *format, va_list *args) {
+    
+    va_list *args_copy = LSE::calloc<va_list>();
+        
+    va_copy(*args_copy, *args);
+    va_end(*args_copy);
+    
+    LogEvent log_event = LogEvent(log_level, stream, format, args_copy);
+    this->buffer.push(log_event);
+        
+    this->log_sem.Post();
+}
+
+
+/*
+Log a simple informative log message at LOG_LEVEL_INFO.
+*/
+void Logger::info(const char *format, ...) {
+    
+    va_list args;
+    va_start(args, format);
+    
+    this->log_event(LOG_LEVEL_INFO, std::cout, format, &args);
+    
+    va_end(args);
+}
+
+
+/*
+Log engine debugging information at LOG_LEVEL_DEBUG.
+*/
+void Logger::debug(const char *format, ...) {
+    
+    va_list args;
+    va_start(args, format);
+    
+    this->log_event(LOG_LEVEL_DEBUG, std::cout, format, &args);
+    
+    va_end(args);
+}
+
+
+/*
+Log an engine error at LOG_LEVEL_ERROR.
+*/
+void Logger::error(const char *format, ...) {
+    
+    va_list args;
+    va_start(args, format);
+    
+    this->log_event(LOG_LEVEL_ERROR, std::cerr, format, &args);
+    
+    va_end(args);
+}
+
+
+/*
+Log an errno message at LOG_LEVEL_ERROR.
+*/
+void Logger::errn(const char *error_msg) {
+    
+    this->error("%s: %s", error_msg, strerror(errno));
+}
+
+
+/*
+Log a message at LOG_LEVEL_VERBOSE.
+This is used for log messages we
+typically do not need to see.
+*/
+void Logger::verbose(const char *format, ...) {
+    
+    va_list args;
+    va_start(args, format);
+    
+    this->log_event(LOG_LEVEL_VERBOSE, std::cout, format, &args);
+    
+    va_end(args);
+}
+
+
+/*
+Log a message at LOG_LEVEL_RAW.
+This is mostly used for data dumps.
+*/
+void Logger::raw(const char *format, ...) {
+    
+    va_list args;
+    va_start(args, format);
+    
+    this->log_event(LOG_LEVEL_RAW, std::cout, format, &args);
+    
+    va_end(args);
+}
+
+
+/*char* indent_newlines(const char *format) {
+    
+    char prefix_buffer[LOG_PREFIX_LENGTH];
+    memset(prefix_buffer, ' ', LOG_PREFIX_LENGTH);
     
     unsigned int format_len = strlen(format);
     unsigned int num_newlines = 0;
@@ -28,7 +202,7 @@ char* indent_newlines(unsigned int prefix_len, const char *format) {
             ++num_newlines;
     }
     
-    unsigned int new_format_len = (num_newlines * prefix_len) + format_len + 1;
+    unsigned int new_format_len = (num_newlines * LOG_PREFIX_LENGTH) + format_len + 1;
     char *new_format = new (std::nothrow) char[new_format_len];
     if(new_format == NULL) {
         
@@ -43,85 +217,10 @@ char* indent_newlines(unsigned int prefix_len, const char *format) {
         new_format[k] = format[i];
         if(format[i] == '\n') {
             
-            strncat(new_format, prefix_buffer, prefix_len);
-            k += prefix_len;
+            strncat(new_format, prefix_buffer, LOG_PREFIX_LENGTH);
+            k += LOG_PREFIX_LENGTH;
         }
     }
 
     return new_format;
-}
-
-/*
-TODO: use strftime, auto newline around 80 characters
-*/
-void write_log(LogLevel log_level, FILE *stream, va_list &arg_list) {
-    
-    if(log_level <= LOG_LEVEL) {
-        
-        char *time_str = new (std::nothrow) char [9];
-        if(stream != NULL && time_str != NULL) {
-        
-            memset(time_str, 0, 9);
-        
-            time_t t;
-            time(&t);
-            char *static_time = ctime(&t);
-    
-            strncpy(time_str, &static_time[11], 8);
-        
-            int prefix_len = fprintf(stream, "[%s] %s: ", time_str, LOG_LEVEL_PREFIXS[log_level]);
-            if(prefix_len < 0) {
-                
-                // FIXME: what should we do here? this is an error case...
-            }
-            
-            const char *format = va_arg(arg_list, const char *);
-            char *indented_format = indent_newlines(prefix_len, format);
-            
-            vfprintf(stream, indented_format, arg_list);
-            fprintf(stream, "\n");
-            
-            fflush(stream);
-            
-            delete[] time_str;
-            delete[] indented_format;
-        }
-        else {
-        
-            LOG(LOG_LEVEL_ERROR, "Could not create time string or NULL log stream supplied.");
-        }
-    }
-}
-
-void errno_helper(LogLevel log_level, FILE *stream, ...) {
-    
-    va_list arg_list;
-    va_start(arg_list, stream);
-    
-    write_log(log_level, stream, arg_list);
-    
-    va_end(arg_list);
-}
-
-namespace LSE {
-
-void LOG(LogLevel log_level, ...) {
-    
-    va_list arg_list;
-    va_start(arg_list, log_level);
-    
-    if(log_level == LOG_LEVEL_ERROR)
-        ::write_log(log_level, stderr, arg_list);
-        
-    else
-        ::write_log(log_level, stdout, arg_list);
-    
-    va_end(arg_list);
-}
-
-void ERRNO(const char *const errno_msg) {
-    
-    ::errno_helper(LOG_LEVEL_ERROR, stderr, "%s: %s", errno_msg, strerror(errno));
-}
-
-}
+}*/

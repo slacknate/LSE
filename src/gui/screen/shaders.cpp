@@ -1,4 +1,5 @@
 #include "gui/screen/shaders.h"
+#include "lse/globals.h"
 using namespace LSE;
 
 /*
@@ -147,7 +148,7 @@ const char* GetScreenShaders(ShaderType type) {
     if(valid_shader_type(type))
         return SHADERS[type];
     
-    LOG(LOG_LEVEL_ERROR, "Invalid Shader type.");
+    logger.error("Invalid Shader type.");
     return NULL;
 }
 

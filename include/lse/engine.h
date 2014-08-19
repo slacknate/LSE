@@ -1,6 +1,7 @@
 #ifndef LSE_ENGINE_H
 #define LSE_ENGINE_H
 
+#include <fstream>
 #include "io/handler.h"
 #include "lse/semaphore.h"
 #include "gui/window/window.h"
@@ -21,12 +22,14 @@ class Engine : public Thread {
         Semaphore event_sem;
         IOHandler handler;
         GLWindow *window; // OpenGL window
-        FILE *messgLog, *errorLog; // logging file handles
+        std::streambuf *cout_buff, *cerr_buff;
+        std::filebuf message_log, error_log; // logging file handles
         bool run; // keep the engine running
         int status; // exit status
         
-        void CreateLogs();
-        void CloseLogs();
+        void log_banner(const char *const title);
+        void create_logs();
+        void close_logs();
         
     public:
         

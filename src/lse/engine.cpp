@@ -1,6 +1,12 @@
+#include <iostream>
 #include "lse/engine.h"
+#include "lse/globals.h"
 #include "lse/signals.h"
+#include "lse/exception.h"
+#include "util/time.h"
+#include "util/memory.h"
 using namespace LSE;
+
 
 /*
 Engine event table.
@@ -11,24 +17,24 @@ const EngineEventTable Engine::table = EngineEventTable({
     EngineTableEntry(EVENT_ANY,  ID_ANY,          &Engine::OnEvent)
 });
 
+
 /*
 
 */
 Engine::Engine(int argc, char *argv[]) : handler(this) {
     
     window = NULL;
-    messgLog = errorLog = NULL;
     run = false;
     status = OK;
     keyFocus = mouseFocus = NULL;
     
-    //this->CreateLogs();
+    this->create_logs();
     
-    ::LOG_LEVEL = LOG_LEVEL_DEBUG;
-    ::InitSignals(this);
+    LSE::InitSignals(this);
     
     this->register_table(&Engine::table);
 }
+
 
 /*
 
@@ -36,8 +42,9 @@ Engine::Engine(int argc, char *argv[]) : handler(this) {
 Engine::~Engine() {
     
     this->eventList.Clear();
-    this->CloseLogs();
+    this->close_logs();
 }
+
 
 /*
 
@@ -48,116 +55,97 @@ void Engine::InitWindow(const char *const windowTitle, unsigned int mask, int wi
     run = true;
 }
 
-/*
-Create message and error logs.
-*/
-void Engine::CreateLogs() {
-    
-    time_t t;
-    time(&t);
-    char *time = ctime(&t);
-    
-    int len = strlen(time) + 3;
-    
-    char *messgLogFileName = new (std::nothrow) char [len + 1];
-    char *errorLogFileName = new (std::nothrow) char [len + 5];
-    
-    if(messgLogFileName != NULL && errorLogFileName != NULL) {
-        
-        strncpy(messgLogFileName, time, 11);
-        strncat(messgLogFileName, &time[20], 4);
-        strncat(messgLogFileName, ".log", 4);
-    
-        for(int i = 0; i < len; ++i) {
-        
-            if(messgLogFileName[i] == ' ')
-                messgLogFileName[i] = '_';
-        }
-    
-        messgLog = freopen(messgLogFileName, "a", stdout);
-        
-        strncpy(errorLogFileName, time, 11);
-        strncat(errorLogFileName, &time[20], 4);
-        strncat(errorLogFileName, "_err.log", 8);
-    
-        for(int i = 0; i < len; ++i) {
-        
-            if(errorLogFileName[i] == ' ')
-                errorLogFileName[i] = '_';
-        }
-    
-        errorLog = freopen(errorLogFileName, "a", stderr);
-    
-        delete[] messgLogFileName;
-        delete[] errorLogFileName;
-        
-        fprintf(stdout, "--------------------");
-        fprintf(stderr, "--------------------");
-        
-        char *timeStr = new (std::nothrow) char [9];
-        if(timeStr != NULL) {
-        
-            memset(timeStr, 0, 9);
-        
-            time_t t;
-            ::time(&t);
-            char *static_time = ctime(&t);
-    
-            strncpy(timeStr, &static_time[11], 8);
-        
-            fprintf(stdout, " Log Open:  [%s] ", timeStr);
-            fprintf(stderr, " Log Open:  [%s] ", timeStr);
-        }
-        
-        fprintf(stdout, "--------------------\n\n");
-        fprintf(stderr, "--------------------\n\n");
-    }
-    else {
-        
-        // need to write this to disk....
-        LOG(LOG_LEVEL_ERROR, "Error creating error log files!");
-    }
-}
 
 /*
 
 */
-void Engine::CloseLogs() {
+void Engine::log_banner(const char *const title) {
     
-    fprintf(stdout, "\n--------------------");
-    fprintf(stderr, "\n--------------------");
-        
-    char *timeStr = new (std::nothrow) char [9];
-    if(timeStr != NULL) {
-        
-        memset(timeStr, 0, 9);
-        
-        time_t t;
-        ::time(&t);
-        char *static_time = ctime(&t);
+    std::cout << "\n--------------------";
+    std::cerr << "\n--------------------";
     
-        strncpy(timeStr, &static_time[11], 8);
+    char *time_str = calloc<char>(TIME_STR_LENGTH);
+    LSE::get_local_time(time_str);
+    
+    std::cout << " Log " << title << ": [" << time_str << "] ";
+    std::cerr << " Log " << title << ": [" << time_str << "] ";
+    
+    std::cout << "--------------------\n\n";
+    std::cerr << "--------------------\n\n";
+    
+    delete[] time_str;
+}
+
+
+/*
+Open a file on disk for logging std::cout and std::cerr.
+Preserve the original stream buffer for both streams.
+*/
+void Engine::create_logs() {
+    
+    logger.Start();
+    
+    char *date_and_day_str = calloc<char>(DAY_DATE_STR_LENGTH);
+    LSE::get_day_and_date(date_and_day_str);
+    
+    char *message_log_name = calloc<char>(DAY_DATE_STR_LENGTH + 9);
+    strncpy(message_log_name, date_and_day_str, DAY_DATE_STR_LENGTH);
+    strncat(message_log_name, "_cout.log", 9);
+    
+    for(int i = 0; i < DAY_DATE_STR_LENGTH + 9; ++i) {
         
-        fprintf(stdout, " Log Close: [%s] ", timeStr);
-        fprintf(stderr, " Log Close: [%s] ", timeStr);
+        if(message_log_name[i] == ' ')
+            message_log_name[i] = '_';
     }
         
-    fprintf(stdout, "--------------------\n\n");
-    fprintf(stderr, "--------------------\n\n");
+    this->message_log.open(message_log_name, std::fstream::out | std::fstream::app);
+    this->cout_buff = std::cout.rdbuf(&this->message_log);
     
-    if(messgLog != NULL)
-        fclose(messgLog);
+    char *error_log_name = calloc<char>(DAY_DATE_STR_LENGTH + 9);
+    strncpy(error_log_name, date_and_day_str, DAY_DATE_STR_LENGTH);
+    strncat(error_log_name, "_cerr.log", 9);
+    
+    for(int i = 0; i < DAY_DATE_STR_LENGTH + 9; ++i) {
         
-    if(errorLog != NULL)    
-        fclose(errorLog);
+        if(error_log_name[i] == ' ')
+            error_log_name[i] = '_';
+    }
+        
+    this->error_log.open(error_log_name, std::fstream::out | std::fstream::app);
+    this->cerr_buff = std::cerr.rdbuf(&this->error_log);
+    
+    this->log_banner("Open");
+    
+    delete[] message_log_name;
+    delete[] error_log_name;
+    delete[] date_and_day_str;
 }
+
+
+/*
+Close the log files, reassociate std::cout and std::cerr to
+their original stream buffers.
+*/
+void Engine::close_logs() {
+    
+    this->log_banner("Close");
+    
+    logger.Join();
+    
+    std::cout.rdbuf(this->cout_buff);
+    std::cerr.rdbuf(this->cerr_buff);
+    
+    this->message_log.close();
+    this->error_log.close();
+}
+
 
 /*
 
 */
 void* Engine::Execute() {
     
-    LOG(LOG_LEVEL_DEBUG, "Event queue thread started.");
+    logger.debug("Event queue thread started.");
     
     while(run) {
         
@@ -167,7 +155,7 @@ void* Engine::Execute() {
         if(node) {
             
             Event *event = (Event *)node->GetData();
-            LOG(LOG_LEVEL_VERBOSE, "Popping %s event off queue.", event->name);
+            logger.verbose("Popping %s event off queue.", event->name);
             
             switch(event->type) {
                 
@@ -187,14 +175,15 @@ void* Engine::Execute() {
         }
         else {
             
-            LOG(LOG_LEVEL_VERBOSE, "No events in queue to pop.");
+            logger.verbose("No events in queue to pop.");
         }
     }
     
-    LOG(LOG_LEVEL_DEBUG, "Event queue thread terminating.");
+    logger.debug("Event queue thread terminating.");
     
     return NULL;
 }
+
 
 /*
 Run the engine.
@@ -209,7 +198,7 @@ int Engine::Run() {
         window->SetupIO(&this->handler);
         window->Start();
         
-        while(!window->Ready() && StatusCode() != GL_INIT_FAIL); // is there a way to make this semaphore bound?
+        while(!window->Ready() && StatusCode() != GL_INIT_FAIL); // FIXME: is there a way to make this semaphore bound?
         
         if(StatusCode() != GL_INIT_FAIL) {
             
@@ -227,30 +216,31 @@ int Engine::Run() {
             }
             catch(Exception &e) {
                 
-                LOG(LOG_LEVEL_ERROR, e.what());
+                logger.error(e.what());
             }
         }
         else {
             
             if(GLVersion() < MIN_GL_VERSION)
-                LOG(LOG_LEVEL_ERROR, "OpenGL version too low.");
+                logger.error("OpenGL version too low.");
         
             if(MaxGLVertAttrib() < GL_MIN_VERT_ATTRIB)
-                LOG(LOG_LEVEL_ERROR, "Too few bindable vertex attributes available.");
+                logger.error("Too few bindable vertex attributes available.");
                 
             if(MaxFBOColorAttachments() < GL_MIN_COLOR_ATTACH)
-                LOG(LOG_LEVEL_ERROR, "Too few bindable Frame buffer object color attachmentments available.");
+                logger.error("Too few bindable Frame buffer object color attachmentments available.");
         }
         
         window->Join();
     }
     else {
         
-        LOG(LOG_LEVEL_ERROR, "Cannot render NULL OpenGL window.");
+        logger.error("Cannot render NULL OpenGL window.");
     }
     
     return status;
 }
+
 
 /*
 Post an event to the event queue.
@@ -260,29 +250,30 @@ int Engine::OnEvent(Object *, unsigned int, unsigned int, void *ptr) {
     if(ptr != NULL) {
         
         Event *event = (Event *)ptr;
-        LOG(LOG_LEVEL_VERBOSE, "Adding %s event to queue.", event->name);
+        logger.verbose("Adding %s event to queue.", event->name);
         eventList.PushFront(event);
         
         event_sem.Post();
     }
     else {
         
-        LOG(LOG_LEVEL_VERBOSE, "NULL event received.");
+        logger.verbose("NULL event received.");
     }
     
     return ptr != NULL;
 }
+
 
 /*
 Quit the application.
 */
 int Engine::OnQuit(Object *, unsigned int, unsigned int, void *ptr) {
     
-    LOG(LOG_LEVEL_DEBUG, "Received quit event. Stopping event loop.");
+    logger.debug("Received quit event. Stopping event loop.");
     this->run = false;
     
     Event *event = (Event *)ptr;
-    LOG(LOG_LEVEL_DEBUG, "Sending quit event to event queue.");
+    logger.debug("Sending quit event to event queue.");
     eventList.PushFront(event);
         
     event_sem.Post();

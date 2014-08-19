@@ -31,7 +31,9 @@ void get_local_time(char *ptr) {
 
 
 /*
-
+Get the day and date as Weekday Month Day Year.
+The piece of memory pointed to by ptr must
+contain at least DAY_DATE_STR_LENGTH bytes.
 */
 void get_day_and_date(char *ptr) {
     

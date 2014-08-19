@@ -1,6 +1,8 @@
+#include <new>
 #include <cstdlib>
 #include "lse/defs.h"
 #include "lse/list.h"
+#include "lse/globals.h"
 using namespace LSE;
 
 /*
@@ -41,7 +43,7 @@ void List::PushFront(void *data) {
     if(node != NULL)
         this->PushFront(node);
     else
-        LOG(LOG_LEVEL_ERROR, "Failed to allocate memory for new list node.\n");
+        logger.error("Failed to allocate memory for new list node.\n");
 }
 
 /*
@@ -69,7 +71,7 @@ void List::PushFront(ListNode *node) {
     }
     else {
 
-        LOG(LOG_LEVEL_ERROR, "Cannot add NULL node to list.\n");
+        logger.error("Cannot add NULL node to list.\n");
     }
 }
 
@@ -84,11 +86,11 @@ void List::Insert(void *data, int index) {
         if(node != NULL)
             Insert(node, index);
         else
-            LOG(LOG_LEVEL_ERROR, "Failed to allocate memory for new list node.\n");
+            logger.error("Failed to allocate memory for new list node.\n");
     }
     else {
 
-        LOG(LOG_LEVEL_ERROR, "List node insertion index out of range.\n");
+        logger.error("List node insertion index out of range.\n");
     }
 }
 
@@ -124,12 +126,12 @@ void List::Insert(ListNode *node, int index) {
         }
         else {
 
-            LOG(LOG_LEVEL_ERROR, "Cannot add NULL node to list.\n");
+            logger.error("Cannot add NULL node to list.\n");
         }
     }
     else {
 
-        LOG(LOG_LEVEL_ERROR, "List node insertion index out of range.\n");
+        logger.error("List node insertion index out of range.\n");
     }
 }
 
@@ -142,7 +144,7 @@ void List::PushBack(void *data) {
     if(node != NULL)
         PushBack(node);
     else
-        LOG(LOG_LEVEL_ERROR, "Failed to allocate memory for new list node.\n");
+        logger.error("Failed to allocate memory for new list node.\n");
 }
 
 /*
@@ -170,7 +172,7 @@ void List::PushBack(ListNode *node) {
     }
     else {
 
-        LOG(LOG_LEVEL_ERROR, "Cannot add NULL node to list.\n");
+        logger.error("Cannot add NULL node to list.\n");
     }
 }
 
