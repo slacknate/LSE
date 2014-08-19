@@ -1,6 +1,4 @@
 #include <ctime>
-#include <cerrno>
-#include <iostream>
 #include "util/time.h"
 
 namespace LSE {
