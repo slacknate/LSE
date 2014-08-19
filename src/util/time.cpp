@@ -1,10 +1,12 @@
 #include <ctime>
+#include <cerrno>
+#include <iostream>
 #include "util/time.h"
 
 namespace LSE {
     
-const unsigned int TIME_STR_LENGTH = 8;
-const unsigned int DAY_DATE_STR_LENGTH = 15;
+const unsigned int TIME_STR_LENGTH = 9;
+const unsigned int DAY_DATE_STR_LENGTH = 16;
 
 /*
 Get the local time as HH:MM:SS.
@@ -39,7 +41,7 @@ void get_day_and_date(char *ptr) {
         time(&raw_time);
 
         struct tm *time_info = localtime(&raw_time);
-        strftime(ptr, DAY_DATE_STR_LENGTH, "%a %b %d %G", time_info);
+        strftime(ptr, DAY_DATE_STR_LENGTH, "%a %b %d %Y", time_info);
     }
     else {
         
