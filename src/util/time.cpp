@@ -9,7 +9,7 @@ const unsigned int TIME_STR_LENGTH = 9;
 const unsigned int DAY_DATE_STR_LENGTH = 16;
 
 /*
-Get the local time as HH:MM:SS.
+Get the local time as 'Hour:Minute:Second'.
 The piece of memory pointed to by ptr must
 contain at least TIME_STR_LENGTH bytes.
 */
@@ -31,7 +31,7 @@ void get_local_time(char *ptr) {
 
 
 /*
-Get the day and date as Weekday Month Day Year.
+Get the day and date as 'Weekday Month Day Year'.
 The piece of memory pointed to by ptr must
 contain at least DAY_DATE_STR_LENGTH bytes.
 */
