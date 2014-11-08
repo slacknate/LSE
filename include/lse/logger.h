@@ -22,7 +22,7 @@ enum LogLevel : unsigned int {
     LOG_LEVEL_RAW
 };
 
-typedef std::tuple<LogLevel, std::ostream&, const char *, va_list *> LogEvent;
+typedef std::tuple<LogLevel, std::ostream&, char *> LogEvent;
 typedef Buffer<LogEvent> LogBuffer;
 
 /*
@@ -44,7 +44,7 @@ class Logger : public Thread {
         Semaphore log_sem;
         
         void* Execute();
-        void write_log(LogLevel log_level, std::ostream &stream, const char *format, va_list *arg_list);
+        void write_log(LogLevel log_level, std::ostream &stream, char *fmt_log);
         
         void log_event(LogLevel log_level, std::ostream &stream, const char *format, va_list *arg_list);
         

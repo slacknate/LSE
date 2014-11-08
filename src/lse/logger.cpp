@@ -1,5 +1,6 @@
 #include <cerrno>
 #include <cstring>
+#include <sstream>
 #include <iostream>
 #include "lse/logger.h"
 #include "lse/engine.h"
@@ -8,7 +9,10 @@
 using namespace LSE;
 
 const unsigned int LOG_BUFFER_SIZE = 32;
+const unsigned int LOG_LINE_LENGTH = 66;
 const unsigned int LOG_PREFIX_LENGTH = 14;
+
+const char *const LOG_INDENT_STR = "\n              ";
 
 const char *const LOG_LEVEL_PREFIXS[] = {
     
@@ -58,7 +62,7 @@ void* Logger::Execute() {
             /*
             Explode the log event tuple, pass the elements to write_log.
             */
-            this->write_log(std::get<0>(*log_event), std::get<1>(*log_event), std::get<2>(*log_event), std::get<3>(*log_event));
+            this->write_log(std::get<0>(*log_event), std::get<1>(*log_event), std::get<2>(*log_event));
             
             delete log_event;
         }
@@ -74,18 +78,17 @@ greater or equal log level to the log level of the logger.
 
 TODO: format properly, auto newline around 80 characters
 */
-void Logger::write_log(LogLevel log_level, std::ostream &stream, const char *format, va_list *arg_list) {
+void Logger::write_log(LogLevel log_level, std::ostream &stream, char *fmt_log) {
     
     if(log_level <= this->level) {
         
         char *time_str = LSE::calloc<char>(TIME_STR_LENGTH);            
         LSE::get_local_time(time_str);
             
-        stream << "[" << time_str << "] " << LOG_LEVEL_PREFIXS[log_level] << ": ";
-        stream << format << std::endl;
-            
+        stream << "[" << time_str << "] " << LOG_LEVEL_PREFIXS[log_level] << ": " << fmt_log << std::endl;
+        
         delete[] time_str;
-        delete arg_list;
+        delete[] fmt_log;
     }
 }
 
@@ -95,12 +98,21 @@ void Logger::write_log(LogLevel log_level, std::ostream &stream, const char *for
 */
 void Logger::log_event(LogLevel log_level, std::ostream &stream, const char *format, va_list *args) {
     
-    va_list *args_copy = LSE::calloc<va_list>();
+    char *fmt_log = nullptr;
+    int log_length = vsnprintf(NULL, 0, format, *args);
+    if(log_length >= 0) {
+            
+        fmt_log = LSE::calloc<char>(log_length);
+        vsprintf(fmt_log, format, *args);
+    }
+    else {
         
-    va_copy(*args_copy, *args);
-    va_end(*args_copy);
+        // TODO: determine if this is sloochy
+        fmt_log = LSE::calloc<char>(42);
+        strncpy(fmt_log, "Error occurred getting log message length", 41);
+    }
     
-    LogEvent log_event = LogEvent(log_level, stream, format, args_copy);
+    LogEvent log_event = LogEvent(log_level, stream, fmt_log);
     this->buffer.push(log_event);
         
     this->log_sem.Post();
