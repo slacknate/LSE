@@ -5,7 +5,7 @@ namespace LSE {
 /*
 System logger.
 */
-Logger logger = Logger(LOG_LEVEL_VERBOSE);
+Logger logger = Logger(LOG_LEVEL_DEBUG);
 
 /*
 Viewing and projection matrices.
