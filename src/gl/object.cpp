@@ -18,7 +18,7 @@ GLObject::GLObject(double x, double y, double z) : PHObject(x, y, z) {
     program.BindAttrib(VERT_TEX_COORD, "VERT_TEX_COORD");
         
     if(!program.Finalize())
-        throw Exception(__FILE__, __LINE__, GL_PROG_FAIL);
+        throw Exception(__FILE__, __LINE__, "OpenGL shader program failed to verify");
         
     program.BindUniform(MAT4, "VIEW_MAT", 1, GL_FALSE, &VIEW_MATRIX[0]);
     program.BindUniform(MAT4, "PROJ_MAT", 1, GL_FALSE, &PROJ_MATRIX[0]);

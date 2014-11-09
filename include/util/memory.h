@@ -20,7 +20,7 @@ template <class T> T* calloc(unsigned int size=1) {
     }
     else{
         
-        throw Exception("NOT_REAL", 0, BAD_ALLOC); // FIXME: get real file and line
+        throw Exception("NOT_REAL", 0, "An error occurred during memory allocation"); // FIXME: get real file and line
     }
     
     return t_ptr;
@@ -39,7 +39,7 @@ template <class T> T* malloc(unsigned int size=1, ...) {
     T *t_ptr = new (std::nothrow) T [size];
     if(t_ptr == nullptr) {
         
-        throw Exception("NOT_REAL", 0, BAD_ALLOC); // FIXME: get real file and line
+        throw Exception("NOT_REAL", 0, "An error occurred during memory allocation"); // FIXME: get real file and line
     }
     
     return t_ptr;

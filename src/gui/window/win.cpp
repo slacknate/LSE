@@ -45,19 +45,19 @@ void* GLWindow::Execute() {
     wc.lpszMenuName = NULL;
     wc.lpszClassName = "Lucent Shards Engine";
     if(!RegisterClass(&wc))
-        throw Exception(__FILE__, __LINE__, WIN_REG_FAIL);
+        throw Exception(__FILE__, __LINE__, "Failed to register window class");
     
     // Create our window
     hwnd = CreateWindow(wc.lpszClassName, windowTitle, WS_CAPTION | WS_OVERLAPPEDWINDOW | WS_VISIBLE, 100, 100, width, height, NULL, NULL, wc.hInstance, NULL);
     if(hwnd == NULL)
-        throw Exception(__FILE__, __LINE__, WIN_CREATE_FAIL);
+        throw Exception(__FILE__, __LINE__, "Failed to create window");
         
     this->handler->Setup(hwnd);
     
     // Get a device context so we can use OpenGL
     hdc = GetDC(hwnd);
     if(hdc == NULL)
-        throw Exception(__FILE__, __LINE__, GL_CON_FAIL);
+        throw Exception(__FILE__, __LINE__, "Failed to obtain an OpenGL device context");
     
     // Set up all out IO for this window
     //io.Setup(hwnd);
@@ -84,11 +84,11 @@ void* GLWindow::Execute() {
     
     // Finish setting up our OpenGL context
     if(!SetPixelFormat(hdc, ChoosePixelFormat(hdc, &pfd), &pfd))
-        throw Exception(__FILE__, __LINE__, GL_CON_FAIL);
+        throw Exception(__FILE__, __LINE__, "Failed to set OpenGL context pixel format");
     
     hglrc = wglCreateContext(hdc);
     if(hglrc == NULL)
-        throw Exception(__FILE__, __LINE__, GL_CON_FAIL);
+        throw Exception(__FILE__, __LINE__, "Failed to create an OpenGL context");
     
     initialized = true;
     
@@ -103,7 +103,7 @@ void* GLWindow::Execute() {
     }
     catch(std::exception &e) {
         
-        throw Exception(__FILE__, __LINE__, OK); // FIXME: need a way to "convert" standard exceptions into LSE exceptions
+        throw Exception(__FILE__, __LINE__, "FIXME"); // FIXME: need a way to "convert" standard exceptions into LSE exceptions
     }
     
     return NULL;

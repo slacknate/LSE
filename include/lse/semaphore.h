@@ -14,8 +14,7 @@ class Semaphore {
     private:
         
         sem_t semaphore; // semaphore structure
-        bool initialized; // state of the semaphore. true when sem_init succeeds
-        
+
     public:
         
         Semaphore(int initial=0, int shared=0);

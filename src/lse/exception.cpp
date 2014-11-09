@@ -45,12 +45,11 @@ TODO: safe way to catch the standard exceptions and make sure we only deal with 
 /*
 Create an exception, with a corresponding error message.
 */
-Exception::Exception(const char *f, int l, int c) throw() {
-    
-    memset(output, 0, ERROR_BUFFER_SIZE + 1);
-    fileName = f;
-    lineNumber = l;
-    errCode = c;
+Exception::Exception(const char *file, int line, const char *message) throw() {
+
+    this->file_name = file;
+    this->line_number = line;
+    this->error_message = message;
 }
 
 /*
@@ -59,14 +58,6 @@ Return the error message.
 const char* Exception::what() const throw() {
     
     std::stringstream ss;
-    ss << "An exception was thrown in \"" << fileName << "\" at line " << lineNumber << ", code " << StatusID(errCode) << ": " << StatusString(errCode);
+    ss << "An exception was thrown in \"" << this->file_name << "\" at line " << this->line_number << ": " << this->error_message;
     return ss.str().c_str();
-}
-
-/*
-Return the error code.
-*/
-int Exception::code() const throw() {
-    
-    return errCode;
 }

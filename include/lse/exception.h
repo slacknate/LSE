@@ -19,19 +19,15 @@ TODO:
 class Exception {
     
     private:
-        
-        static const int ERROR_BUFFER_SIZE = 128;
-        
-        char output[ERROR_BUFFER_SIZE + 1];
-        const char *fileName;
-        int lineNumber, errCode; // error code
-    
+
+        int line_number;
+        const char *file_name, *error_message;
+
     public:
         
-        Exception(const char *f, int l, int c) throw();
+        Exception(const char *file, int line, const char *message) throw();
         
         const char* what() const throw();
-        int code() const throw();
 };
 
 }

@@ -286,7 +286,7 @@ void IOHandler::RegisterInput(HWND hwnd, unsigned short page, unsigned short id)
     raw_io.hwndTarget = hwnd;
 
     if(RegisterRawInputDevices(&raw_io, 1, sizeof(RAWINPUTDEVICE)) == false)
-        throw Exception(__FILE__, __LINE__, IO_SETUP_FAIL);
+        throw Exception(__FILE__, __LINE__, "Failed to setup IO handler");
 }
 
 /*
