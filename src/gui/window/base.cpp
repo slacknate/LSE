@@ -11,7 +11,7 @@ We save the opengl clear bitmask,
 as well as the canvas height, width,
 and aspect ratio information.
 */
-GLWindow_Base::GLWindow_Base(const char *const title, unsigned int m, int w, int h, double angle, double zi, double za) {
+GLWindowBase::GLWindowBase(const char *const title, unsigned int m, int w, int h, double angle, double zi, double za) {
     
     this->mask = m;
     this->window_title = title;
@@ -36,7 +36,7 @@ GLWindow_Base::GLWindow_Base(const char *const title, unsigned int m, int w, int
 /*
 
 */
-void GLWindow_Base::SetupIO(IOHandler *h) {
+void GLWindowBase::SetupIO(IOHandler *h) {
     
     this->handler = h;
 }
@@ -48,7 +48,7 @@ Invoke this method after an
 OpenGL context has been obtained.
 (mention attributes and stuff)
 */
-void GLWindow_Base::setup_gl() {
+void GLWindowBase::setup_gl() {
     
     try {
 
@@ -84,7 +84,7 @@ void GLWindow_Base::setup_gl() {
 /*
 
 */
-void GLWindow_Base::teardown_gl(){
+void GLWindowBase::teardown_gl(){
 
     this->draw_list.Clear();
     this->light_list.Clear();
@@ -99,7 +99,7 @@ void GLWindow_Base::teardown_gl(){
 /*
 Add an object to the graphics object list.
 */
-void GLWindow_Base::PushGL(GLObject *o) {
+void GLWindowBase::PushGL(GLObject *o) {
     
     draw_list.PushBack(o);
 }
@@ -108,7 +108,7 @@ void GLWindow_Base::PushGL(GLObject *o) {
 /*
 Remove an object from the graphics object list.
 */
-void GLWindow_Base::PopGL() {
+void GLWindowBase::PopGL() {
     
     delete draw_list.PopBack();
 }
@@ -117,7 +117,7 @@ void GLWindow_Base::PopGL() {
 /*
 Clear all graphics objects from the scene.
 */
-void GLWindow_Base::ClearGL() {
+void GLWindowBase::ClearGL() {
     
     draw_list.Clear();
 }
@@ -126,7 +126,7 @@ void GLWindow_Base::ClearGL() {
 /*
 Add an object to the graphics object list.
 */
-void GLWindow_Base::PushLight(GLLight *l) {
+void GLWindowBase::PushLight(GLLight *l) {
     
     light_list.PushBack(l);
 }
@@ -135,7 +135,7 @@ void GLWindow_Base::PushLight(GLLight *l) {
 /*
 Remove an object from the graphics object list.
 */
-void GLWindow_Base::PopLight() {
+void GLWindowBase::PopLight() {
     
     delete light_list.PopBack();
 }
@@ -144,7 +144,7 @@ void GLWindow_Base::PopLight() {
 /*
 Clear all graphics objects from the scene.
 */
-void GLWindow_Base::ClearLights() {
+void GLWindowBase::ClearLights() {
     
     light_list.Clear();
 }
@@ -156,7 +156,7 @@ Calculate the VIEW_MATRIX transformation matrix.
 Reference:
     http://en.wikibooks.org/wiki/GLSL_Programming/Vertex_Transformations
 */
-void GLWindow_Base::PlaceCamera() {
+void GLWindowBase::PlaceCamera() {
     
     Vector posVec(pos.x, pos.y, pos.z);
     
@@ -198,7 +198,7 @@ Calculate the aspect ratio transformation matrix.
 Reference:
     http://en.wikibooks.org/wiki/GLSL_Programming/Vertex_Transformations
 */
-void GLWindow_Base::AspectRatio() {
+void GLWindowBase::AspectRatio() {
     
     double aspect = ((double)width/(double)height);
     double dz = zmin - zmax;
@@ -230,7 +230,7 @@ void GLWindow_Base::AspectRatio() {
 /*
 Draw our objects on the canvas.
 */
-void GLWindow_Base::Render() {    
+void GLWindowBase::Render() {
     
     screen->BindFBO();
     
@@ -261,7 +261,7 @@ void GLWindow_Base::Render() {
 /*
 
 */
-Vertex& GLWindow_Base::GetCamPos() {
+Vertex&GLWindowBase::GetCamPos() {
     
     return pos;
 }
@@ -270,7 +270,7 @@ Vertex& GLWindow_Base::GetCamPos() {
 /*
 
 */
-Vertex& GLWindow_Base::GetCamFocus() {
+Vertex&GLWindowBase::GetCamFocus() {
     
     return focus;
 }
@@ -279,7 +279,7 @@ Vertex& GLWindow_Base::GetCamFocus() {
 /*
 
 */
-void GLWindow_Base::wait_for_ready() {
+void GLWindowBase::wait_for_ready() {
 
     this->init_sem.wait();
 }
@@ -288,7 +288,7 @@ void GLWindow_Base::wait_for_ready() {
 /*
 
 */
-void GLWindow_Base::Resize() {
+void GLWindowBase::Resize() {
     
     screen->Resize(width, height);
     AspectRatio();

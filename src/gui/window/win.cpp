@@ -5,7 +5,7 @@ using namespace LSE;
 
 GLWindow::GLWindow(const char *const title, unsigned int mask,
                            int width, int height, double angle, double zi, double za) :
-                           GLWindow_Base(title, mask, width, height, angle, zi, za) { }
+                           GLWindowBase(title, mask, width, height, angle, zi, za) { }
 
 void GLWindow::setup_gl_context() {
     

@@ -22,7 +22,7 @@ OpenGL context class.
 Describes an OpenGL canvas, and
 Draws all GLObjects.
 */
-class GLWindow_Base : public Thread {
+class GLWindowBase : public Thread {
     
     protected:
         
@@ -49,7 +49,7 @@ class GLWindow_Base : public Thread {
 
     public:
 
-        GLWindow_Base(const char *const title, unsigned int m, int w, int h, double angle, double zi, double za);
+        GLWindowBase(const char *const title, unsigned int m, int w, int h, double angle, double zi, double za);
 
         void SetupIO(IOHandler *h);
 
