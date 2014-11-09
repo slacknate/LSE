@@ -98,8 +98,8 @@ void Engine::create_logs() {
             message_log_name[i] = '_';
     }
         
-    this->message_log.open(message_log_name, std::fstream::out | std::fstream::app);
-    this->cout_buff = std::cout.rdbuf(&this->message_log);
+    //this->message_log.open(message_log_name, std::fstream::out | std::fstream::app);
+    //this->cout_buff = std::cout.rdbuf(&this->message_log);
     
     char *error_log_name = LSE::calloc<char>(DAY_DATE_STR_LENGTH + 9);
     strncpy(error_log_name, date_and_day_str, DAY_DATE_STR_LENGTH);
@@ -111,8 +111,8 @@ void Engine::create_logs() {
             error_log_name[i] = '_';
     }
         
-    this->error_log.open(error_log_name, std::fstream::out | std::fstream::app);
-    this->cerr_buff = std::cerr.rdbuf(&this->error_log);
+    //this->error_log.open(error_log_name, std::fstream::out | std::fstream::app);
+    //this->cerr_buff = std::cerr.rdbuf(&this->error_log);
     
     this->log_banner("Open");
     
@@ -203,7 +203,7 @@ int Engine::Run() {
             
             try {
 
-                window->GLInit(); 
+                window->setup_gl();
                 ::GLInit();
                 ::InitScene(this->window);           
                 this->Start();
@@ -212,6 +212,7 @@ int Engine::Run() {
                     window->Render();
                 
                 this->Join();
+                window->teardown_gl();
             }
             catch(Exception &e) {
                 

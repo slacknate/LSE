@@ -42,18 +42,20 @@ class GLWindow_Base : public Thread {
         
         void PlaceCamera();
         void AspectRatio();
-        
+
+        virtual void setup_gl_context()=0;
+        virtual void teardown_gl_context()=0;
+        virtual void swap_gl_buffers()=0;
+
     public:
-        
+
         GLWindow_Base(const char *const title, unsigned int m, int w, int h, double angle, double zi, double za);
-        ~GLWindow_Base();
-        
+
         void SetupIO(IOHandler *h);
-        
-        void GLInit();
-        virtual void GLContextInit()=0;
-        virtual void GLContextDestroy()=0;
-        
+
+        void setup_gl();
+        void teardown_gl();
+
         void PushGL(GLObject *o);
         void PopGL();
         void ClearGL();
@@ -63,8 +65,7 @@ class GLWindow_Base : public Thread {
         void ClearLights();
         
         void Render();
-        virtual void SwapGLBuffers()=0;
-        
+
         Vertex& GetCamPos();
         Vertex& GetCamFocus();
         

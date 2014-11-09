@@ -3,23 +3,23 @@
 #include "lse/exception.h"
 using namespace LSE;
 
-GLWindow::GLWindow(const char *const windowTitle, unsigned int mask,
-                           int width, int height, double angle, double zi, double za) : 
-                           GLWindow_Base(windowTitle, mask, width, height, angle, zi, za) { }
+GLWindow::GLWindow(const char *const title, unsigned int mask,
+                           int width, int height, double angle, double zi, double za) :
+                           GLWindow_Base(title, mask, width, height, angle, zi, za) { }
 
-void GLWindow::GLContextInit() {
+void GLWindow::setup_gl_context() {
     
     wglMakeCurrent(hdc, hglrc);
 }
 
-void GLWindow::GLContextDestroy() {
+void GLWindow::teardown_gl_context() {
     
     wglMakeCurrent(NULL, NULL);
     wglDeleteContext(hglrc);
-    ReleaseDC(hwnd, hdc); // this is an issue, HWND is destroyed before we get here....
+    ReleaseDC(hwnd, hdc); // FIXME: this is an issue, HWND is destroyed before we get here....
 }
 
-void GLWindow::SwapGLBuffers() {
+void GLWindow::swap_gl_buffers() {
     
     SwapBuffers(hdc);
 }
@@ -90,7 +90,7 @@ void* GLWindow::Execute() {
     if(hglrc == NULL)
         throw Exception(__FILE__, __LINE__, "Failed to create an OpenGL context");
     
-    initialized = true;
+    this->init_sem.post();
     
     // Begin the message queue
     MSG msg;

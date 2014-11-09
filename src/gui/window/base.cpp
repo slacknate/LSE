@@ -4,6 +4,7 @@
 #include "lse/exception.h"
 using namespace LSE;
 
+
 /*
 Initialize our canvas.
 We save the opengl clear bitmask,
@@ -31,24 +32,15 @@ GLWindow_Base::GLWindow_Base(const char *const title, unsigned int m, int w, int
     this->up = Vector(0.0, 1.0, 0.0);
 }
 
-/*
-Delete all objects.
-*/
-GLWindow_Base::~GLWindow_Base() {
-    
-    draw_list.Clear();
-    light_list.Clear();
-        
-    if(screen != NULL)
-        delete screen;
-        
-    this->GLContextDestroy();
-}
 
+/*
+
+*/
 void GLWindow_Base::SetupIO(IOHandler *h) {
     
     this->handler = h;
 }
+
 
 /*
 Initialize OpenGL and the Extension Wrangler.
@@ -56,11 +48,11 @@ Invoke this method after an
 OpenGL context has been obtained.
 (mention attributes and stuff)
 */
-void GLWindow_Base::GLInit() {
+void GLWindow_Base::setup_gl() {
     
     try {
-    
-    this->GLContextInit();
+
+        this->setup_gl_context();
     
     int glewStatus = glewInit();
     if(glewStatus != GLEW_OK)
@@ -88,6 +80,22 @@ void GLWindow_Base::GLInit() {
     }
 }
 
+
+/*
+
+*/
+void GLWindow_Base::teardown_gl(){
+
+    this->draw_list.Clear();
+    this->light_list.Clear();
+
+    if(this->screen != NULL)
+        delete this->screen;
+
+    this->teardown_gl_context();
+}
+
+
 /*
 Add an object to the graphics object list.
 */
@@ -95,6 +103,7 @@ void GLWindow_Base::PushGL(GLObject *o) {
     
     draw_list.PushBack(o);
 }
+
 
 /*
 Remove an object from the graphics object list.
@@ -104,6 +113,7 @@ void GLWindow_Base::PopGL() {
     delete draw_list.PopBack();
 }
 
+
 /*
 Clear all graphics objects from the scene.
 */
@@ -111,6 +121,7 @@ void GLWindow_Base::ClearGL() {
     
     draw_list.Clear();
 }
+
 
 /*
 Add an object to the graphics object list.
@@ -120,6 +131,7 @@ void GLWindow_Base::PushLight(GLLight *l) {
     light_list.PushBack(l);
 }
 
+
 /*
 Remove an object from the graphics object list.
 */
@@ -128,6 +140,7 @@ void GLWindow_Base::PopLight() {
     delete light_list.PopBack();
 }
 
+
 /*
 Clear all graphics objects from the scene.
 */
@@ -135,6 +148,7 @@ void GLWindow_Base::ClearLights() {
     
     light_list.Clear();
 }
+
 
 /*
 Calculate the VIEW_MATRIX transformation matrix.
@@ -177,6 +191,7 @@ void GLWindow_Base::PlaceCamera() {
     VIEW_MATRIX[15] = 1.0;
 }
 
+
 /*
 Calculate the aspect ratio transformation matrix.
 
@@ -211,6 +226,7 @@ void GLWindow_Base::AspectRatio() {
     PROJ_MATRIX[15] = 0.0;
 }
 
+
 /*
 Draw our objects on the canvas.
 */
@@ -237,9 +253,10 @@ void GLWindow_Base::Render() {
     glClear(mask);
     
     screen->Render();
-    
-    this->SwapGLBuffers();
+
+    this->swap_gl_buffers();
 }
+
 
 /*
 
@@ -249,6 +266,7 @@ Vertex& GLWindow_Base::GetCamPos() {
     return pos;
 }
 
+
 /*
 
 */
@@ -257,6 +275,7 @@ Vertex& GLWindow_Base::GetCamFocus() {
     return focus;
 }
 
+
 /*
 
 */
@@ -264,6 +283,7 @@ void GLWindow_Base::wait_for_ready() {
 
     this->init_sem.wait();
 }
+
 
 /*
 
