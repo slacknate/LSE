@@ -1,12 +1,13 @@
 #ifndef LSE_GL_WINDOW_BASE_H
 #define LSE_GL_WINDOW_BASE_H
 
+#include "gl/light.h"
 #include "gl/object.h"
 #include "gl/program.h"
-#include "gl/light.h"
 
 #include "io/handler.h"
 #include "lse/thread.h"
+#include "lse/semaphore.h"
 #include "gui/screen/screen.h"
 
 /*
@@ -26,15 +27,15 @@ class GLWindow_Base : public Thread {
     protected:
         
         IOHandler *handler; // 
-        List drawList; // list of objects to be drawn
-        List lightList; // list of all lights in the scene
+        List draw_list; // list of objects to be drawn
+        List light_list; // list of all lights in the scene
         GLScreen *screen; // 
         Vertex pos, focus; // camera position and focus point
         Vector up; // camera up vector
         
-        bool initialized;
+        Semaphore init_sem;
         //int glewStatus, glStatus; // return code of glewInit()
-        const char *windowTitle;
+        const char *window_title;
         unsigned int width, height; // canvas width and height
         double fovy, zmin, zmax; // aspect ratio parameters
         unsigned int mask; // opengl bit clear mask
@@ -44,14 +45,14 @@ class GLWindow_Base : public Thread {
         
     public:
         
-        GLWindow_Base(const char *const windowTitle, unsigned int m, int w, int h, double angle, double zi, double za);
+        GLWindow_Base(const char *const title, unsigned int m, int w, int h, double angle, double zi, double za);
         ~GLWindow_Base();
         
         void SetupIO(IOHandler *h);
         
         void GLInit();
-        virtual void GLContextInit() {}
-        virtual void GLContextDestroy() {}
+        virtual void GLContextInit()=0;
+        virtual void GLContextDestroy()=0;
         
         void PushGL(GLObject *o);
         void PopGL();
@@ -62,12 +63,12 @@ class GLWindow_Base : public Thread {
         void ClearLights();
         
         void Render();
-        virtual void SwapGLBuffers() {}
+        virtual void SwapGLBuffers()=0;
         
         Vertex& GetCamPos();
         Vertex& GetCamFocus();
         
-        bool Ready();
+        void wait_for_ready();
         
         void Resize();
 };

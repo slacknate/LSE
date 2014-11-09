@@ -12,24 +12,23 @@ and aspect ratio information.
 */
 GLWindow_Base::GLWindow_Base(const char *const title, unsigned int m, int w, int h, double angle, double zi, double za) {
     
-    initialized = false;
-    mask = m;
-    windowTitle = title;
-    width = w;
-    height = h;
-    fovy = angle;
-    zmin = zi;
-    zmax = za;
-    
-    pos.x = 0.0;
-    pos.y = 0.0;
-    pos.z = 1.0;
-            
-    focus.x = 0.0;
-    focus.y = 0.0;
-    focus.z = 0.0;
-            
-    up = Vector(0.0, 1.0, 0.0);
+    this->mask = m;
+    this->window_title = title;
+    this->width = w;
+    this->height = h;
+    this->fovy = angle;
+    this->zmin = zi;
+    this->zmax = za;
+
+    this->pos.x = 0.0;
+    this->pos.y = 0.0;
+    this->pos.z = 1.0;
+
+    this->focus.x = 0.0;
+    this->focus.y = 0.0;
+    this->focus.z = 0.0;
+
+    this->up = Vector(0.0, 1.0, 0.0);
 }
 
 /*
@@ -37,8 +36,8 @@ Delete all objects.
 */
 GLWindow_Base::~GLWindow_Base() {
     
-    drawList.Clear();
-    lightList.Clear();
+    draw_list.Clear();
+    light_list.Clear();
         
     if(screen != NULL)
         delete screen;
@@ -94,7 +93,7 @@ Add an object to the graphics object list.
 */
 void GLWindow_Base::PushGL(GLObject *o) {
     
-    drawList.PushBack(o);
+    draw_list.PushBack(o);
 }
 
 /*
@@ -102,7 +101,7 @@ Remove an object from the graphics object list.
 */
 void GLWindow_Base::PopGL() {
     
-    delete drawList.PopBack();
+    delete draw_list.PopBack();
 }
 
 /*
@@ -110,7 +109,7 @@ Clear all graphics objects from the scene.
 */
 void GLWindow_Base::ClearGL() {
     
-    drawList.Clear();
+    draw_list.Clear();
 }
 
 /*
@@ -118,7 +117,7 @@ Add an object to the graphics object list.
 */
 void GLWindow_Base::PushLight(GLLight *l) {
     
-    lightList.PushBack(l);
+    light_list.PushBack(l);
 }
 
 /*
@@ -126,7 +125,7 @@ Remove an object from the graphics object list.
 */
 void GLWindow_Base::PopLight() {
     
-    delete lightList.PopBack();
+    delete light_list.PopBack();
 }
 
 /*
@@ -134,7 +133,7 @@ Clear all graphics objects from the scene.
 */
 void GLWindow_Base::ClearLights() {
     
-    lightList.Clear();
+    light_list.Clear();
 }
 
 /*
@@ -222,14 +221,14 @@ void GLWindow_Base::Render() {
     glClear(mask);
     PlaceCamera();
     
-    for(int i = 0; i < drawList.Size(); ++i) {
+    for(int i = 0; i < draw_list.Size(); ++i) {
         
-        GLObject *gl_object = (GLObject *)drawList[i]->GetData();
+        GLObject *gl_object = (GLObject *) draw_list[i]->GetData();
         //Quaternion q(1.0, 2.0, 3.0, 10.0*cos(PI/190.0));
         //gl_object->Transform(q);
         gl_object->Render();
         
-        if(1 == 2) // fix me -> real condition
+        if(1 == 2) // FIXME: real condition
             gl_object->RenderNormals();
     }
     
@@ -261,9 +260,9 @@ Vertex& GLWindow_Base::GetCamFocus() {
 /*
 
 */
-bool GLWindow_Base::Ready() {
-    
-    return initialized;
+void GLWindow_Base::wait_for_ready() {
+
+    this->init_sem.wait();
 }
 
 /*

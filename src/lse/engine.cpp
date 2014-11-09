@@ -197,9 +197,8 @@ int Engine::Run() {
         
         window->SetupIO(&this->handler);
         window->Start();
-        
-        while(!window->Ready() && StatusCode() != GL_INIT_FAIL); // FIXME: is there a way to make this semaphore bound?
-        
+        window->wait_for_ready();
+
         if(StatusCode() != GL_INIT_FAIL) {
             
             try {

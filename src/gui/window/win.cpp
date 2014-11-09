@@ -48,7 +48,7 @@ void* GLWindow::Execute() {
         throw Exception(__FILE__, __LINE__, "Failed to register window class");
     
     // Create our window
-    hwnd = CreateWindow(wc.lpszClassName, windowTitle, WS_CAPTION | WS_OVERLAPPEDWINDOW | WS_VISIBLE, 100, 100, width, height, NULL, NULL, wc.hInstance, NULL);
+    hwnd = CreateWindow(wc.lpszClassName, window_title, WS_CAPTION | WS_OVERLAPPEDWINDOW | WS_VISIBLE, 100, 100, width, height, NULL, NULL, wc.hInstance, NULL);
     if(hwnd == NULL)
         throw Exception(__FILE__, __LINE__, "Failed to create window");
         
