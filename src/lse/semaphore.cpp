@@ -11,55 +11,71 @@ store that as well.
 */
 Semaphore::Semaphore(int initial, int shared) {
 
-    if(sem_init(&semaphore, shared, initial))
+    if(sem_init(&this->semaphore, shared, initial))
         throw Exception(__FILE__, __LINE__, "Failed to initialize semaphore");
 }
+
 
 /*
 Destroy the semaphore.
 */
 Semaphore::~Semaphore() {
     
-    if(sem_destroy(&semaphore))
-        logger.errn("Failed to destroy semaphore");
+    if(sem_destroy(&this->semaphore))
+        logger.errn("An error occurred in sem_destroy");
 }
+
 
 /*
 Wait on the semaphore.
 */
-void Semaphore::Wait() {
+void Semaphore::wait() {
     
-    if(sem_wait(&semaphore))
-        logger.errn("Failed to wait on semaphore");
+    if(sem_wait(&this->semaphore))
+        throw Exception(__FILE__, __LINE__, "An error occurred in sem_wait");
 }
+
 
 /*
 Attempt to non-blocking wait on the semaphore.
 */
-void Semaphore::TryWait() {
-    
-    if(sem_trywait(&semaphore))
-        logger.errn("Failed to try to wait on semaphore");
+bool Semaphore::try_wait() {
+
+    bool success = true;
+
+    int result = sem_trywait(&this->semaphore);
+    if(result < 0) {
+
+        if(errno == EAGAIN)
+            success = false;
+
+        else
+            throw Exception(__FILE__, __LINE__, "An error occurred in sem_trywait");
+    }
+
+    return success;
 }
+
 
 /*
 Post to the semaphore.
 */
-void Semaphore::Post() {
-    
-   if(sem_post(&semaphore))
-        logger.errn("Failed to post to semaphore");
+void Semaphore::post() {
+
+    if(sem_post(&this->semaphore))
+        throw Exception(__FILE__, __LINE__, "An error occurred in sem_post");
 }
+
 
 /*
 Get the current number of available wait slots available.
 */
-int Semaphore::Value() {
+int Semaphore::value() {
     
-    int currValue = 0;
+    int current_value = 0;
     
-    if(sem_getvalue(&semaphore, &currValue))
-        logger.errn("Failed to get current semaphore value");
+    if(sem_getvalue(&this->semaphore, &current_value))
+        throw Exception(__FILE__, __LINE__, "An error occurred in sem_getvalue");
 
-    return currValue;
+    return current_value;
 }

@@ -35,7 +35,7 @@ Stop the logger write-to-disk thread.
 bool Logger::Join() {
     
     execute = false;
-    this->log_sem.Post();
+    this->log_sem.post();
     return Thread::Join();
 }
 
@@ -46,8 +46,8 @@ Thread to write log events to their respective log files.
 void* Logger::Execute() {
     
     while(this->execute) {
-        
-        this->log_sem.Wait();
+
+        this->log_sem.wait();
         
         /*
         When we stop the logger, the post to the semaphore, but the buffer is
@@ -113,8 +113,8 @@ void Logger::log_event(LogLevel log_level, std::ostream &stream, const char *for
     
     LogEvent log_event = LogEvent(log_level, stream, fmt_log);
     this->buffer.push(log_event);
-        
-    this->log_sem.Post();
+
+    this->log_sem.post();
 }
 
 

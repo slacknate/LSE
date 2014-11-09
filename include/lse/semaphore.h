@@ -20,10 +20,10 @@ class Semaphore {
         Semaphore(int initial=0, int shared=0);
         ~Semaphore();
         
-        void Wait();
-        void TryWait();
-        void Post();
-        int Value();
+        void wait();
+        bool try_wait();
+        void post();
+        int value();
 };
 
 }

@@ -110,7 +110,7 @@ template <class T> class Buffer {
         */
         void push(const T &t) {
             
-            read_write_sync.Wait();
+            read_write_sync.wait();
             
             unsigned int pos = this->write_pos();
             this->buffer[pos] = new (std::nothrow) T(t);
@@ -130,7 +130,7 @@ template <class T> class Buffer {
             T *t = this->buffer[pos];
             this->buffer[pos] = nullptr;
             
-            read_write_sync.Post();
+            read_write_sync.post();
             
             return t;
         }        
