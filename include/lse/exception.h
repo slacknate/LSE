@@ -14,6 +14,7 @@ namespace LSE {
 Exception class used to display file names and
 line numbers automatically.
 TODO:
+    add a flag to check the errno error code/message
     extended OS error code info
 */
 class Exception {
