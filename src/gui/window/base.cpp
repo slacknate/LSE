@@ -261,7 +261,7 @@ void GLWindowBase::Render() {
 /*
 
 */
-Vertex&GLWindowBase::GetCamPos() {
+Vertex& GLWindowBase::GetCamPos() {
     
     return pos;
 }
@@ -270,7 +270,7 @@ Vertex&GLWindowBase::GetCamPos() {
 /*
 
 */
-Vertex&GLWindowBase::GetCamFocus() {
+Vertex& GLWindowBase::GetCamFocus() {
     
     return focus;
 }
