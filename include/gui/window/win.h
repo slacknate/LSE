@@ -8,7 +8,7 @@ namespace LSE {
 /*
 
 */
-class GLWindow : public GLWindow_Base {
+class GLWindow : public GLWindowBase {
     
     private:
         
