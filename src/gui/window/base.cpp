@@ -36,7 +36,7 @@ GLWindowBase::GLWindowBase(const char *const title, unsigned int m, int w, int h
 /*
 
 */
-void GLWindowBase::SetupIO(IOHandler *h) {
+void GLWindowBase::setup_io(IOHandler *h) {
     
     this->handler = h;
 }
@@ -65,10 +65,10 @@ void GLWindowBase::setup_gl() {
         throw Exception(__FILE__, __LINE__, "The version of OpenGL on this machine did not meet minimum system requirements");
 
     // compute and bind viewing matrix
-    PlaceCamera();
+        place_camera();
     
     // compute and bind projection matrix
-    AspectRatio();
+        aspect_ratio();
     
     // create our framebuffer
     screen = new GLScreen(width, height);
@@ -99,7 +99,7 @@ void GLWindowBase::teardown_gl(){
 /*
 Add an object to the graphics object list.
 */
-void GLWindowBase::PushGL(GLObject *o) {
+void GLWindowBase::push_gl(GLObject *o) {
     
     draw_list.PushBack(o);
 }
@@ -108,7 +108,7 @@ void GLWindowBase::PushGL(GLObject *o) {
 /*
 Remove an object from the graphics object list.
 */
-void GLWindowBase::PopGL() {
+void GLWindowBase::pop_gl() {
     
     delete draw_list.PopBack();
 }
@@ -117,7 +117,7 @@ void GLWindowBase::PopGL() {
 /*
 Clear all graphics objects from the scene.
 */
-void GLWindowBase::ClearGL() {
+void GLWindowBase::clear_gl() {
     
     draw_list.Clear();
 }
@@ -126,7 +126,7 @@ void GLWindowBase::ClearGL() {
 /*
 Add an object to the graphics object list.
 */
-void GLWindowBase::PushLight(GLLight *l) {
+void GLWindowBase::push_light(GLLight *l) {
     
     light_list.PushBack(l);
 }
@@ -135,7 +135,7 @@ void GLWindowBase::PushLight(GLLight *l) {
 /*
 Remove an object from the graphics object list.
 */
-void GLWindowBase::PopLight() {
+void GLWindowBase::pop_light() {
     
     delete light_list.PopBack();
 }
@@ -144,7 +144,7 @@ void GLWindowBase::PopLight() {
 /*
 Clear all graphics objects from the scene.
 */
-void GLWindowBase::ClearLights() {
+void GLWindowBase::clear_lights() {
     
     light_list.Clear();
 }
@@ -156,7 +156,7 @@ Calculate the VIEW_MATRIX transformation matrix.
 Reference:
     http://en.wikibooks.org/wiki/GLSL_Programming/Vertex_Transformations
 */
-void GLWindowBase::PlaceCamera() {
+void GLWindowBase::place_camera() {
     
     Vector posVec(pos.x, pos.y, pos.z);
     
@@ -198,7 +198,7 @@ Calculate the aspect ratio transformation matrix.
 Reference:
     http://en.wikibooks.org/wiki/GLSL_Programming/Vertex_Transformations
 */
-void GLWindowBase::AspectRatio() {
+void GLWindowBase::aspect_ratio() {
     
     double aspect = ((double)width/(double)height);
     double dz = zmin - zmax;
@@ -230,12 +230,12 @@ void GLWindowBase::AspectRatio() {
 /*
 Draw our objects on the canvas.
 */
-void GLWindowBase::Render() {
+void GLWindowBase::render() {
     
     screen->BindFBO();
     
     glClear(mask);
-    PlaceCamera();
+    place_camera();
     
     for(int i = 0; i < draw_list.Size(); ++i) {
         
@@ -261,7 +261,7 @@ void GLWindowBase::Render() {
 /*
 
 */
-Vertex& GLWindowBase::GetCamPos() {
+Vertex& GLWindowBase::cam_pos() {
     
     return pos;
 }
@@ -270,7 +270,7 @@ Vertex& GLWindowBase::GetCamPos() {
 /*
 
 */
-Vertex& GLWindowBase::GetCamFocus() {
+Vertex& GLWindowBase::cam_focus() {
     
     return focus;
 }
@@ -288,9 +288,9 @@ void GLWindowBase::wait_for_ready() {
 /*
 
 */
-void GLWindowBase::Resize() {
+void GLWindowBase::resize() {
     
     screen->Resize(width, height);
-    AspectRatio();
+    aspect_ratio();
 }
 

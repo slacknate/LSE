@@ -49,8 +49,8 @@ int TestPrism::OnKey(Object *, unsigned int, unsigned int, void *ptr) {
     printf("Key!\n");
     KeyEvent *event = (KeyEvent *)ptr;
     
-    Vertex& pos = window->GetCamPos();
-    Vertex& foc = window->GetCamFocus();
+    Vertex& pos = window->cam_pos();
+    Vertex& foc = window->cam_focus();
             
     if(event->key == 'w') {
                 

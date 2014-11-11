@@ -9,10 +9,10 @@ Initialize our scene.
 void InitScene(GLWindow *window) {
     
     TestPrism *prism = new TestPrism(window, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
-    window->PushGL(prism);
+    window->push_gl(prism);
     
     //GLLight *light = new GLLight();
-    //window->PushLight(light);
+    //window->push_light(light);
 }
 
 /*

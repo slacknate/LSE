@@ -40,8 +40,8 @@ class GLWindowBase : public Thread {
         double fovy, zmin, zmax; // aspect ratio parameters
         unsigned int mask; // opengl bit clear mask
         
-        void PlaceCamera();
-        void AspectRatio();
+        void place_camera();
+        void aspect_ratio();
 
         virtual void setup_gl_context()=0;
         virtual void teardown_gl_context()=0;
@@ -51,27 +51,27 @@ class GLWindowBase : public Thread {
 
         GLWindowBase(const char *const title, unsigned int m, int w, int h, double angle, double zi, double za);
 
-        void SetupIO(IOHandler *h);
+        void setup_io(IOHandler *h);
 
         void setup_gl();
         void teardown_gl();
 
-        void PushGL(GLObject *o);
-        void PopGL();
-        void ClearGL();
+        void push_gl(GLObject *o);
+        void pop_gl();
+        void clear_gl();
         
-        void PushLight(GLLight *l);
-        void PopLight();
-        void ClearLights();
+        void push_light(GLLight *l);
+        void pop_light();
+        void clear_lights();
         
-        void Render();
+        void render();
 
-        Vertex& GetCamPos();
-        Vertex& GetCamFocus();
+        Vertex& cam_pos();
+        Vertex& cam_focus();
         
         void wait_for_ready();
         
-        void Resize();
+        void resize();
 };
 
 }

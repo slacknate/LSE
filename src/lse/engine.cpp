@@ -194,8 +194,8 @@ begin the context event loop thread.
 int Engine::Run() {
     
     if(window != NULL) {
-        
-        window->SetupIO(&this->handler);
+
+        window->setup_io(&this->handler);
         window->Start();
         window->wait_for_ready();
 
@@ -209,7 +209,7 @@ int Engine::Run() {
                 this->Start();
             
                 while(run)
-                    window->Render();
+                    window->render();
                 
                 this->Join();
                 window->teardown_gl();
