@@ -28,7 +28,7 @@ void GLWindow::swap_gl_buffers() {
 Create a window with an OpenGL context,
 and run our UI event loop.
 */
-void* GLWindow::Execute() {
+void* GLWindow::execute() {
     
     try {
     

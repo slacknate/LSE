@@ -39,7 +39,7 @@ class Engine : public Thread {
         void InitWindow(const char *const windowTitle, unsigned int m, int w, int h, double angle, double zi, double za);
         int Run();
         
-        void* Execute();
+        void* execute();
         
         enum {
             
@@ -48,7 +48,7 @@ class Engine : public Thread {
         };
         
         int OnEvent(Object *sender, unsigned int type, unsigned int id, void *ptr);
-        int OnQuit(Object *sender, unsigned int type, unsigned int id, void *ptr);
+        int on_quit(Object *sender, unsigned int type, unsigned int id, void *ptr);
 };
 
 typedef EventTable<Engine> EngineEventTable;

@@ -20,26 +20,26 @@ class Thread : public Object {
     protected:
         
         pthread_t thread; // event loop thread ID
-        bool execute; // thread execution state
+        bool running; // thread execution state
         
-        static void* ThreadMethod(void *arg);
+        static void* thread_method(void *arg);
         
     public:
         
         Thread();
         
-        bool Start();
-        bool Detach();
-        bool Join();
+        bool start();
+        bool detach();
+        bool join();
         
-        virtual void* Execute();
+        virtual void* execute()=0;
         
         enum {
             
             ID_QUIT = 1
         };
         
-        int OnQuit(Object *sender, unsigned int type, unsigned int id, void *ptr);
+        int on_quit(Object *sender, unsigned int type, unsigned int id, void *ptr);
 };
 
 typedef EventTable<Thread> ThreadEventTable;

@@ -12,8 +12,8 @@ using namespace LSE;
 Engine event table.
 */
 const EngineEventTable Engine::table = EngineEventTable({
-    
-    EngineTableEntry(EVENT_QUIT, Engine::ID_QUIT, &Engine::OnQuit),
+
+        EngineTableEntry(EVENT_QUIT, Engine::ID_QUIT, &Engine::on_quit),
     EngineTableEntry(EVENT_ANY,  ID_ANY,          &Engine::OnEvent)
 });
 
@@ -82,8 +82,8 @@ Open a file on disk for logging std::cout and std::cerr.
 Preserve the original stream buffer for both streams.
 */
 void Engine::create_logs() {
-    
-    logger.Start();
+
+    logger.start();
     
     char *date_and_day_str = LSE::calloc<char>(DAY_DATE_STR_LENGTH);
     LSE::get_day_and_date(date_and_day_str);
@@ -129,8 +129,8 @@ their original stream buffers.
 void Engine::close_logs() {
     
     this->log_banner("Close");
-    
-    logger.Join();
+
+    logger.join();
     
     std::cout.rdbuf(this->cout_buff);
     std::cerr.rdbuf(this->cerr_buff);
@@ -143,7 +143,7 @@ void Engine::close_logs() {
 /*
 
 */
-void* Engine::Execute() {
+void* Engine::execute() {
     
     logger.debug("Event queue thread started.");
     
@@ -196,7 +196,7 @@ int Engine::Run() {
     if(window != NULL) {
 
         window->setup_io(&this->handler);
-        window->Start();
+        window->start();
         window->wait_for_ready();
 
         if(StatusCode() != GL_INIT_FAIL) {
@@ -205,13 +205,13 @@ int Engine::Run() {
 
                 window->setup_gl();
                 ::GLInit();
-                ::InitScene(this->window);           
-                this->Start();
+                ::InitScene(this->window);
+                this->start();
             
                 while(run)
                     window->render();
-                
-                this->Join();
+
+                this->join();
                 window->teardown_gl();
             }
             catch(Exception &e) {
@@ -230,8 +230,8 @@ int Engine::Run() {
             if(MaxFBOColorAttachments() < GL_MIN_COLOR_ATTACH)
                 logger.error("Too few bindable Frame buffer object color attachmentments available.");
         }
-        
-        window->Join();
+
+        window->join();
     }
     else {
         
@@ -267,7 +267,7 @@ int Engine::OnEvent(Object *, unsigned int, unsigned int, void *ptr) {
 /*
 Quit the application.
 */
-int Engine::OnQuit(Object *, unsigned int, unsigned int, void *ptr) {
+int Engine::on_quit(Object *, unsigned int, unsigned int, void *ptr) {
     
     logger.debug("Received quit event. Stopping event loop.");
     this->run = false;

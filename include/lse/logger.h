@@ -43,7 +43,7 @@ class Logger : public Thread {
         LogBuffer buffer;
         Semaphore log_sem;
         
-        void* Execute();
+        void* execute();
         void write_log(LogLevel log_level, std::ostream &stream, char *fmt_log);
         
         void log_event(LogLevel log_level, std::ostream &stream, const char *format, va_list *arg_list);
@@ -52,7 +52,7 @@ class Logger : public Thread {
         
         Logger(LogLevel _level);
         
-        bool Join();
+        bool join();
         
         void info(const char *format, ...);
         void debug(const char *format, ...);

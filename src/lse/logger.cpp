@@ -32,20 +32,20 @@ Logger::Logger(LogLevel _level) : level(_level), buffer(LOG_BUFFER_SIZE) {}
 /*
 Stop the logger write-to-disk thread.
 */
-bool Logger::Join() {
+bool Logger::join() {
     
-    execute = false;
+    running = false;
     this->log_sem.post();
-    return Thread::Join();
+    return Thread::join();
 }
 
 
 /*
 Thread to write log events to their respective log files.
 */
-void* Logger::Execute() {
+void* Logger::execute() {
     
-    while(this->execute) {
+    while(this->running) {
 
         this->log_sem.wait();
         
@@ -54,7 +54,7 @@ void* Logger::Execute() {
         empty. Thusly we need to make sure to skip writing a log event if
         we are terminating the logger.
         */
-        if(this->execute) {
+        if(this->running) {
             
             LogEvent *log_event = this->buffer.pop();
             

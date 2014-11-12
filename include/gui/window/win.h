@@ -24,7 +24,7 @@ class GLWindow : public GLWindowBase {
         
         GLWindow(const char *const title, unsigned int m, int w, int h, double angle, double zi, double za);
 
-        void* Execute();
+        void* execute();
 };
 
 }

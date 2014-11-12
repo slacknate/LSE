@@ -6,8 +6,8 @@ using namespace LSE;
 Thread event table.
 */
 const ThreadEventTable Thread::table = ThreadEventTable({
-    
-    ThreadTableEntry(EVENT_QUIT, Thread::ID_QUIT, &Thread::OnQuit)
+
+        ThreadTableEntry(EVENT_QUIT, Thread::ID_QUIT, &Thread::on_quit)
 });
 
 /*
@@ -15,7 +15,7 @@ Initialize our thread to a non-running state.
 */
 Thread::Thread() {
     
-    this->execute = false;
+    this->running = false;
     
     this->register_table(&Thread::table);
 }
@@ -23,23 +23,23 @@ Thread::Thread() {
 /*
 Run the user defined method in the new thread.
 */
-void* Thread::ThreadMethod(void *arg) {
+void* Thread::thread_method(void *arg) {
     
-    Thread *t = (Thread *)arg;
-    return t->Execute();
+    Thread *thread = (Thread *)arg;
+    return thread->execute();
 }
 
 /*
 Run the thread.
 */
-bool Thread::Start() {
+bool Thread::start() {
     
-    int threadError = pthread_create(&thread, NULL, &Thread::ThreadMethod, this);
+    int threadError = pthread_create(&thread, NULL, &Thread::thread_method, this);
     if(threadError != 0)
         logger.errn("Error starting thread");
         
     else
-        execute = true;
+        running = true;
         
     return !threadError;
 }
@@ -47,7 +47,7 @@ bool Thread::Start() {
 /*
 Detach the thread from the calling thread.
 */
-bool Thread::Detach() {
+bool Thread::detach() {
     
     int threadError = pthread_detach(thread);
     if(threadError != 0)
@@ -59,9 +59,9 @@ bool Thread::Detach() {
 /*
 Join the thread to the calling thread.
 */
-bool Thread::Join() {
+bool Thread::join() {
     
-    execute = false;
+    running = false;
     
     int threadError = pthread_join(thread, NULL);
     if(threadError != 0)
@@ -71,19 +71,11 @@ bool Thread::Join() {
 }
 
 /*
-
-*/
-void* Thread::Execute() { 
-    
-    return NULL;
-}
-
-/*
 Give the user the ability to terminate
 a detached thread.
 */
-int Thread::OnQuit(Object *, unsigned int, unsigned int, void *) {
+int Thread::on_quit(Object *, unsigned int, unsigned int, void *) {
     
-    execute = false;
+    running = false;
     return true;
 }
