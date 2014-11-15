@@ -90,7 +90,7 @@ void Engine::create_logs() {
     strncpy(message_log_name, date_and_day_str, DAY_DATE_STR_LENGTH);
     strncat(message_log_name, "_cout.log", 9);
     
-    for(int i = 0; i < DAY_DATE_STR_LENGTH + 9; ++i) {
+    for(unsigned int i = 0; i < DAY_DATE_STR_LENGTH + 9; ++i) {
         
         if(message_log_name[i] == ' ')
             message_log_name[i] = '_';
@@ -103,7 +103,7 @@ void Engine::create_logs() {
     strncpy(error_log_name, date_and_day_str, DAY_DATE_STR_LENGTH);
     strncat(error_log_name, "_cerr.log", 9);
     
-    for(int i = 0; i < DAY_DATE_STR_LENGTH + 9; ++i) {
+    for(unsigned int i = 0; i < DAY_DATE_STR_LENGTH + 9; ++i) {
         
         if(error_log_name[i] == ' ')
             error_log_name[i] = '_';
