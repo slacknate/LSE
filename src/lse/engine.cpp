@@ -24,7 +24,6 @@ const EngineEventTable Engine::table = EngineEventTable({
 Engine::Engine(int argc, char *argv[]) : handler(this) {
     
     window = NULL;
-    run = false;
     status = OK;
     keyFocus = mouseFocus = NULL;
     
@@ -52,7 +51,6 @@ Engine::~Engine() {
 void Engine::InitWindow(const char *const windowTitle, unsigned int mask, int width, int height, double angle, double zi, double za) {
     
     window = new GLWindow(windowTitle, mask, width, height, angle, zi, za);
-    run = true;
 }
 
 
@@ -147,7 +145,7 @@ void* Engine::execute() {
     
     logger.debug("Event queue thread started.");
     
-    while(run) {
+    while(this->running) {
 
         event_sem.wait();
         
@@ -208,7 +206,7 @@ int Engine::Run() {
                 ::InitScene(this->window);
                 this->start();
             
-                while(run)
+                while(this->running)
                     window->render();
 
                 this->join();
@@ -270,7 +268,7 @@ Quit the application.
 int Engine::on_quit(Object *, unsigned int, unsigned int, void *ptr) {
     
     logger.debug("Received quit event. Stopping event loop.");
-    this->run = false;
+    this->running = false;
     
     Event *event = (Event *)ptr;
     logger.debug("Sending quit event to event queue.");

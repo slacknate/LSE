@@ -24,7 +24,6 @@ class Engine : public Thread {
         GLWindow *window; // OpenGL window
         std::streambuf *cout_buff, *cerr_buff;
         std::filebuf message_log, error_log; // logging file handles
-        bool run; // keep the engine running
         int status; // exit status
         
         void log_banner(const char *const title);
