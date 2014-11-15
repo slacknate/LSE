@@ -49,7 +49,7 @@ Engine::~Engine() {
 */
 void Engine::init_window(const char *const title, unsigned int mask, int width, int height, double angle, double zi, double za) {
     
-    window = new GLWindow(title, mask, width, height, angle, zi, za);
+    this->window = new GLWindow(title, mask, width, height, angle, zi, za);
 }
 
 
