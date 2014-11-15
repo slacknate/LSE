@@ -1,7 +1,6 @@
 #ifndef LSE_EVENT_TABLE_H
 #define LSE_EVENT_TABLE_H
 
-#include <lse/object.h>
 #include <vector> // FIXME: don't use STL stuff...
 #include "lse/event/entry.h"
 #include "lse/event/types.h"
