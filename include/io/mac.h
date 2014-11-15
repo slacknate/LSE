@@ -5,7 +5,7 @@
 
 namespace LSE {
 
-class IOHandler : public IOHandler_Base {
+class IOHandler : public IOHandlerBase {
         
     public:
         
