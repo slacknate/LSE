@@ -35,18 +35,17 @@ class Engine : public Thread {
         Engine(int argc, char *argv[]);
         ~Engine();
         
-        void InitWindow(const char *const windowTitle, unsigned int m, int w, int h, double angle, double zi, double za);
-        int Run();
+        void init_window(const char *const title, unsigned int m, int w, int h, double angle, double zi, double za);
+        int run();
         
         void* execute();
         
         enum {
             
             ID_QUIT = 1,
-            ID_EVENT
         };
         
-        int OnEvent(Object *sender, unsigned int type, unsigned int id, void *ptr);
+        int on_event(Object *sender, unsigned int type, unsigned int id, void *ptr);
         int on_quit(Object *sender, unsigned int type, unsigned int id, void *ptr);
 };
 

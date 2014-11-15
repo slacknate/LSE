@@ -14,7 +14,7 @@ Engine event table.
 const EngineEventTable Engine::table = EngineEventTable({
 
     EngineTableEntry(EVENT_QUIT, Engine::ID_QUIT, &Engine::on_quit),
-    EngineTableEntry(EVENT_ANY,  ID_ANY,          &Engine::OnEvent)
+    EngineTableEntry(EVENT_ANY, ID_ANY, &Engine::on_event)
 });
 
 
@@ -47,9 +47,9 @@ Engine::~Engine() {
 /*
 
 */
-void Engine::InitWindow(const char *const windowTitle, unsigned int mask, int width, int height, double angle, double zi, double za) {
+void Engine::init_window(const char *const title, unsigned int mask, int width, int height, double angle, double zi, double za) {
     
-    window = new GLWindow(windowTitle, mask, width, height, angle, zi, za);
+    window = new GLWindow(title, mask, width, height, angle, zi, za);
 }
 
 
@@ -188,7 +188,7 @@ We set the engine pointer of
 the GLContext object, and 
 begin the context event loop thread.
 */
-int Engine::Run() {
+int Engine::run() {
     
     try {
 
@@ -243,7 +243,7 @@ int Engine::Run() {
 /*
 Post an event to the event queue.
 */
-int Engine::OnEvent(Object *, unsigned int, unsigned int, void *ptr) {
+int Engine::on_event(Object *, unsigned int, unsigned int, void *ptr) {
     
     if(ptr != NULL) {
         
