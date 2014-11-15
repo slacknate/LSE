@@ -26,7 +26,7 @@ class Object {
 
         virtual ~Object();
         
-        int Dispatch(Object *sender, unsigned int type, unsigned int id, void *ptr);
+        int dispatch(Object *sender, unsigned int type, unsigned int id, void *ptr);
 };
 
 }

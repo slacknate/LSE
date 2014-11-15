@@ -158,11 +158,11 @@ void* Engine::execute() {
                 
                 case EVENT_KEYBOARD:
                     if(this->key_focus)
-                        this->key_focus->Dispatch(this, EVENT_KEYBOARD, ID_ANY, event);
+                        this->key_focus->dispatch(this, EVENT_KEYBOARD, ID_ANY, event);
                     break;
                 case EVENT_MOUSE:
                     if(this->mouse_focus)
-                        this->mouse_focus->Dispatch(this, EVENT_MOUSE, ID_ANY, event);
+                        this->mouse_focus->dispatch(this, EVENT_MOUSE, ID_ANY, event);
                     break;
                 default:
                     break;

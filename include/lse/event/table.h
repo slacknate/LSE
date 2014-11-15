@@ -1,6 +1,7 @@
 #ifndef LSE_EVENT_TABLE_H
 #define LSE_EVENT_TABLE_H
 
+#include <lse/object.h>
 #include <vector> // FIXME: don't use STL stuff...
 #include "lse/event/entry.h"
 #include "lse/event/types.h"
@@ -20,7 +21,7 @@ class EventTableBase {
     
     public:
         
-        virtual int Dispatch(Object *, Object *, unsigned int, unsigned int, void *) const { return 0; }
+        virtual int dispatch(Object *, Object *, unsigned int, unsigned int, void *) const { return 0; }
 };
 
 
@@ -47,18 +48,18 @@ template <class T> class EventTable : public EventTableBase {
             }
         }
         
-        int Dispatch(Object *target, Object *sender, unsigned int type, unsigned int id, void *ptr) const { 
+        int dispatch(Object *target, Object *sender, unsigned int type, unsigned int id, void *ptr) const {
             
             T *typed_target = (T *)target;
             
             int result = 0;
             for(int i = 0; i < this->items.size(); ++i) {
                 
-                const EventTableEntry<T> &blah = this->items[i];
+                const EventTableEntry<T> &table_entry = this->items[i];
                 
-                const unsigned int handler_type = blah.type;
-                const unsigned int handler_id = blah.id;
-                const EventMethod handler_method = blah.method;
+                const unsigned int handler_type = table_entry.type;
+                const unsigned int handler_id = table_entry.id;
+                const EventMethod handler_method = table_entry.method;
                 
                 if((handler_type == type || handler_type == EVENT_ANY) && (handler_id == id || handler_id == ID_ANY)) {
                     

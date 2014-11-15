@@ -9,6 +9,6 @@ IOHandler_Base::IOHandler_Base(Object *e) {
 }
 
 void IOHandler_Base::HandleEvent(Object *sender, unsigned int type, unsigned int id, void *ptr) {
-    
-    IOHandler_Base::engine->Dispatch(sender, type, id, ptr);
+
+    IOHandler_Base::engine->dispatch(sender, type, id, ptr);
 }

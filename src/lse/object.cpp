@@ -28,11 +28,11 @@ void Object::register_table(const EventTableBase *tp) {
 /*
 Dispatch an event through the event table.
 */
-int Object::Dispatch(Object *sender, unsigned int type, unsigned int id, void *ptr) { 
+int Object::dispatch(Object *sender, unsigned int type, unsigned int id, void *ptr) {
     
     int result = 0;
     if(this->table_ptr != nullptr)
-        result = this->table_ptr->Dispatch(this, sender, type, id, ptr); 
+        result = this->table_ptr->dispatch(this, sender, type, id, ptr);
         
     else
         logger.error("This object does not have an event table.\nSkipping event dispatch.");
