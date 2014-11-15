@@ -8,7 +8,7 @@ namespace LSE {
 /*
 
 */
-class IOHandler_Base : public Object {
+class IOHandlerBase : public Object {
     
     private:
         
@@ -16,7 +16,7 @@ class IOHandler_Base : public Object {
         
     public:
         
-        IOHandler_Base(Object *e);
+        IOHandlerBase(Object *e);
         
         static void HandleEvent(Object *sender, unsigned int type, unsigned int id, void *ptr);
 };

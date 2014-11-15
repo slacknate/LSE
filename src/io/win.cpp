@@ -271,7 +271,7 @@ int* vbutton_to_lbutton(unsigned int vbutton) {
 /*
 
 */
-IOHandler::IOHandler(Object *e) : IOHandler_Base(e) { }
+IOHandler::IOHandler(Object *e) : IOHandlerBase(e) { }
 
 /*
 
@@ -317,7 +317,7 @@ LRESULT CALLBACK IOHandler::WindowHandler(HWND hwnd, unsigned int message, WPARA
             // terminate the engine
             
             QuitEvent *quit_event = new QuitEvent();
-            IOHandler_Base::HandleEvent(NULL, EVENT_QUIT, Engine::ID_QUIT, quit_event);
+            IOHandlerBase::HandleEvent(NULL, EVENT_QUIT, Engine::ID_QUIT, quit_event);
             break;
         }    
         case WM_INPUT: {
@@ -365,7 +365,7 @@ LRESULT CALLBACK IOHandler::WindowHandler(HWND hwnd, unsigned int message, WPARA
                 key_event->key = vkey_to_lkey(r_keyboard->VKey, r_keyboard->MakeCode, left_right);
                 key_event->state = key_state;
                 
-                IOHandler_Base::HandleEvent(NULL, EVENT_KEYBOARD, ID_ANY, key_event);
+                IOHandlerBase::HandleEvent(NULL, EVENT_KEYBOARD, ID_ANY, key_event);
             }
             else if(raw_input->header.dwType == RIM_TYPEMOUSE) {
             
@@ -400,7 +400,7 @@ LRESULT CALLBACK IOHandler::WindowHandler(HWND hwnd, unsigned int message, WPARA
                     logger.error("Invalid mouse state"); // TODO: real error handling
                 }
                 
-                IOHandler_Base::HandleEvent(NULL, EVENT_MOUSE, ID_ANY, mouse_event);
+                IOHandlerBase::HandleEvent(NULL, EVENT_MOUSE, ID_ANY, mouse_event);
             }
             else if(raw_input->header.dwType == RIM_TYPEHID) {
                 

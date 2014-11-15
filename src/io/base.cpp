@@ -1,14 +1,14 @@
 #include "io/base.h"
 using namespace LSE;
 
-Object *IOHandler_Base::engine = NULL;
+Object *IOHandlerBase::engine = NULL;
 
-IOHandler_Base::IOHandler_Base(Object *e) {
+IOHandlerBase::IOHandlerBase(Object *e) {
     
     this->engine = e;
 }
 
-void IOHandler_Base::HandleEvent(Object *sender, unsigned int type, unsigned int id, void *ptr) {
+void IOHandlerBase::HandleEvent(Object *sender, unsigned int type, unsigned int id, void *ptr) {
 
-    IOHandler_Base::engine->dispatch(sender, type, id, ptr);
+    IOHandlerBase::engine->dispatch(sender, type, id, ptr);
 }
