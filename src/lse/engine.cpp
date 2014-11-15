@@ -24,14 +24,13 @@ const EngineEventTable Engine::table = EngineEventTable({
 Engine::Engine(int argc, char *argv[]) : handler(this) {
 
     this->window = NULL;
-    status = OK;
-    keyFocus = mouseFocus = NULL;
+    this->status = OK;
+    this->key_focus = this->mouse_focus = NULL;
     
     this->create_logs();
-    
-    LSE::InitSignals(this);
-    
     this->register_table(&Engine::table);
+
+    LSE::InitSignals(this);
 }
 
 
@@ -40,7 +39,7 @@ Engine::Engine(int argc, char *argv[]) : handler(this) {
 */
 Engine::~Engine() {
     
-    this->eventList.Clear();
+    this->event_list.Clear();
     this->close_logs();
 }
 
@@ -147,9 +146,9 @@ void* Engine::execute() {
     
     while(this->running) {
 
-        event_sem.wait();
+        this->event_sem.wait();
         
-        ListNode *node = eventList.PopBack();
+        ListNode *node = this->event_list.PopBack();
         if(node) {
             
             Event *event = (Event *)node->GetData();
@@ -158,12 +157,12 @@ void* Engine::execute() {
             switch(event->type) {
                 
                 case EVENT_KEYBOARD:
-                    if(keyFocus)
-                        keyFocus->Dispatch(this, EVENT_KEYBOARD, ID_ANY, event);
+                    if(this->key_focus)
+                        this->key_focus->Dispatch(this, EVENT_KEYBOARD, ID_ANY, event);
                     break;
                 case EVENT_MOUSE:
-                    if(mouseFocus)
-                        mouseFocus->Dispatch(this, EVENT_MOUSE, ID_ANY, event);
+                    if(this->mouse_focus)
+                        this->mouse_focus->Dispatch(this, EVENT_MOUSE, ID_ANY, event);
                     break;
                 default:
                     break;
@@ -237,7 +236,7 @@ int Engine::Run() {
         logger.error(e.what());
     }
     
-    return status;
+    return this->status;
 }
 
 
@@ -250,9 +249,9 @@ int Engine::OnEvent(Object *, unsigned int, unsigned int, void *ptr) {
         
         Event *event = (Event *)ptr;
         logger.verbose("Adding %s event to queue.", event->name);
-        eventList.PushFront(event);
+        this->event_list.PushFront(event);
 
-        event_sem.post();
+        this->event_sem.post();
     }
     else {
         
@@ -273,8 +272,8 @@ int Engine::on_quit(Object *, unsigned int, unsigned int, void *ptr) {
     
     Event *event = (Event *)ptr;
     logger.debug("Sending quit event to event queue.");
-    eventList.PushFront(event);
+    this->event_list.PushFront(event);
 
-    event_sem.post();
+    this->event_sem.post();
     return true;
 }

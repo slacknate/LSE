@@ -17,8 +17,8 @@ class Engine : public Thread {
         
         static const EventTable<Engine> table;
         
-        List eventList; // 
-        Object *keyFocus, *mouseFocus;
+        List event_list; //
+        Object *key_focus, *mouse_focus;
         Semaphore event_sem;
         IOHandler handler;
         GLWindow *window; // OpenGL window
