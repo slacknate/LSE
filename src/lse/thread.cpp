@@ -1,5 +1,6 @@
 #include "lse/thread.h"
 #include "lse/globals.h"
+#include "lse/exception.h"
 using namespace LSE;
 
 /*
@@ -24,9 +25,20 @@ Thread::Thread() {
 Run the user defined method in the new thread.
 */
 void* Thread::thread_method(void *arg) {
-    
-    Thread *thread = (Thread *)arg;
-    return thread->execute();
+
+    void *result = nullptr;
+
+    try {
+
+        Thread *thread = (Thread *)arg;
+        result = thread->execute();
+    }
+    catch(Exception &e) {
+
+        logger.error(e.what());
+    }
+
+    return result;
 }
 
 /*
