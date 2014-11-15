@@ -7,9 +7,9 @@ Initialize a "zero" vector.
 */
 Vector::Vector() {
     
-    this->i = 0.0;
-    this->j = 0.0;
-    this->k = 0.0;
+    this->x = 0.0;
+    this->y = 0.0;
+    this->z = 0.0;
 }
 
 /*
@@ -17,61 +17,61 @@ Initialize our vector.
 */
 Vector::Vector(double x, double y, double z) {
     
-    this->i = x;
-    this->j = y;
-    this->k = z;
+    this->x = x;
+    this->y = y;
+    this->z = z;
 }
 
 /*
 Get the X component.
 */
-double Vector::I() {
+double Vector::i() {
     
-    return this->i;
+    return this->x;
 }
 
 /*
 Get the Y component.
 */
-double Vector::J() {
+double Vector::j() {
     
-    return this->j;
+    return this->y;
 }
 
 /*
 Get the Z component.
 */
-double Vector::K() {
+double Vector::k() {
     
-    return this->k;
+    return this->z;
 }
 
 /*
 Get the length of the vector.
 */
-double Vector::Length() {
+double Vector::length() {
     
-    return sqrt(pow(this->i, 2.0) + pow(this->j, 2.0) + pow(this->k, 2.0));
+    return sqrt(pow(this->x, 2.0) + pow(this->y, 2.0) + pow(this->z, 2.0));
 }
 
 /*
 Make this vector a unit vector in its current direction.
 */
-void Vector::Normalize() {
+void Vector::normalize() {
     
-    double size = this->Length();
+    double size = this->length();
     if(size > 0) {
         
-        this->i /= size;
-        this->j /= size;
-        this->k /= size;
+        this->x /= size;
+        this->y /= size;
+        this->z /= size;
     }
 }
 
 /*
-Words. Fancy words. That describe orthagonalization. fix me
+FIXME: Words. Fancy words. That describe orthagonalization.
 */
-void Vector::Orthagonalize(Vector& v) {
+void Vector::orthagonalize(Vector &v) {
     
     
 }
@@ -81,7 +81,7 @@ Vector scalar multiplication.
 */
 Vector Vector::operator*(const double& scalar) {
     
-    return Vector(this->i * scalar, this->j * scalar, this->k * scalar);
+    return Vector(this->x * scalar, this->y * scalar, this->z * scalar);
 }
 
 /*
@@ -89,7 +89,7 @@ Vector scalar division.
 */
 Vector Vector::operator/(const double& scalar) {
     
-    return Vector(this->i / scalar, this->j / scalar, this->k / scalar);
+    return Vector(this->x / scalar, this->y / scalar, this->z / scalar);
 }
 
 /*
@@ -97,7 +97,7 @@ Vector addition.
 */
 Vector Vector::operator+(const Vector& other) {
     
-    return Vector(this->i + other.i, this->j + other.j, this->k + other.k);
+    return Vector(this->x + other.x, this->y + other.y, this->z + other.z);
 }
 
 /*
@@ -105,7 +105,7 @@ Vector subtraction.
 */
 Vector Vector::operator-(const Vector& other) {
     
-    return Vector(this->i - other.i, this->j - other.j, this->k - other.k);
+    return Vector(this->x - other.x, this->y - other.y, this->z - other.z);
 }
 
 /*
@@ -113,7 +113,7 @@ Get the angle between two vector, in radians.
 */
 double Vector::operator^(Vector& other) {
     
-    return acos((float)((*this * other)/(this->Length() * other.Length())));
+    return acos((float)((*this * other)/(this->length() * other.length())));
 }
 
 /*
@@ -121,7 +121,7 @@ Get the dot product of two vector.
 */
 double Vector::operator*(const Vector& other) {
     
-    return (this->i * other.i) + (this->j * other.j) + (this->k * other.k);
+    return (this->x * other.x) + (this->y * other.y) + (this->z * other.z);
 }
 
 /*
@@ -129,19 +129,19 @@ Get the cross product of two vector.
 */
 Vector Vector::operator%(const Vector& other) {
     
-    double x = (this->j * other.k) - (this->k * other.j);
-    double y = (this->k * other.i) - (this->i * other.k);
-    double z = (this->i * other.j) - (this->j * other.i);
+    double x = (this->y * other.z) - (this->z * other.y);
+    double y = (this->z * other.x) - (this->x * other.z);
+    double z = (this->x * other.y) - (this->y * other.x);
     
     return Vector(x, y, z);
 }
 
 bool Vector::operator==(const Vector& other) {
     
-    return (this->i == other.i && this->j == other.j && this->k == other.k);
+    return (this->x == other.x && this->y == other.y && this->z == other.z);
 }
 
 bool Vector::operator!=(const Vector& other) {
     
-    return (this->i != other.i || this->j != other.j || this->k != other.k);
+    return (this->x != other.x || this->y != other.y || this->z != other.z);
 }

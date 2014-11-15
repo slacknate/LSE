@@ -177,7 +177,7 @@ Multiply a vector by this quaternion.
 */
 Vector Quaternion::operator*(Vector& v) {
     
-    Quaternion qv(v.I(), v.J(), v.K(), 0.0);
+    Quaternion qv(v.i(), v.j(), v.k(), 0.0);
     Quaternion q = this->Conjugate() * qv;
     q = q * *this;
     return Vector(q.I(), q.J(), q.K());

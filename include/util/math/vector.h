@@ -12,19 +12,19 @@ class Vector {
     
     private:
         
-        double i, j, k; // Vector components
+        double x, y, z; // Vector components
         
     public:
         
         Vector();
         Vector(double x, double y, double z);
         
-        double I();
-        double J();
-        double K();
-        double Length();
-        void Normalize();
-        void Orthagonalize(Vector& v);
+        double i();
+        double j();
+        double k();
+        double length();
+        void normalize();
+        void orthagonalize(Vector &v);
         
         Vector operator*(const double& scalar);
         Vector operator/(const double& scalar);

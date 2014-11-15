@@ -130,20 +130,20 @@ void GLPrimitive::CalcNormals() {
                                 
             // calculate the cross product, and normalize it
             Vector normal = vec1 % vec2;
-            normal.Normalize();
+            normal.normalize();
             
             // store our result in the normal array (note: need a normal per vertex)
-            normals[(3*vertOne)] = normal.I();
-            normals[(3*vertOne)+1] = normal.J();
-            normals[(3*vertOne)+2] = normal.K();
+            normals[(3*vertOne)] = normal.i();
+            normals[(3*vertOne)+1] = normal.j();
+            normals[(3*vertOne)+2] = normal.k();
             
-            normals[(3*vertTwo)+3] = normal.I();
-            normals[(3*vertTwo)+4] = normal.J();
-            normals[(3*vertTwo)+5] = normal.K();
+            normals[(3*vertTwo)+3] = normal.i();
+            normals[(3*vertTwo)+4] = normal.j();
+            normals[(3*vertTwo)+5] = normal.k();
             
-            normals[(3*vertThree)+6] = normal.I();
-            normals[(3*vertThree)+7] = normal.J();
-            normals[(3*vertThree)+8] = normal.K();
+            normals[(3*vertThree)+6] = normal.i();
+            normals[(3*vertThree)+7] = normal.j();
+            normals[(3*vertThree)+8] = normal.k();
         }
     }
 }
@@ -261,7 +261,7 @@ void GLPrimitive::RenderNormals() {
             v = v / 3;
                     
             // calculate the barycenter of the triangle
-            Vertex barycenter(mid12.x + v.I(), mid12.y + v.J(), mid12.z + v.K());
+            Vertex barycenter(mid12.x + v.i(), mid12.y + v.j(), mid12.z + v.k());
             
             // get normal of the current surface
             Vector normal = GetNormalAt(barycenter.x, barycenter.y, barycenter.z);
@@ -276,7 +276,7 @@ void GLPrimitive::RenderNormals() {
             glColor4f(1.0, 0.0, 0.0, 0.0);
             glBegin(GL_LINES);
                 glVertex3f(pX, pY, pZ);
-                glVertex3f(pX + normal.I(), pY + normal.J(), pZ + normal.K());
+                glVertex3f(pX + normal.i(), pY + normal.j(), pZ + normal.k());
             glEnd();
             glColor4f(1.0, 1.0, 1.0, 1.0);
             
@@ -325,7 +325,7 @@ Vector GLPrimitive::GetNormalAt(double x, double y, double z) {
             v = v / 3;
             
             // calculate the barycenter of the triangle
-            Vertex barycenter(mid12.x + v.I(), mid12.y + v.J(), mid12.z + v.K());
+            Vertex barycenter(mid12.x + v.i(), mid12.y + v.j(), mid12.z + v.k());
             
             // test if the given point falls in this triangle
             if(InTriangle(vert1, vert2, vert3, barycenter, x, y, z))

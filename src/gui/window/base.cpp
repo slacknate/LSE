@@ -161,28 +161,28 @@ void GLWindowBase::place_camera() {
     Vector posVec(pos.x, pos.y, pos.z);
     
     Vector forward(focus.x - pos.x, focus.y - pos.y, focus.z - pos.z);
-    forward.Normalize();
+    forward.normalize();
     forward = forward * -1.0;
     
     Vector side = forward % up;
-    side.Normalize();
+    side.normalize();
     
     up = forward % side;
-    up.Normalize();
+    up.normalize();
     
-    VIEW_MATRIX[0] = side.I();
-    VIEW_MATRIX[1] = up.I();
-    VIEW_MATRIX[2] = forward.I();
+    VIEW_MATRIX[0] = side.i();
+    VIEW_MATRIX[1] = up.i();
+    VIEW_MATRIX[2] = forward.i();
     VIEW_MATRIX[3] = 0.0;
     
-    VIEW_MATRIX[4] = side.J();
-    VIEW_MATRIX[5] = up.J();
-    VIEW_MATRIX[6] = forward.J();
+    VIEW_MATRIX[4] = side.j();
+    VIEW_MATRIX[5] = up.j();
+    VIEW_MATRIX[6] = forward.j();
     VIEW_MATRIX[7] = 0.0;
     
-    VIEW_MATRIX[8] = side.K();
-    VIEW_MATRIX[9] = up.K();
-    VIEW_MATRIX[10] = forward.K();
+    VIEW_MATRIX[8] = side.k();
+    VIEW_MATRIX[9] = up.k();
+    VIEW_MATRIX[10] = forward.k();
     VIEW_MATRIX[11] = 0.0;
     
     VIEW_MATRIX[12] = -1.0 * (side * posVec);

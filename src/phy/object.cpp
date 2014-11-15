@@ -27,13 +27,13 @@ void PHObject::ApplyForce(Vector &force, Vector &normal, double x, double y, dou
     inverseNormal = inverseNormal * -1;
     double dotProd = force * inverseNormal;
     Vector linearForce = inverseNormal;
-    linearForce.Normalize();
+    linearForce.normalize();
     linearForce = linearForce * dotProd;
     
     //  get the component of force that is converted to angular velocity
-    double tailX = x - force.I() + linearForce.I();
-    double tailY = y - force.J() + linearForce.J();
-    double tailZ = z - force.K() + linearForce.K();
+    double tailX = x - force.i() + linearForce.i();
+    double tailY = y - force.j() + linearForce.j();
+    double tailZ = z - force.k() + linearForce.k();
     Vector angularForce(x - tailX, y - tailY, z - tailZ);
     
     linearVelocity = linearVelocity + (linearForce / mass);
@@ -57,7 +57,7 @@ unsigned int PHObject::Update(unsigned int delay, void *arg) {
         
             // update orientation
             Quaternion q(cos(PI/180.0)/PHY_UPD_MULT, ph->angularVelocity.I(), ph->angularVelocity.J(), ph->angularVelocity.K());
-            q.Normalize();
+            q.normalize();
             ph->object->Transform(q);
         }
     }

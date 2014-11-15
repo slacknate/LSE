@@ -29,7 +29,7 @@ int TestPrism::OnMouseMotion(Object *, unsigned int, unsigned int, void *) {
         if(event->state == SDL_PRESSED) {
             
             Vector v(event->yrel, event->xrel, 0);
-            v.Normalize();
+            v.normalize();
 
             Quaternion q(10.0*cos(3.14159265359/180.0), v.I(), v.J(), v.K());
             q.Normalize();
