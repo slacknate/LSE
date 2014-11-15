@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
     
     Engine engine(argc, argv);
     
-    int mask = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT;
+    unsigned int mask = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT;
     engine.InitWindow("Engine", mask, 640, 480, 90.0, 1.0, 20.0);
     
     return engine.Run();

@@ -13,7 +13,7 @@ Engine event table.
 */
 const EngineEventTable Engine::table = EngineEventTable({
 
-        EngineTableEntry(EVENT_QUIT, Engine::ID_QUIT, &Engine::on_quit),
+    EngineTableEntry(EVENT_QUIT, Engine::ID_QUIT, &Engine::on_quit),
     EngineTableEntry(EVENT_ANY,  ID_ANY,          &Engine::OnEvent)
 });
 
@@ -22,8 +22,8 @@ const EngineEventTable Engine::table = EngineEventTable({
 
 */
 Engine::Engine(int argc, char *argv[]) : handler(this) {
-    
-    window = NULL;
+
+    this->window = NULL;
     status = OK;
     keyFocus = mouseFocus = NULL;
     
@@ -191,49 +191,50 @@ begin the context event loop thread.
 */
 int Engine::Run() {
     
-    if(window != NULL) {
+    try {
 
-        window->setup_io(&this->handler);
-        window->start();
-        window->wait_for_ready();
+        if(this->window != NULL) {
 
-        if(StatusCode() != GL_INIT_FAIL) {
-            
-            try {
+            this->window->setup_io(&this->handler);
+            this->window->start();
+            this->window->wait_for_ready();
 
-                window->setup_gl();
+            if(StatusCode() != GL_INIT_FAIL) {
+
+                this->window->setup_gl();
+                // FIXME: these two functions are some serious slooch...
                 ::GLInit();
                 ::InitScene(this->window);
                 this->start();
-            
+
                 while(this->running)
-                    window->render();
+                    this->window->render();
 
                 this->join();
-                window->teardown_gl();
+                this->window->teardown_gl();
             }
-            catch(Exception &e) {
-                
-                logger.error(e.what());
+            else {
+
+                if(GLVersion() < MIN_GL_VERSION)
+                    logger.error("OpenGL version too low.");
+
+                if(MaxGLVertAttrib() < GL_MIN_VERT_ATTRIB)
+                    logger.error("Too few bindable vertex attributes available.");
+
+                if(MaxFBOColorAttachments() < GL_MIN_COLOR_ATTACH)
+                    logger.error("Too few bindable Frame buffer object color attachmentments available.");
             }
+
+            this->window->join();
         }
         else {
-            
-            if(GLVersion() < MIN_GL_VERSION)
-                logger.error("OpenGL version too low.");
-        
-            if(MaxGLVertAttrib() < GL_MIN_VERT_ATTRIB)
-                logger.error("Too few bindable vertex attributes available.");
-                
-            if(MaxFBOColorAttachments() < GL_MIN_COLOR_ATTACH)
-                logger.error("Too few bindable Frame buffer object color attachmentments available.");
-        }
 
-        window->join();
+            logger.error("Cannot render NULL OpenGL window.");
+        }
     }
-    else {
-        
-        logger.error("Cannot render NULL OpenGL window.");
+    catch(Exception &e) {
+
+        logger.error(e.what());
     }
     
     return status;
