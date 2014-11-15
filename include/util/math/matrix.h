@@ -22,14 +22,14 @@ class Matrix {
         Matrix(const Matrix& other);
         ~Matrix();
         
-        float* RawMatrix();
+        float*raw_matrix();
         
-        Matrix Inverse();
-        Matrix Transpose();
-        Matrix TopTriangular();
-        Matrix BotTriangular();
+        Matrix inverse();
+        Matrix transpose();
+        Matrix top_triangular();
+        Matrix bot_triangular();
         
-        float Determinant();
+        float determinant();
         
         void operator*(const double& scalar);
         void operator/(const double& scalar);

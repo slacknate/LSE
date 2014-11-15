@@ -45,7 +45,7 @@ Matrix::~Matrix() {
 /*
 Return the array which stores our data.
 */
-float* Matrix::RawMatrix() {
+float* Matrix::raw_matrix() {
     
     return data;
 }
@@ -53,7 +53,7 @@ float* Matrix::RawMatrix() {
 /*
  
 */  
-Matrix Matrix::Inverse() {
+Matrix Matrix::inverse() {
     
     if(data != NULL) {
         
@@ -68,7 +68,7 @@ Matrix Matrix::Inverse() {
 /*
  
 */  
-Matrix Matrix::Transpose() {
+Matrix Matrix::transpose() {
     
     if(data != NULL) {
         
@@ -83,7 +83,7 @@ Matrix Matrix::Transpose() {
 /*
 
 */
-Matrix Matrix::TopTriangular() {
+Matrix Matrix::top_triangular() {
     
     
 }
@@ -91,7 +91,7 @@ Matrix Matrix::TopTriangular() {
 /*
 
 */
-Matrix Matrix::BotTriangular() {
+Matrix Matrix::bot_triangular() {
     
     
 }
@@ -99,7 +99,7 @@ Matrix Matrix::BotTriangular() {
 /*
  
 */     
-float Matrix::Determinant() {
+float Matrix::determinant() {
     
     if(data != NULL) {
         
