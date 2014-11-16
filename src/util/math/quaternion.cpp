@@ -7,10 +7,10 @@ Initialize our quaternion by default to a identity orientation.
 */
 Quaternion::Quaternion() {
     
-    i = 0.0;
-    j = 0.0;
-    k = 0.0;
-    s = 1.0;
+    x = 0.0;
+    y = 0.0;
+    z = 0.0;
+    w = 1.0;
     
     UpdateMatrix();
 }
@@ -18,12 +18,12 @@ Quaternion::Quaternion() {
 /*
 Initialize our quaternion given all four components.
 */
-Quaternion::Quaternion(double x, double y, double z, double n) {
-    
-    i = x;
-    j = y;
-    k = z;
-    s = n;
+Quaternion::Quaternion(double x, double y, double z, double w) {
+
+    this->x = x;
+    this->y = y;
+    this->z = z;
+    this->w = w;
     
     UpdateMatrix();
 }
@@ -33,7 +33,7 @@ Get the X component.
 */
 double Quaternion::I() {
     
-    return i;
+    return x;
 }
 
 /*
@@ -41,7 +41,7 @@ Get the Y component.
 */
 double Quaternion::J() {
     
-    return j;
+    return y;
 }
 
 /*
@@ -49,7 +49,7 @@ Get the Z component.
 */
 double Quaternion::K() {
     
-    return k;
+    return z;
 }
 
 /*
@@ -57,7 +57,7 @@ Get the scalar component.
 */
 double Quaternion::S() {
     
-    return s;
+    return w;
 }
 
 /*
@@ -65,7 +65,7 @@ Get the length of the quaternion.
 */
 double Quaternion::Norm() {
     
-    return sqrt(i*i + j*j + k*k + s*s);
+    return sqrt(x * x + y * y + z * z + w * w);
 }
 
 /*
@@ -73,7 +73,7 @@ Return the conjugate of this quaternion.
 */
 Quaternion Quaternion::Conjugate() {
     
-    return Quaternion(-i, -j, -k, s);
+    return Quaternion(-x, -y, -z, w);
 }
 
 /*
@@ -85,10 +85,10 @@ void Quaternion::Normalize() {
     
     if(size > 0) {
         
-        i /= size;
-        j /= size;
-        k /= size;
-        s /= size;
+        x /= size;
+        y /= size;
+        z /= size;
+        w /= size;
     }
 }
 
@@ -108,17 +108,17 @@ Reference:
 */
 void Quaternion::UpdateMatrix() {
     
-    double xx = i * i;
-    double xy = i * j;
-    double xz = i * k;
-    double xw = i * s;
+    double xx = x * x;
+    double xy = x * y;
+    double xz = x * z;
+    double xw = x * w;
 
-    double yy = j * j;
-    double yz = j * k;
-    double yw = j * s;
+    double yy = y * y;
+    double yz = y * z;
+    double yw = y * w;
 
-    double zz = k * k;
-    double zw = k * s;
+    double zz = z * z;
+    double zw = z * w;
 
     matrix[0]  = 1 - 2 * ( yy + zz );
     matrix[1]  = 2 * ( xy - zw );
@@ -150,7 +150,7 @@ Quaternion scalar multiplication.
 */
 Quaternion Quaternion::operator*(const double& scalar) {
     
-    return Quaternion(this->i * scalar, this->j * scalar, this->k * scalar, this->s * scalar);
+    return Quaternion(this->x * scalar, this->y * scalar, this->z * scalar, this->w * scalar);
 }
 
 /*
@@ -158,7 +158,7 @@ Quaternion scalar division.
 */
 Quaternion Quaternion::operator/(const double& scalar) {
     
-    return Quaternion(this->i / scalar, this->j / scalar, this->k / scalar, this->s / scalar);
+    return Quaternion(this->x / scalar, this->y / scalar, this->z / scalar, this->w / scalar);
 }
 
 /*
@@ -188,7 +188,7 @@ Quaternion addition.
 */
 Quaternion Quaternion::operator+(const Quaternion& other) {
     
-    return Quaternion(this->i + other.i, this->j + other.j, this->k + other.k, this->s + other.s);
+    return Quaternion(this->x + other.x, this->y + other.y, this->z + other.z, this->w + other.w);
 }
 
 /*
@@ -196,7 +196,7 @@ Quaternion subtraction.
 */
 Quaternion Quaternion::operator-(const Quaternion& other) {
     
-    return Quaternion(this->i - other.i, this->j - other.j, this->k - other.k, this->s - other.s);
+    return Quaternion(this->x - other.x, this->y - other.y, this->z - other.z, this->w - other.w);
 }
 
 /*
@@ -206,10 +206,10 @@ Quaternion Quaternion::operator*(const Quaternion& other) {
     
     double x, y, z, n;
     
-    x = (this->s * other.i) + (this->i * other.s) + (this->j * other.k) - (this->k * other.j);
-    y = (this->s * other.j) + (this->j * other.s) - (this->i * other.k) + (this->k * other.i);
-    z = (this->s * other.k) + (this->k * other.s) + (this->i * other.j) - (this->j * other.i);
-    n = (this->s * other.s) - (this->i * other.i) - (this->j * other.j) - (this->k * other.k);
+    x = (this->w * other.x) + (this->x * other.w) + (this->y * other.z) - (this->z * other.y);
+    y = (this->w * other.y) + (this->y * other.w) - (this->x * other.z) + (this->z * other.x);
+    z = (this->w * other.z) + (this->z * other.w) + (this->x * other.y) - (this->y * other.x);
+    n = (this->w * other.w) - (this->x * other.x) - (this->y * other.y) - (this->z * other.z);
     
     return Quaternion(x, y, z, n);
 }
@@ -228,7 +228,7 @@ Quaternion Quaternion::operator/(const Quaternion& other) {
 */
 bool Quaternion::operator==(const Quaternion& other) {
     
-    return (this->i == other.i && this->j == other.j && this->k == other.k && this->s == other.s);
+    return (this->x == other.x && this->y == other.y && this->z == other.z && this->w == other.w);
 }
 
 /*
@@ -236,5 +236,5 @@ bool Quaternion::operator==(const Quaternion& other) {
 */
 bool Quaternion::operator!=(const Quaternion& other) {
     
-    return (this->i != other.i || this->j != other.j || this->k != other.k || this->s != other.s);
+    return (this->x != other.x || this->y != other.y || this->z != other.z || this->w != other.w);
 }

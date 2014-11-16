@@ -15,13 +15,13 @@ class Quaternion {
     
     private:
         
-        double i, j, k, s; // Quaternion components
+        double x, y, z, w; // Quaternion components
         double matrix[16]; // Quaternion represented as a rotation matrix
         
     public:
         
         Quaternion();
-        Quaternion(double x, double y, double z, double n);
+        Quaternion(double x, double y, double z, double w);
         
         double I();
         double J();
