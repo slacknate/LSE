@@ -35,7 +35,7 @@ class Engine : public Thread {
         Engine(int argc, char *argv[]);
         ~Engine();
         
-        void init_window(const char *const title, unsigned int m, int w, int h, double angle, double zi, double za);
+        void attach_window(GLWindow *w);
         int run();
         
         void* execute();
@@ -53,11 +53,5 @@ typedef EventTable<Engine> EngineEventTable;
 typedef EventTableEntry<Engine> EngineTableEntry;
 
 }
-
-/*
-User defined initialization functions.
-*/
-void GLInit();
-void InitScene(LSE::GLWindow *window);
 
 #endif

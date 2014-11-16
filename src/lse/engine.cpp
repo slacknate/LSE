@@ -47,9 +47,9 @@ Engine::~Engine() {
 /*
 
 */
-void Engine::init_window(const char *const title, unsigned int mask, int width, int height, double angle, double zi, double za) {
+void Engine::attach_window(GLWindow *w) {
     
-    this->window = new GLWindow(title, mask, width, height, angle, zi, za);
+    this->window = w;
 }
 
 
@@ -201,9 +201,6 @@ int Engine::run() {
             if(StatusCode() != GL_INIT_FAIL) {
 
                 this->window->setup_gl();
-                // FIXME: these two functions are some serious slooch...
-                ::GLInit();
-                ::InitScene(this->window);
                 this->start();
 
                 while(this->running)
