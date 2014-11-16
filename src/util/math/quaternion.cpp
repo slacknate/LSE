@@ -6,13 +6,13 @@ using namespace LSE;
 Initialize our quaternion by default to a identity orientation.
 */
 Quaternion::Quaternion() {
-    
-    x = 0.0;
-    y = 0.0;
-    z = 0.0;
-    w = 1.0;
 
-    update_matrix();
+    this->x = 0.0;
+    this->y = 0.0;
+    this->z = 0.0;
+    this->w = 1.0;
+
+    this->update_matrix();
 }
 
 /*
@@ -25,7 +25,7 @@ Quaternion::Quaternion(double x, double y, double z, double w) {
     this->z = z;
     this->w = w;
 
-    update_matrix();
+    this->update_matrix();
 }
 
 /*
@@ -33,7 +33,7 @@ Get the X component.
 */
 double Quaternion::i() {
     
-    return x;
+    return this->x;
 }
 
 /*
@@ -41,7 +41,7 @@ Get the Y component.
 */
 double Quaternion::j() {
     
-    return y;
+    return this->y;
 }
 
 /*
@@ -49,7 +49,7 @@ Get the Z component.
 */
 double Quaternion::k() {
     
-    return z;
+    return this->z;
 }
 
 /*
@@ -57,7 +57,7 @@ Get the scalar component.
 */
 double Quaternion::s() {
     
-    return w;
+    return this->w;
 }
 
 /*
@@ -65,7 +65,7 @@ Get the length of the quaternion.
 */
 double Quaternion::norm() {
     
-    return sqrt(x * x + y * y + z * z + w * w);
+    return sqrt(pow(this->x, 2.0) + pow(this->y, 2.0) + pow(this->z, 2.0) + pow(this->w, 2.0));
 }
 
 /*
@@ -73,7 +73,7 @@ Return the conjugate of this quaternion.
 */
 Quaternion Quaternion::conjugate() {
     
-    return Quaternion(-x, -y, -z, w);
+    return Quaternion(-this->x, -this->y, -this->z, this->w);
 }
 
 /*
@@ -81,14 +81,14 @@ Make this quaternion a unit quaternion in its current direction.
 */
 void Quaternion::normalize() {
     
-    double size = norm();
+    double size = this->norm();
     
     if(size > 0) {
-        
-        x /= size;
-        y /= size;
-        z /= size;
-        w /= size;
+
+        this->x /= size;
+        this->y /= size;
+        this->z /= size;
+        this->w /= size;
     }
 }
 
@@ -108,32 +108,37 @@ Reference:
 */
 void Quaternion::update_matrix() {
     
-    double xx = x * x;
-    double xy = x * y;
-    double xz = x * z;
-    double xw = x * w;
+    double xx = this->x * this->x;
+    double xy = this->x * this->y;
+    double xz = this->x * this->z;
+    double xw = this->x * this->w;
 
-    double yy = y * y;
-    double yz = y * z;
-    double yw = y * w;
+    double yy = this->y * this->y;
+    double yz = this->y * this->z;
+    double yw = this->y * this->w;
 
-    double zz = z * z;
-    double zw = z * w;
+    double zz = this->z * this->z;
+    double zw = this->z * this->w;
 
-    matrix[0]  = 1 - 2 * ( yy + zz );
-    matrix[1]  = 2 * ( xy - zw );
-    matrix[2]  = 2 * ( xz + yw );
+    this->matrix[0]  = 1 - 2 * ( yy + zz );
+    this->matrix[1]  = 2 * ( xy - zw );
+    this->matrix[2]  = 2 * ( xz + yw );
 
-    matrix[4]  = 2 * ( xy + zw );
-    matrix[5]  = 1 - 2 * ( xx + zz );
-    matrix[6]  = 2 * ( yz - xw );
+    this->matrix[4]  = 2 * ( xy + zw );
+    this->matrix[5]  = 1 - 2 * ( xx + zz );
+    this->matrix[6]  = 2 * ( yz - xw );
 
-    matrix[8]  = 2 * ( xz - yw );
-    matrix[9]  = 2 * ( yz + xw );
-    matrix[10] = 1 - 2 * ( xx + yy );
+    this->matrix[8]  = 2 * ( xz - yw );
+    this->matrix[9]  = 2 * ( yz + xw );
+    this->matrix[10] = 1 - 2 * ( xx + yy );
 
-    matrix[3]  = matrix[7] = matrix[11] = matrix[12] = matrix[13] = matrix[14] = 0.0;
-    matrix[15] = 1.0;
+    this->matrix[3]  = 0.0;
+    this->matrix[7]  = 0.0;
+    this->matrix[11] = 0.0;
+    this->matrix[12] = 0.0;
+    this->matrix[13] = 0.0;
+    this->matrix[14] = 0.0;
+    this->matrix[15] = 1.0;
 }
 
 /*
@@ -142,7 +147,7 @@ to be passed to OpenGL or Direct3D for rotation.
 */
 double* Quaternion::get_matrix() {
     
-    return &matrix[0];
+    return &this->matrix[0];
 }
 
 /*
@@ -204,14 +209,14 @@ Multiply two quaternion.
 */
 Quaternion Quaternion::operator*(const Quaternion& other) {
     
-    double x, y, z, n;
+    double new_x, new_y, new_z, new_w;
+
+    new_x = (this->w * other.x) + (this->x * other.w) + (this->y * other.z) - (this->z * other.y);
+    new_y = (this->w * other.y) + (this->y * other.w) - (this->x * other.z) + (this->z * other.x);
+    new_z = (this->w * other.z) + (this->z * other.w) + (this->x * other.y) - (this->y * other.x);
+    new_w = (this->w * other.w) - (this->x * other.x) - (this->y * other.y) - (this->z * other.z);
     
-    x = (this->w * other.x) + (this->x * other.w) + (this->y * other.z) - (this->z * other.y);
-    y = (this->w * other.y) + (this->y * other.w) - (this->x * other.z) + (this->z * other.x);
-    z = (this->w * other.z) + (this->z * other.w) + (this->x * other.y) - (this->y * other.x);
-    n = (this->w * other.w) - (this->x * other.x) - (this->y * other.y) - (this->z * other.z);
-    
-    return Quaternion(x, y, z, n);
+    return Quaternion(new_x, new_y, new_z, new_w);
 }
 
 /*
