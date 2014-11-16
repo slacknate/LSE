@@ -22,7 +22,7 @@ GLObject::GLObject(double x, double y, double z) : PHObject(x, y, z) {
         
     program.BindUniform(MAT4, "VIEW_MAT", 1, GL_FALSE, &VIEW_MATRIX[0]);
     program.BindUniform(MAT4, "PROJ_MAT", 1, GL_FALSE, &PROJ_MATRIX[0]);
-    program.BindUniform(MAT4, "ROT_MAT", 1, GL_FALSE, quat.GetMatrix());
+    program.BindUniform(MAT4, "ROT_MAT", 1, GL_FALSE, quat.get_matrix());
 }
 
 /*
@@ -49,7 +49,7 @@ Change this objects orientation.
 void GLObject::Transform(Quaternion& q) {
     
     quat = q * quat;
-    quat.Normalize();
+    quat.normalize();
 }
 
 /*
@@ -69,7 +69,7 @@ void GLObject::Render() {
     glTranslated(pX, pY, pZ);
     
     Quaternion q(0.0, 0.0, 0.1, 10.0*cos(PI/180.0));
-    q.Normalize();
+    q.normalize();
     Transform(q);
     
     //  draw our object

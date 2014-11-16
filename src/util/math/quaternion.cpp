@@ -11,8 +11,8 @@ Quaternion::Quaternion() {
     y = 0.0;
     z = 0.0;
     w = 1.0;
-    
-    UpdateMatrix();
+
+    update_matrix();
 }
 
 /*
@@ -24,14 +24,14 @@ Quaternion::Quaternion(double x, double y, double z, double w) {
     this->y = y;
     this->z = z;
     this->w = w;
-    
-    UpdateMatrix();
+
+    update_matrix();
 }
 
 /*
 Get the X component.
 */
-double Quaternion::I() {
+double Quaternion::i() {
     
     return x;
 }
@@ -39,7 +39,7 @@ double Quaternion::I() {
 /*
 Get the Y component.
 */
-double Quaternion::J() {
+double Quaternion::j() {
     
     return y;
 }
@@ -47,7 +47,7 @@ double Quaternion::J() {
 /*
 Get the Z component.
 */
-double Quaternion::K() {
+double Quaternion::k() {
     
     return z;
 }
@@ -55,7 +55,7 @@ double Quaternion::K() {
 /*
 Get the scalar component.
 */
-double Quaternion::S() {
+double Quaternion::s() {
     
     return w;
 }
@@ -63,7 +63,7 @@ double Quaternion::S() {
 /*
 Get the length of the quaternion.
 */
-double Quaternion::Norm() {
+double Quaternion::norm() {
     
     return sqrt(x * x + y * y + z * z + w * w);
 }
@@ -71,7 +71,7 @@ double Quaternion::Norm() {
 /*
 Return the conjugate of this quaternion.
 */
-Quaternion Quaternion::Conjugate() {
+Quaternion Quaternion::conjugate() {
     
     return Quaternion(-x, -y, -z, w);
 }
@@ -79,9 +79,9 @@ Quaternion Quaternion::Conjugate() {
 /*
 Make this quaternion a unit quaternion in its current direction.
 */
-void Quaternion::Normalize() {
+void Quaternion::normalize() {
     
-    double size = Norm();
+    double size = norm();
     
     if(size > 0) {
         
@@ -106,7 +106,7 @@ Reference:
 2 6 10 14
 3 7 11 15
 */
-void Quaternion::UpdateMatrix() {
+void Quaternion::update_matrix() {
     
     double xx = x * x;
     double xy = x * y;
@@ -140,7 +140,7 @@ void Quaternion::UpdateMatrix() {
 Return the address of the first element of the matrix
 to be passed to OpenGL or Direct3D for rotation.
 */
-double* Quaternion::GetMatrix() {
+double* Quaternion::get_matrix() {
     
     return &matrix[0];
 }
@@ -167,9 +167,9 @@ Multiply a 3D point by this quaternion.
 Vertex Quaternion::operator*(Vertex& v) {
     
     Quaternion qv(v.x, v.y, v.z, 0.0);
-    Quaternion q = this->Conjugate() * qv;
+    Quaternion q = this->conjugate() * qv;
     q = q * *this;
-    return Vertex(q.I(), q.J(), q.K());
+    return Vertex(q.i(), q.j(), q.k());
 }
 
 /*
@@ -178,9 +178,9 @@ Multiply a vector by this quaternion.
 Vector Quaternion::operator*(Vector& v) {
     
     Quaternion qv(v.i(), v.j(), v.k(), 0.0);
-    Quaternion q = this->Conjugate() * qv;
+    Quaternion q = this->conjugate() * qv;
     q = q * *this;
-    return Vector(q.I(), q.J(), q.K());
+    return Vector(q.i(), q.j(), q.k());
 }
 
 /*
@@ -215,7 +215,7 @@ Quaternion Quaternion::operator*(const Quaternion& other) {
 }
 
 /*
-Divide a quaternion by another quaternion. fix me
+FIXME: Divide a quaternion by another quaternion
 http://www.mathworks.com/help/aeroblks/quaterniondivision.html
 */
 Quaternion Quaternion::operator/(const Quaternion& other) {

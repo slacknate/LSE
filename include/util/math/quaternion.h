@@ -23,15 +23,15 @@ class Quaternion {
         Quaternion();
         Quaternion(double x, double y, double z, double w);
         
-        double I();
-        double J();
-        double K();
-        double S();
-        double Norm();
-        Quaternion Conjugate();
-        void Normalize();
-        void UpdateMatrix();
-        double* GetMatrix();
+        double i();
+        double j();
+        double k();
+        double s();
+        double norm();
+        Quaternion conjugate();
+        void normalize();
+        void update_matrix();
+        double* get_matrix();
         
         Quaternion operator*(const double& scalar);
         Quaternion operator/(const double& scalar);
