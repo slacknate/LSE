@@ -99,5 +99,12 @@ GLManager::GLManager() : max_vertex_attributes(init_max_vertex_attr()),
 */
 const char* GLManager::error_string(GLenum e) {
 
-    return GL_ERROR_MAP[e];
+    GLErrorMap::const_iterator error_it = GL_ERROR_MAP.find(e);
+
+    // FIXME: don't use multiple return statements
+    if(error_it == GL_ERROR_MAP.end())
+        return "Unknown OpenGL error.";
+
+    else
+        return error_it->second;
 }
