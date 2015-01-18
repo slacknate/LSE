@@ -8,6 +8,11 @@ System logger.
 Logger logger = Logger(LOG_LEVEL_DEBUG);
 
 /*
+Manager of OpenGL system information.
+*/
+GLManager gl_manager = GLManager();
+
+/*
 Viewing and projection matrices.
 They are column major format:
 
