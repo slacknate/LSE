@@ -1,7 +1,11 @@
 #ifndef LSE_GL_MAN_H
 #define LSE_GL_MAN_H
 
+#include <map>
+
 namespace LSE {
+
+typedef std::map<GLenum, const char *const> GLErrorMap;
 
 /*
 Minimum OpenGL and GLSL requirements.

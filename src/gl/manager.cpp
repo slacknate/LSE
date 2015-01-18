@@ -1,26 +1,21 @@
 #include "gl/manager.h"
+#include "lse/defs.h"
 using namespace LSE;
-
-/*
-OpenGL and Extension Wrangler includes.
-*/
-#include <gl/glew.h>
-#include <gl/gl.h>
 
 /*
 OpenGL error messages.
 */
-static const char *const GL_ERRORS[] = {
+// TODO: other error constants?
+static const GLErrorMap GL_ERROR_MAP = GLErrorMap({
 
-    "GL_INVALID_ENUM",
-    "GL_INVALID_VALUE",
-    "GL_INVALID_OPERATION",
-    "GL_INVALID_FRAMEBUFFER_OPERATION",
-    "GL_OUT_OF_MEMORY",
-    "GL_STACK_UNDERFLOW",
-    "GL_STACK_OVERFLOW"
-};
-
+    {GL_INVALID_ENUM, "GL_INVALID_ENUM"},
+    {GL_INVALID_VALUE, "GL_INVALID_VALUE"},
+    {GL_INVALID_OPERATION, "GL_INVALID_OPERATION"},
+    {GL_INVALID_FRAMEBUFFER_OPERATION, "GL_INVALID_FRAMEBUFFER_OPERATION"},
+    {GL_OUT_OF_MEMORY, "GL_OUT_OF_MEMORY"},
+    {GL_STACK_UNDERFLOW, "GL_STACK_UNDERFLOW"},
+    {GL_STACK_OVERFLOW, "GL_STACK_OVERFLOW"},
+});
 
 /*
 Get the OpenGL version as an integer.
@@ -105,11 +100,5 @@ GLManager::GLManager() : max_vertex_attributes(init_max_vertex_attr()),
 */
 const char* GLManager::error_string(GLenum e) {
 
-    // FIXME: this is sketch. what if the GLEnum range changes?
-    int err_index = e - 0x0500;
-    if(err_index >= 0 && err_index < 7)
-        return GL_ERRORS[err_index];
-
-    else
-        return "Unknown OpenGL error.";
+    return GL_ERROR_MAP[e];
 }
