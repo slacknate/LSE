@@ -27,6 +27,7 @@ set(SOURCES
 	# gl source files
 	${CMAKE_SOURCE_DIR}/src/gl/light.cpp
 	${CMAKE_SOURCE_DIR}/src/gl/material.cpp
+	${CMAKE_SOURCE_DIR}/src/gl/manager.cpp
 	${CMAKE_SOURCE_DIR}/src/gl/model.cpp
 	${CMAKE_SOURCE_DIR}/src/gl/object.cpp
 	${CMAKE_SOURCE_DIR}/src/gl/primitive.cpp
