@@ -10,14 +10,6 @@ TODO: determine if these includes can be moved into more specialized headers
 
 // TODO: move functions into the util src/include directories in well named files
 namespace LSE {
-    
-/*
-Minimum OpenGL and GLSL requirements.
-*/
-const int MIN_GL_VERSION      = 320;
-const int MIN_SL_VERSION      = 150;
-const int GL_MIN_COLOR_ATTACH = 2;
-const int GL_MIN_VERT_ATTRIB  = 6;
 
 enum {
     
@@ -134,22 +126,6 @@ enum EngineStatus {
     IO_SETUP_FAIL,
     STAT_LAST
 };
-
-/*
-OpenGL Version and Attribute fetching functions.
-*/
-int GLVersion();
-const char* GLVendorVersion();
-int SLVersion();
-const char* SLVendorVersion();
-int MaxGLVertAttrib();
-int MaxFBOColorAttachments();
-
-/*
-Utility functions.
-*/
-const char* GLErrorString(GLenum e);
-
 
 /*
 LSE Engine status functions.
