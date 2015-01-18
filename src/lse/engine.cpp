@@ -211,13 +211,13 @@ int Engine::run() {
             }
             else {
 
-                if(GLVersion() < MIN_GL_VERSION)
+                if(gl_manager.gl_version < MIN_GL_VERSION)
                     logger.error("OpenGL version too low.");
 
-                if(MaxGLVertAttrib() < GL_MIN_VERT_ATTRIB)
+                if(gl_manager.max_vertex_attributes < GL_MIN_VERT_ATTRIB)
                     logger.error("Too few bindable vertex attributes available.");
 
-                if(MaxFBOColorAttachments() < GL_MIN_COLOR_ATTACH)
+                if(gl_manager.max_fbo_color_attachments < GL_MIN_COLOR_ATTACH)
                     logger.error("Too few bindable Frame buffer object color attachmentments available.");
             }
 
