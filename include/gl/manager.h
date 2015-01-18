@@ -18,7 +18,7 @@ const int GL_MIN_VERT_ATTRIB = 6;
 
 class GLManager {
 
-    private:
+    public:
 
         const int gl_version;
         const char *gl_vendor_version;
@@ -28,8 +28,6 @@ class GLManager {
 
         const int max_vertex_attributes;
         const int max_fbo_color_attachments;
-
-    public:
 
         GLManager();
 
