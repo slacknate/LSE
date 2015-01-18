@@ -1,4 +1,4 @@
-#include "gui/window/window.h"
+#include <gui/window/base.h>
 #include "lse/engine.h"
 #include "lse/globals.h"
 #include "lse/exception.h"
@@ -58,9 +58,9 @@ void GLWindowBase::setup_gl() {
     if(glewStatus != GLEW_OK)
         throw Exception(__FILE__, __LINE__, "GLEW failed to initialize");
     
-    logger.info("GL_VERSION: %s\nGL_SHADING_LANGUAGE_VERSION: %s", GLVendorVersion(), SLVendorVersion());
+    logger.info("GL_VERSION: %s\nGL_SHADING_LANGUAGE_VERSION: %s", gl_manager.gl_vendor_version, gl_manager.sl_vendor_version);
         
-    int glStatus = GLVersion() >= MIN_GL_VERSION && MaxGLVertAttrib() >= GL_MIN_VERT_ATTRIB && MaxFBOColorAttachments() >= GL_MIN_COLOR_ATTACH;
+    int glStatus = gl_manager.gl_version >= MIN_GL_VERSION && gl_manager.max_vertex_attributes >= GL_MIN_VERT_ATTRIB && gl_manager.max_fbo_color_attachments >= GL_MIN_COLOR_ATTACH;
     if(!glStatus)
         throw Exception(__FILE__, __LINE__, "The version of OpenGL on this machine did not meet minimum system requirements");
 
