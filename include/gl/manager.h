@@ -32,6 +32,6 @@ class GLManager {
         const char *error_string(GLenum e);
     };
 
-}
+};
 
 #endif
