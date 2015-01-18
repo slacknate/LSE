@@ -2,6 +2,7 @@
 #define LSE_GL_MAN_H
 
 #include <map>
+#include "lse/defs.h"
 
 namespace LSE {
 

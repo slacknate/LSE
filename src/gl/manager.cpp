@@ -1,5 +1,4 @@
 #include "gl/manager.h"
-#include "lse/defs.h"
 using namespace LSE;
 
 /*
