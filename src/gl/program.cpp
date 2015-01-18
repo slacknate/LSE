@@ -255,7 +255,7 @@ int GLProgram::AddShader(const char *buffer, ShaderType lseType) {
                     
                     char sl_version_str[64];
                     memset(sl_version_str, 0, 64);
-                    snprintf((char *)sl_version_str, 64, "%d", SLVersion());
+                    snprintf((char *)sl_version_str, 64, "%d", gl_manager.sl_version);
                     
                     unsigned int size[] = { 9, strlen(sl_version_str), 1, strlen(shaderSource) };
                     const char *const sourceWithVersion[] = { "#version ", sl_version_str, "\n", shaderSource };
@@ -294,7 +294,7 @@ int GLProgram::AddShader(const char *buffer, ShaderType lseType) {
                         
                     int error = glGetError();
                     if(error)
-                        logger.error("An error occurred while creating shader from \"%s\": %s.", buffer, GLErrorString(error));
+                        logger.error("An error occurred while creating shader from \"%s\": %s.", buffer, gl_manager.error_string(error));
                     else
                         logger.error("An unknown error occurred while creating shader from \"%s.\"", buffer);
                 }
@@ -310,7 +310,7 @@ int GLProgram::AddShader(const char *buffer, ShaderType lseType) {
                 
                 char sl_version_str[64];
                 memset(sl_version_str, 0, 64);
-                snprintf((char *)sl_version_str, 64, "%d", SLVersion());
+                snprintf((char *)sl_version_str, 64, "%d", gl_manager.sl_version);
                 
                 unsigned int size[] = { 9, strlen(sl_version_str), 1, strlen(buffer) };
                 const char *const sourceWithVersion[] = { "#version ", sl_version_str, "\n", buffer };
@@ -349,7 +349,7 @@ int GLProgram::AddShader(const char *buffer, ShaderType lseType) {
                         
                 int error = glGetError();
                 if(error)
-                    logger.error("An error occurred while creating shader from \"%s\": %s.", buffer, GLErrorString(error));
+                    logger.error("An error occurred while creating shader from \"%s\": %s.", buffer, gl_manager.error_string(error));
                 else
                     logger.error("An unknown error occurred while creating shader from \"%s.\"", buffer);
             }
