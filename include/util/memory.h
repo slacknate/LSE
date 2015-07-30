@@ -11,7 +11,7 @@ Allocate a block of memory and initialze to zero.
 Throw an exception in the event of allocation failure.
 This should be used for basic types and structs.
 */
-template <class T> T* calloc(unsigned int size=1) {
+template <class T> T* calloc(size_t size=1) {
     
     T *t_ptr = new (std::nothrow) T [size];
     if(t_ptr != nullptr) {
@@ -34,7 +34,7 @@ This should be used for classes. Note that this will only
 call a default constructor; if a more specialized constructor
 is required, use template specialization to override this function.
 */
-template <class T> T* malloc(unsigned int size=1, ...) {
+template <class T> T* malloc(size_t size=1, ...) {
     
     T *t_ptr = new (std::nothrow) T [size];
     if(t_ptr == nullptr) {
