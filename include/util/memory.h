@@ -1,6 +1,8 @@
 #ifndef LSE_MEMORY_H
 #define LSE_MEMORY_H
 
+#include <new>
+#include <cstring>
 #include "lse/defs.h"
 #include "lse/exception.h"
 
