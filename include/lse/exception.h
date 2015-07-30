@@ -33,6 +33,6 @@ Macro to wrap the Exception class. This automatically inserts the file and line 
 Note that if this macro is used outside of the LSE namespace you MUST provide the LSE:: prefix
 like you would directly accessing the Exception class.
 */
-#define EXCEPTION(message, ...) Exception(__FILE__, __LINE__, message, __VA_ARGS__)
+#define EXCEPTION(...) Exception(__FILE__, __LINE__, __VA_ARGS__)
 
 #endif
