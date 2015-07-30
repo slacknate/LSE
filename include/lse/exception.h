@@ -1,11 +1,6 @@
 #ifndef LSE_EXCEPTION_H
 #define LSE_EXCEPTION_H
 
-/*
-TODO: move these includes to the .cpp file?
-*/
-#include <iostream>
-#include <stdexcept>
 #include <exception>
 
 namespace LSE {
@@ -17,7 +12,7 @@ TODO:
     add a flag to check the errno error code/message
     extended OS error code info
 */
-class Exception {
+class Exception : public std::exception {
     
     private:
 
@@ -26,11 +21,18 @@ class Exception {
 
     public:
         
-        Exception(const char *file, int line, const char *message) throw();
+        Exception(const char *file, int line, const char *fmt, ...) noexcept;
         
-        const char* what() const throw();
+        const char* what() const noexcept;
 };
 
 }
+
+/*
+Macro to wrap the Exception class. This automatically inserts the file and line number.
+Note that if this macro is used outside of the LSE namespace you MUST provide the LSE:: prefix
+like you would directly accessing the Exception class.
+*/
+#define EXCEPTION(message, ...) Exception(__FILE__, __LINE__, message, __VA_ARGS__)
 
 #endif
