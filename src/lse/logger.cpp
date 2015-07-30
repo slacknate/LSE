@@ -4,6 +4,7 @@
 #include "lse/logger.h"
 #include "lse/engine.h"
 #include "util/time.h"
+#include "util/format.h"
 #include "util/memory.h"
 using namespace LSE;
 
@@ -95,23 +96,9 @@ void Logger::write_log(LogLevel log_level, std::ostream &stream, char *fmt_log) 
 /*
 
 */
-void Logger::log_event(LogLevel log_level, std::ostream &stream, const char *format, va_list *args) {
-    
-    char *fmt_log = nullptr;
-    int log_length = vsnprintf(NULL, 0, format, *args);
-    if(log_length >= 0) {
-            
-        fmt_log = LSE::calloc<char>(log_length);
-        vsprintf(fmt_log, format, *args);
-    }
-    else {
-        
-        // TODO: determine if this is sloochy
-        fmt_log = LSE::calloc<char>(42);
-        strncpy(fmt_log, "Error occurred getting log message length", 41);
-    }
-    
-    LogEvent log_event = LogEvent(log_level, stream, fmt_log);
+void Logger::log_event(LogLevel log_level, std::ostream &stream, const char *fmt, va_list &args) {
+
+    LogEvent log_event = LogEvent(log_level, stream, vformat(fmt, args));
     this->buffer.push(log_event);
 
     this->log_sem.post();
@@ -126,7 +113,7 @@ void Logger::info(const char *format, ...) {
     va_list args;
     va_start(args, format);
     
-    this->log_event(LOG_LEVEL_INFO, std::cout, format, &args);
+    this->log_event(LOG_LEVEL_INFO, std::cout, format, args);
     
     va_end(args);
 }
@@ -140,7 +127,7 @@ void Logger::debug(const char *format, ...) {
     va_list args;
     va_start(args, format);
     
-    this->log_event(LOG_LEVEL_DEBUG, std::cout, format, &args);
+    this->log_event(LOG_LEVEL_DEBUG, std::cout, format, args);
     
     va_end(args);
 }
@@ -154,7 +141,7 @@ void Logger::error(const char *format, ...) {
     va_list args;
     va_start(args, format);
     
-    this->log_event(LOG_LEVEL_ERROR, std::cerr, format, &args);
+    this->log_event(LOG_LEVEL_ERROR, std::cerr, format, args);
     
     va_end(args);
 }
@@ -179,7 +166,7 @@ void Logger::verbose(const char *format, ...) {
     va_list args;
     va_start(args, format);
     
-    this->log_event(LOG_LEVEL_VERBOSE, std::cout, format, &args);
+    this->log_event(LOG_LEVEL_VERBOSE, std::cout, format, args);
     
     va_end(args);
 }
@@ -194,7 +181,7 @@ void Logger::raw(const char *format, ...) {
     va_list args;
     va_start(args, format);
     
-    this->log_event(LOG_LEVEL_RAW, std::cout, format, &args);
+    this->log_event(LOG_LEVEL_RAW, std::cout, format, args);
     
     va_end(args);
 }

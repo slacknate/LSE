@@ -46,7 +46,7 @@ class Logger : public Thread {
         void* execute();
 
         void write_log(LogLevel log_level, std::ostream &stream, char *fmt_log);
-        void log_event(LogLevel log_level, std::ostream &stream, const char *format, va_list *arg_list);
+        void log_event(LogLevel log_level, std::ostream &stream, const char *fmt, va_list &args);
         
     public:
         
