@@ -7,7 +7,7 @@
 namespace LSE {
 
 /*
-Allocate a block of memory and initialze to zero.
+Allocate a block of memory and initialize to zero.
 Throw an exception in the event of allocation failure.
 This should be used for basic types and structs.
 */
