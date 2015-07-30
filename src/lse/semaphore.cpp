@@ -12,7 +12,7 @@ store that as well.
 Semaphore::Semaphore(int initial, int shared) {
 
     if(sem_init(&this->semaphore, shared, initial))
-        throw Exception(__FILE__, __LINE__, "Failed to initialize semaphore");
+        throw EXCEPTION("Failed to initialize semaphore");
 }
 
 
@@ -32,7 +32,7 @@ Wait on the semaphore.
 void Semaphore::wait() {
     
     if(sem_wait(&this->semaphore))
-        throw Exception(__FILE__, __LINE__, "An error occurred in sem_wait");
+        throw EXCEPTION("An error occurred in sem_wait");
 }
 
 
@@ -50,7 +50,7 @@ bool Semaphore::try_wait() {
             success = false;
 
         else
-            throw Exception(__FILE__, __LINE__, "An error occurred in sem_trywait");
+            throw EXCEPTION("An error occurred in sem_trywait");
     }
 
     return success;
@@ -63,7 +63,7 @@ Post to the semaphore.
 void Semaphore::post() {
 
     if(sem_post(&this->semaphore))
-        throw Exception(__FILE__, __LINE__, "An error occurred in sem_post");
+        throw EXCEPTION("An error occurred in sem_post");
 }
 
 
@@ -75,7 +75,7 @@ int Semaphore::value() {
     int current_value = 0;
     
     if(sem_getvalue(&this->semaphore, &current_value))
-        throw Exception(__FILE__, __LINE__, "An error occurred in sem_getvalue");
+        throw EXCEPTION("An error occurred in sem_getvalue");
 
     return current_value;
 }

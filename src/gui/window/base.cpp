@@ -56,13 +56,13 @@ void GLWindowBase::setup_gl() {
     
     int glewStatus = glewInit();
     if(glewStatus != GLEW_OK)
-        throw Exception(__FILE__, __LINE__, "GLEW failed to initialize");
+        throw EXCEPTION("GLEW failed to initialize");
     
     logger.info("GL_VERSION: %s\nGL_SHADING_LANGUAGE_VERSION: %s", gl_manager.gl_vendor_version, gl_manager.sl_vendor_version);
         
     int glStatus = gl_manager.gl_version >= MIN_GL_VERSION && gl_manager.max_vertex_attributes >= GL_MIN_VERT_ATTRIB && gl_manager.max_fbo_color_attachments >= GL_MIN_COLOR_ATTACH;
     if(!glStatus)
-        throw Exception(__FILE__, __LINE__, "The version of OpenGL on this machine did not meet minimum system requirements");
+        throw EXCEPTION("The version of OpenGL on this machine did not meet minimum system requirements");
 
     // compute and bind viewing matrix
         place_camera();
@@ -76,7 +76,7 @@ void GLWindowBase::setup_gl() {
     }
     catch(std::exception &e) {
         
-        throw Exception(__FILE__, __LINE__, "FIXME"); // FIXME: need a way to "convert" standard exceptions into LSE exceptions
+        throw EXCEPTION("FIXME"); // FIXME: need a way to "convert" standard exceptions into LSE exceptions
     }
 }
 

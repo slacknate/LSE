@@ -18,7 +18,7 @@ GLScreen::GLScreen(int w, int h) {
     program.AddShader(GetScreenShaders(SHADER_FRAG), SHADER_FRAG);
         
     if(!program.Finalize())
-        throw Exception(__FILE__, __LINE__, "OpenGL failed to initialize");
+        throw EXCEPTION("OpenGL failed to initialize");
         
     program.BindUniform(IN1, "FRAG_TEXTURE", 0);
     

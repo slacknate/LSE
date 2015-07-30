@@ -53,7 +53,7 @@ char* vformat(const char *fmt, va_list &args) {
     }
     else {
 
-        throw Exception(__FILE__, __LINE__, "Failed to get formatted string length.");
+        throw EXCEPTION("Failed to get formatted string length.");
     }
 
     return formatted;
@@ -77,7 +77,7 @@ char* vformat(const char *fmt, va_list &args) {
     va_end(args);
 
     if(!formatted)
-        throw Exception(__FILE__, __LINE__, "String formatting failed.");
+        throw EXCEPTION("String formatting failed.");
 
     return formatted;
 }*/
