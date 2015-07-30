@@ -6,24 +6,55 @@
 using namespace LSE;
 
 
-char* format(const char *format, ...) {
+/*
+ * Format a string with the given parameters.
+ * This is more or less a wrapper around vformat.
+ */
+char* format(const char *fmt, ...) {
 
     char *formatted = nullptr;
 
     va_list args;
-    va_start(args, format);
+    va_start(args, fmt);
 
-    int log_length = vsnprintf(NULL, 0, format, args);
-    if(log_length >= 0) {
+    try {
 
-        formatted = LSE::calloc<char>(log_length);
-        vsprintf(formatted, format, args);
+        formatted = vformat(fmt, args);
+    }
+    catch(std::exception &err) {
+
+        va_end(args);
+        throw;
     }
 
     va_end(args);
 
-    if(!formatted)
-        throw Exception(__FILE__, __LINE__, "String formatting failed.");
+    return formatted;
+}
+
+
+/*
+ * Format a string with the given va_list arguments.
+ * We first attempt to get the length of the formatted
+ * string. If this succeeds we allocate a buffer
+ * and fill it with the formatted string, otherwise we
+ * raise an exception indicating that we were unable
+ * to calculate the formatted string length.
+ */
+char* vformat(const char *fmt, va_list &args) {
+
+    char *formatted = nullptr;
+
+    int fmt_length = vsnprintf(NULL, 0, fmt, args);
+    if(fmt_length >= 0) {
+
+        formatted = LSE::calloc<char>((size_t)fmt_length);
+        vsprintf(formatted, fmt, args);
+    }
+    else {
+
+        throw Exception(__FILE__, __LINE__, "Failed to get formatted string length.");
+    }
 
     return formatted;
 }

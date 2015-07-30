@@ -3,7 +3,9 @@
 
 namespace LSE {
 
-char* format(const char *format, ...);
+char* format(const char *fmt, ...);
+char* vformat(const char *fmt, va_list &args);
+
 //wchar_t* wformat(const wchar_t *format, ...);
 
 }
