@@ -14,9 +14,6 @@ class GLScreen {
     
     private:
         
-        static const int SCREEN_VERT_COUNT = 4;
-        static const int SCREEN_ELEM_COUNT = 2;
-        
         GLProgram program; //
         double *vertices; //
         int *tex_coords; //
@@ -32,10 +29,10 @@ class GLScreen {
     
     public:
         
-        GLScreen(int w, int h);
+        GLScreen(int new_width, int new_height);
         ~GLScreen();
         
-        void resize(int w, int h);
+        void resize(int new_width, int new_height);
         
         void bind_fbo();
         void unbind_fbo();

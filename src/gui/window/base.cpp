@@ -232,7 +232,7 @@ Draw our objects on the canvas.
 */
 void GLWindowBase::render() {
     
-    screen->BindFBO();
+    screen->bind_fbo();
     
     glClear(mask);
     place_camera();
@@ -248,11 +248,11 @@ void GLWindowBase::render() {
             gl_object->RenderNormals();
     }
     
-    screen->UnbindFBO();
+    screen->unbind_fbo();
     
     glClear(mask);
     
-    screen->Render();
+    screen->render();
 
     this->swap_gl_buffers();
 }
@@ -290,7 +290,7 @@ void GLWindowBase::wait_for_ready() {
 */
 void GLWindowBase::resize() {
     
-    screen->Resize(width, height);
+    screen->resize(width, height);
     aspect_ratio();
 }
 
