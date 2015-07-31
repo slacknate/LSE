@@ -6,7 +6,8 @@ namespace LSE {
 char* format(const char *fmt, ...);
 char* vformat(const char *fmt, va_list &args);
 
-//wchar_t* wformat(const wchar_t *format, ...);
+wchar_t* wformat(const wchar_t *fmt, ...);
+wchar_t* vwformat(const wchar_t *fmt, va_list &args);
 
 }
 
