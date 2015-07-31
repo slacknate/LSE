@@ -19,30 +19,30 @@ class GLScreen {
         
         GLProgram program; //
         double *vertices; //
-        int *texCoords; //
+        int *tex_coords; //
         int *indices; //
         
         int width, height; // screen size parameters
-        int fboStatus; // status of framebuffer object creation
-        unsigned int frameBufferID, renderBufferID, colorTexID, normalTexID; // OpenGL IDs
+        int fbo_status; // status of framebuffer object creation
+        unsigned int frame_buffer_id, render_buffer_id, color_tex_id, normal_tex_id; // OpenGL IDs
         
-        void CalcVertices();
-        void CalcIndices();
-        void CalcTexCoords();
+        void calc_vertices();
+        void calc_indices();
+        void calc_tex_coords();
     
     public:
         
         GLScreen(int w, int h);
         ~GLScreen();
         
-        void Resize(int w, int h);
+        void resize(int w, int h);
         
-        void BindFBO();
-        void UnbindFBO();
+        void bind_fbo();
+        void unbind_fbo();
         
-        void Render();
+        void render();
         
-        bool FBOActive();
+        bool fbo_active();
 };
 
 }
