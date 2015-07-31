@@ -73,6 +73,7 @@ set(SOURCES
 	
 	# utility source files
 	${CMAKE_SOURCE_DIR}/src/util/time.cpp
+	${CMAKE_SOURCE_DIR}/src/util/format.cpp
 	# ${CMAKE_SOURCE_DIR}/src/util/math/matrix.cpp
 	${CMAKE_SOURCE_DIR}/src/util/math/quaternion.cpp
 	${CMAKE_SOURCE_DIR}/src/util/math/vector.cpp
