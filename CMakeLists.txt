@@ -84,8 +84,8 @@ set(SOURCES
 	
 # need where to include stuff from.
 include_directories(
-	${CMAKE_SOURCE_DIR}/include
-	${CMAKE_SOURCE_DIR}/debug
+	${CMAKE_SOURCE_DIR}/include/*
+	${CMAKE_SOURCE_DIR}/debug/*
 )
 
 # now let's do some compiler flags
