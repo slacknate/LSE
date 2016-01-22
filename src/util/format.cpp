@@ -63,6 +63,7 @@ char* vformat(const char *fmt, va_list &args) {
 }
 
 
+#if 0
 /*
  * Format a unicode string with the given parameters.
  * This is more or less a wrapper around vwformat.
@@ -118,3 +119,4 @@ wchar_t* vwformat(const wchar_t *fmt, va_list &args) {
 
     return formatted;
 }
+#endif
