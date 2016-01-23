@@ -89,10 +89,12 @@ int init_max_fbo_attach() {
 
 // FIXME: fetch max number of uniforms
 
-GLManager::GLManager() : max_vertex_attributes(init_max_vertex_attr()),
-                         max_fbo_color_attachments(init_max_fbo_attach()),
-                         gl_version(init_gl_version()), gl_vendor_version(init_gl_vendor_version()),
-                         sl_version(init_sl_version()), sl_vendor_version(init_sl_vendor_version()) {}
+GLManager::GLManager() : gl_version(init_gl_version()),
+                         gl_vendor_version(init_gl_vendor_version()),
+                         sl_version(init_sl_version()),
+                         sl_vendor_version(init_sl_vendor_version()),
+                         max_vertex_attributes(init_max_vertex_attr()),
+                         max_fbo_color_attachments(init_max_fbo_attach()) {}
 
 /*
 
