@@ -3,8 +3,8 @@
 #include <cstdarg>
 #include "util/format.h"
 #include "util/memory.h"
-using namespace LSE;
 
+namespace LSE {
 
 /*
  * Format a string with the given parameters.
@@ -120,3 +120,5 @@ wchar_t* vwformat(const wchar_t *fmt, va_list &args) {
     return formatted;
 }
 #endif
+
+}
