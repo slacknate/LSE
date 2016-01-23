@@ -1,3 +1,4 @@
+#include <cerrno>
 #include <cstdio>
 #include <cstdarg>
 #include <sstream>
@@ -39,6 +40,12 @@ Exception::Exception(const char *file, int line, const char *fmt, ...) noexcept 
 const char* Exception::what() const noexcept {
 
     std::stringstream ss;
+
     ss << "An exception was thrown in \"" << this->file_name << "\" at line " << this->line_number << ": " << this->error_message;
+    if(errno != 0) {
+
+        ss << ": Errno (" << errno <<  "): " << strerror(errno);
+    }
+
     return ss.str().c_str();
 }
