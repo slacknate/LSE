@@ -72,7 +72,7 @@ Fetch max number of vertex attributes.
 */
 int init_max_vertex_attr() {
 
-    int gl_max_vert_attr;
+    int gl_max_vert_attr = 0;
     glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &gl_max_vert_attr);
     return gl_max_vert_attr;
 }
@@ -82,7 +82,7 @@ Fetch max number of frame buffer object color attachments.
 */
 int init_max_fbo_attach() {
 
-    int gl_max_color_attach;
+    int gl_max_color_attach = 0;
     glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &gl_max_color_attach);
     return gl_max_color_attach;
 }
