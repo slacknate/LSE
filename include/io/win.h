@@ -2,9 +2,9 @@
 #define LSE_IO_HANDLER_WIN_H
 
 /*
-Defining WINVER and _WIN32_WINNT as 0x501
+Defining WINVER and _WIN32_WINNT as 0x600
 tells the compiler that we assume we are
-at least Windows XP.
+at least Windows Vista.
 */
 
 #ifdef WINVER
@@ -15,8 +15,8 @@ at least Windows XP.
 #undef _WIN32_WINNT
 #endif
 
-#define WINVER          0x0501
-#define _WIN32_WINNT    0x0501
+#define WINVER          0x0600
+#define _WIN32_WINNT    0x0600
 
 #include <windows.h>
 #include "io/base.h"
