@@ -27,10 +27,10 @@ class Event {
     
     public:
         
-        EventType type;
+        const EventType type;
         const char *const name;
         
-        Event(EventType _type, const char *const _name);
+        Event(const EventType _type, const char *const _name);
 };
 
 

@@ -5,7 +5,7 @@ using namespace LSE;
 /*
 Initialize the type and name members of the Event.
 */
-Event::Event(EventType _type, const char *const _name) : type(_type), name(_name) {}
+Event::Event(const EventType _type, const char *const _name) : type(_type), name(_name) {}
 
 
 /*
