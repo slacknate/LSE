@@ -276,7 +276,7 @@ IOHandler::IOHandler(Object *e) : IOHandlerBase(e) { }
 /*
 
 */
-void IOHandler::RegisterInput(HWND hwnd, unsigned short page, unsigned short id) {
+void IOHandler::register_input(HWND hwnd, unsigned short page, unsigned short id) {
     
     RAWINPUTDEVICE raw_io;
     
@@ -292,16 +292,16 @@ void IOHandler::RegisterInput(HWND hwnd, unsigned short page, unsigned short id)
 /*
 
 */
-void IOHandler::Setup(HWND hwnd) {
+void IOHandler::setup(HWND hwnd) {
     
-    this->RegisterInput(hwnd, MOUSE_PAGE, MOUSE_ID);
-    this->RegisterInput(hwnd, KEYBOARD_PAGE, KEYBOARD_ID);
+    this->register_input(hwnd, MOUSE_PAGE, MOUSE_ID);
+    this->register_input(hwnd, KEYBOARD_PAGE, KEYBOARD_ID);
 }
 
 /*
 
 */
-LRESULT CALLBACK IOHandler::WindowHandler(HWND hwnd, unsigned int message, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK IOHandler::window_proc(HWND hwnd, unsigned int message, WPARAM wParam, LPARAM lParam) {
     
     LRESULT result = 0;
     

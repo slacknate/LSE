@@ -33,7 +33,7 @@ void* GLWindow::execute() {
     // Create a window class to be used for CreateWindow
     WNDCLASS wc;
     wc.style = CS_OWNDC;
-    wc.lpfnWndProc = &this->handler->WindowHandler;
+    wc.lpfnWndProc = &this->handler->window_proc;
     wc.cbClsExtra = 0;
     wc.cbWndExtra = 0;
     wc.hInstance = GetModuleHandle(NULL);
@@ -50,7 +50,7 @@ void* GLWindow::execute() {
     if(hwnd == NULL)
         throw EXCEPTION("Failed to create window");
         
-    this->handler->Setup(hwnd);
+    this->handler->setup(hwnd);
     
     // Get a device context so we can use OpenGL
     hdc = GetDC(hwnd);

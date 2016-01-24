@@ -28,9 +28,9 @@ class IOHandler : public IOHandlerBase {
     public:
         IOHandler(Object *e);
         
-        void RegisterInput(HWND hwnd, unsigned short page, unsigned short id);
-        void Setup(HWND hwnd);
-        static LRESULT CALLBACK WindowHandler(HWND hwnd, unsigned int message, WPARAM wParam, LPARAM lParam);
+        void register_input(HWND hwnd, unsigned short page, unsigned short id);
+        void setup(HWND hwnd);
+        static LRESULT CALLBACK window_proc(HWND hwnd, unsigned int message, WPARAM wParam, LPARAM lParam);
 };
 
 }
