@@ -33,7 +33,7 @@ void* Thread::thread_method(void *arg) {
         Thread *thread = (Thread *)arg;
         result = thread->execute();
     }
-    catch(Exception &e) {
+    catch(std::exception &e) {
 
         logger.error(e.what());
     }
