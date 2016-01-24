@@ -58,7 +58,7 @@ void GLWindowBase::setup_gl() {
     if(glewStatus != GLEW_OK)
         throw EXCEPTION("GLEW failed to initialize");
     
-    logger.info("GL_VERSION: %s\nGL_SHADING_LANGUAGE_VERSION: %s", gl_manager.gl_vendor_version, gl_manager.sl_vendor_version);
+    logger.info("GL_VERSION: %s\\nGL_SHADING_LANGUAGE_VERSION: %s", gl_manager.gl_vendor_version, gl_manager.sl_vendor_version);
         
     int glStatus = gl_manager.gl_version >= MIN_GL_VERSION && gl_manager.max_vertex_attributes >= GL_MIN_VERT_ATTRIB && gl_manager.max_fbo_color_attachments >= GL_MIN_COLOR_ATTACH;
     if(!glStatus)
