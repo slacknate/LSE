@@ -147,7 +147,7 @@ void* Engine::execute() {
     while(this->running) {
 
         this->event_sem.wait();
-        
+
         ListNode *node = this->event_list.PopBack();
         if(node) {
             
@@ -192,6 +192,8 @@ int Engine::run() {
     
     try {
 
+        this->start();
+
         if(this->window != NULL) {
 
             this->window->setup_io(&this->handler);
@@ -200,14 +202,12 @@ int Engine::run() {
 
             if(StatusCode() != GL_INIT_FAIL) {
 
-                this->window->setup_gl();
-                this->start();
+                /*this->window->setup_gl();
 
                 while(this->running)
                     this->window->render();
 
-                this->join();
-                this->window->teardown_gl();
+                this->window->teardown_gl();*/
             }
             else {
 
@@ -227,8 +227,10 @@ int Engine::run() {
 
             logger.error("Cannot render NULL OpenGL window.");
         }
+
+        this->join();
     }
-    catch(Exception &e) {
+    catch(std::exception &e) {
 
         logger.error(e.what());
     }
