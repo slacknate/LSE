@@ -225,7 +225,7 @@ int Engine::run() {
         }
         else {
 
-            logger.error("Cannot render NULL OpenGL window.");
+            logger.error("An OpenGL window was never associated with this instance of LSE::Engine.");
         }
 
         this->join();
