@@ -307,8 +307,7 @@ LRESULT CALLBACK IOHandler::WindowHandler(HWND hwnd, unsigned int message, WPARA
     
     switch(message) {
         
-        case WM_CLOSE:
-        case WM_DESTROY: {
+        case WM_CLOSE: {
             
             logger.debug("Window close message received. Sending quit event to engine.");
             
@@ -319,7 +318,13 @@ LRESULT CALLBACK IOHandler::WindowHandler(HWND hwnd, unsigned int message, WPARA
             QuitEvent *quit_event = new QuitEvent();
             IOHandlerBase::HandleEvent(NULL, EVENT_QUIT, Engine::ID_QUIT, quit_event);
             break;
-        }    
+        }
+        case WM_DESTROY: {
+
+            logger.error("WINDOW BEING DESTROYED BEFORE CLOSE MESSAGE RECEIVED.");
+            // FIXME: uhhh... how do we properly shut down at this point?
+            break;
+        }
         case WM_INPUT: {
             
             HRAWINPUT r_input = (HRAWINPUT)lParam;
