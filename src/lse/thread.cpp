@@ -8,7 +8,7 @@ Thread event table.
 */
 const ThreadEventTable Thread::table = ThreadEventTable({
 
-        ThreadTableEntry(EVENT_QUIT, Thread::ID_QUIT, &Thread::on_quit)
+    ThreadTableEntry(EVENT_QUIT, Thread::ID_QUIT, &Thread::on_quit)
 });
 
 /*
@@ -46,14 +46,14 @@ Run the thread.
 */
 bool Thread::start() {
     
-    int threadError = pthread_create(&thread, NULL, &Thread::thread_method, this);
-    if(threadError != 0)
+    int thread_error = pthread_create(&thread, NULL, &Thread::thread_method, this);
+    if(thread_error != 0)
         logger.errn("Error starting thread");
         
     else
         running = true;
         
-    return !threadError;
+    return !thread_error;
 }
 
 /*
@@ -61,11 +61,11 @@ Detach the thread from the calling thread.
 */
 bool Thread::detach() {
     
-    int threadError = pthread_detach(thread);
-    if(threadError != 0)
+    int thread_error = pthread_detach(thread);
+    if(thread_error != 0)
         logger.errn("Error detaching thread");
         
-    return !threadError;
+    return !thread_error;
 }
 
 /*
@@ -75,11 +75,11 @@ bool Thread::join() {
     
     running = false;
     
-    int threadError = pthread_join(thread, NULL);
-    if(threadError != 0)
+    int thread_error = pthread_join(thread, NULL);
+    if(thread_error != 0)
         logger.errn("Error joining thread");
         
-    return !threadError;
+    return !thread_error;
 }
 
 /*
