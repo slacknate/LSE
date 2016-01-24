@@ -129,11 +129,11 @@ void Engine::close_logs() {
 
     logger.join();
     
-    std::cout.rdbuf(this->cout_buff);
-    std::cerr.rdbuf(this->cerr_buff);
+    //std::cout.rdbuf(this->cout_buff);
+    //std::cerr.rdbuf(this->cerr_buff);
     
-    this->message_log.close();
-    this->error_log.close();
+    //this->message_log.close();
+    //this->error_log.close();
 }
 
 
