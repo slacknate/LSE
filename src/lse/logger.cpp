@@ -16,9 +16,9 @@ const char *const LOG_LINE_DELIM = "\\n";
 
 const char *const LOG_LEVEL_PREFIXS[] = {
     
+    "E",
     "I",
     "D",
-    "E",
     "V",
     "R",
 };

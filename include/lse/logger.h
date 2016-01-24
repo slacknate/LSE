@@ -15,9 +15,9 @@ Log level constants.
 */
 enum LogLevel : unsigned int {
     
-    LOG_LEVEL_INFO = 0,
+    LOG_LEVEL_ERROR = 0,
+    LOG_LEVEL_INFO ,
     LOG_LEVEL_DEBUG,
-    LOG_LEVEL_ERROR,
     LOG_LEVEL_VERBOSE,
     LOG_LEVEL_RAW
 };
