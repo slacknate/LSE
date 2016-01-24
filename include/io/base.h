@@ -18,7 +18,7 @@ class IOHandlerBase : public Object {
         
         IOHandlerBase(Object *e);
         
-        static void HandleEvent(Object *sender, unsigned int type, unsigned int id, void *ptr);
+        static void handle_event(Object *sender, unsigned int type, unsigned int id, void *ptr);
 };
 
 }

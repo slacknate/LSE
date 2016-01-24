@@ -8,7 +8,7 @@ IOHandlerBase::IOHandlerBase(Object *e) {
     this->engine = e;
 }
 
-void IOHandlerBase::HandleEvent(Object *sender, unsigned int type, unsigned int id, void *ptr) {
+void IOHandlerBase::handle_event(Object *sender, unsigned int type, unsigned int id, void *ptr) {
 
     IOHandlerBase::engine->dispatch(sender, type, id, ptr);
 }
