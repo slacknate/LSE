@@ -30,8 +30,6 @@ and run our UI event loop.
 */
 void* GLWindow::execute() {
     
-    try {
-    
     // Create a window class to be used for CreateWindow
     WNDCLASS wc;
     wc.style = CS_OWNDC;
@@ -100,11 +98,5 @@ void* GLWindow::execute() {
         DispatchMessage(&msg);
     }
     
-    }
-    catch(std::exception &e) {
-        
-        throw EXCEPTION("FIXME"); // FIXME: need a way to "convert" standard exceptions into LSE exceptions
-    }
-    
-    return NULL;
+    return nullptr;
 }
