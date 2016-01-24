@@ -54,12 +54,17 @@ void GLWindowBase::setup_gl() {
     
     if(glewInit() != GLEW_OK)
         throw EXCEPTION("GLEW failed to initialize");
-    
-    logger.info("GL_VERSION: %s\\nGL_SHADING_LANGUAGE_VERSION: %s", gl_manager.gl_vendor_version, gl_manager.sl_vendor_version);
-        
-    int gl_status = gl_manager.gl_version >= MIN_GL_VERSION && gl_manager.max_vertex_attributes >= GL_MIN_VERT_ATTRIB && gl_manager.max_fbo_color_attachments >= GL_MIN_COLOR_ATTACH;
-    if(!gl_status)
-        throw EXCEPTION("The version of OpenGL on this machine did not meet minimum system requirements");
+
+    logger.info("GL_VERSION: %s\\nGL_SHADING_LANGUAGE_VERSION: %s", gl_vendor_version(), sl_vendor_version());
+
+    if(gl_version() < MIN_GL_VERSION)
+        throw EXCEPTION("OpenGL version too low.");
+
+    if(max_vertex_attr() < GL_MIN_VERT_ATTRIB)
+        throw EXCEPTION("Too few bindable vertex attributes available.");
+
+    if(max_color_attach() < GL_MIN_COLOR_ATTACH)
+        throw EXCEPTION("Too few bindable Frame buffer object color attachmentments available.");
 
     // compute and bind viewing matrix
     place_camera();

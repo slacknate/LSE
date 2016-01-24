@@ -7,7 +7,6 @@
 namespace LSE {
 
 extern Logger logger;
-extern GLManager gl_manager;
 extern float VIEW_MATRIX[16], PROJ_MATRIX[16];
 
 }

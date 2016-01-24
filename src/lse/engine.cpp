@@ -200,27 +200,19 @@ int Engine::run() {
             this->window->start();
             this->window->wait_for_ready();
 
-            if(StatusCode() != GL_INIT_FAIL) {
+            try {
 
-                /*this->window->setup_gl();
+                this->window->setup_gl();
 
                 while(this->running)
                     this->window->render();
-
-                this->window->teardown_gl();*/
             }
-            else {
+            catch(std::exception &e) {
 
-                if(gl_manager.gl_version < MIN_GL_VERSION)
-                    logger.error("OpenGL version too low.");
-
-                if(gl_manager.max_vertex_attributes < GL_MIN_VERT_ATTRIB)
-                    logger.error("Too few bindable vertex attributes available.");
-
-                if(gl_manager.max_fbo_color_attachments < GL_MIN_COLOR_ATTACH)
-                    logger.error("Too few bindable Frame buffer object color attachmentments available.");
+                logger.error(e.what());
             }
 
+            this->window->teardown_gl();
             this->window->join();
         }
         else {
@@ -256,7 +248,7 @@ int Engine::on_event(Object *, unsigned int, unsigned int, void *ptr) {
         
         logger.verbose("NULL event received.");
     }
-    
+
     return ptr != NULL;
 }
 

@@ -1,5 +1,7 @@
 #include "gl/manager.h"
-using namespace LSE;
+
+namespace LSE {
+
 
 /*
 OpenGL error messages.
@@ -19,89 +21,107 @@ static const GLErrorMap GL_ERROR_MAP = GLErrorMap({
 /*
 Get the OpenGL version as an integer.
 */
-int init_gl_version() {
+int gl_version() {
 
-    int gl_version = 0;
-    int gl_major = 0, gl_minor = 0;
+    static int _gl_version = -1;
 
-    glGetIntegerv(GL_MAJOR_VERSION, &gl_major);
-    glGetIntegerv(GL_MINOR_VERSION, &gl_minor);
+    if(_gl_version == -1) {
 
-    gl_version = (100 * gl_major + 10 * gl_minor);
+        int gl_major = 0, gl_minor = 0;
 
-    return gl_version;
+        glGetIntegerv(GL_MAJOR_VERSION, &gl_major);
+        glGetIntegerv(GL_MINOR_VERSION, &gl_minor);
+
+        _gl_version = (100 * gl_major + 10 * gl_minor);
+    }
+
+    return _gl_version;
 }
 
 /*
 
 */
-const char* init_gl_vendor_version() {
+const char* gl_vendor_version() {
 
-    return (const char *)glGetString(GL_VERSION);
+    static char *_gl_vendor_version = nullptr;
+
+    if(_gl_vendor_version == nullptr)
+        _gl_vendor_version = (char *)glGetString(GL_VERSION);
+
+    return (const char *)_gl_vendor_version;
 }
 
 /*
 Get the GLSL version as an integer.
 */
-int init_sl_version() {
+int sl_version() {
 
-    int sl_version = 0;
+    static int _sl_version = -1;
 
-    const int gl_version = init_gl_version();
+    if(_sl_version == -1) {
 
-    // FIXME: use constants instead of magic numbers
-    if(gl_version >= 330)
-        sl_version = gl_version;
+        const int _gl_version = gl_version();
 
-    else
-        sl_version = gl_version - 170;
+        // FIXME: use constants instead of magic numbers
+        if(_gl_version >= 330)
+            _sl_version = _gl_version;
 
-    return sl_version;
+        else
+            _sl_version = _gl_version - 170;
+    }
+
+    return _sl_version;
 }
 
 /*
 
 */
-const char* init_sl_vendor_version() {
+const char* sl_vendor_version() {
 
-    return (const char *)glGetString(GL_SHADING_LANGUAGE_VERSION);
+    static char *_sl_vendor_version = nullptr;
+
+    if(_sl_vendor_version == nullptr)
+        _sl_vendor_version = (char *)glGetString(GL_SHADING_LANGUAGE_VERSION);
+
+    return (const char *)_sl_vendor_version;
 }
 
 /*
 Fetch max number of vertex attributes.
 */
-int init_max_vertex_attr() {
+int max_vertex_attr() {
 
-    int gl_max_vert_attr = 0;
-    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &gl_max_vert_attr);
-    return gl_max_vert_attr;
+    static int _max_vert_attr = -1;
+
+    if(_max_vert_attr == -1)
+        glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &_max_vert_attr);
+
+    return _max_vert_attr;
 }
 
 /*
 Fetch max number of frame buffer object color attachments.
 */
-int init_max_fbo_attach() {
+int max_color_attach() {
 
-    int gl_max_color_attach = 0;
-    glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &gl_max_color_attach);
-    return gl_max_color_attach;
+    static int _max_color_attach = -1;
+
+    if(_max_color_attach == -1)
+        glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &_max_color_attach);
+
+    return _max_color_attach;
 }
 
 // FIXME: fetch max number of uniforms
 
-GLManager::GLManager() : gl_version(init_gl_version()),
-                         gl_vendor_version(init_gl_vendor_version()),
-                         sl_version(init_sl_version()),
-                         sl_vendor_version(init_sl_vendor_version()),
-                         max_vertex_attributes(init_max_vertex_attr()),
-                         max_fbo_color_attachments(init_max_fbo_attach()) {}
-
 /*
 
 */
-const char* GLManager::error_string(GLenum e) {
+const char* gl_error() {
 
-    GLErrorMap::const_iterator error_it = GL_ERROR_MAP.find(e);
+    const GLenum err_code = glGetError();
+
+    GLErrorMap::const_iterator error_it = GL_ERROR_MAP.find(err_code);
 
     // FIXME: don't use multiple return statements
     if(error_it == GL_ERROR_MAP.end())
@@ -109,4 +129,6 @@ const char* GLManager::error_string(GLenum e) {
 
     else
         return error_it->second;
+}
+
 }
