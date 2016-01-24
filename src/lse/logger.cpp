@@ -9,10 +9,10 @@
 using namespace LSE;
 
 const unsigned int LOG_BUFFER_SIZE = 32;
-const unsigned int LOG_LINE_LENGTH = 66;
-const unsigned int LOG_PREFIX_LENGTH = 14;
+const unsigned int LOG_LINE_DELIM_LENGTH = 2;
 
-const char *const LOG_INDENT_STR = "\n              ";
+const char *const LOG_NEW_LINE = "\n              ";
+const char *const LOG_LINE_DELIM = "\\n";
 
 const char *const LOG_LEVEL_PREFIXS[] = {
     
@@ -76,7 +76,7 @@ void* Logger::execute() {
 Write a log entry to disk. We only record entries which are
 greater or equal log level to the log level of the logger.
 
-TODO: format properly, auto newline around 80 characters
+TODO: auto newline around 80 characters
 */
 void Logger::write_log(LogLevel log_level, std::ostream &stream, char *fmt_log) {
     
@@ -84,8 +84,35 @@ void Logger::write_log(LogLevel log_level, std::ostream &stream, char *fmt_log) 
         
         char *time_str = LSE::calloc<char>(TIME_STR_LENGTH);            
         LSE::get_local_time(time_str);
-            
-        stream << "[" << time_str << "] " << LOG_LEVEL_PREFIXS[log_level] << ": " << fmt_log << std::endl;
+
+        stream << "[" << time_str << "] " << LOG_LEVEL_PREFIXS[log_level] << ": "; //<< fmt_log << std::endl;
+
+        char *fmt_line = fmt_log;
+
+        do {
+
+            char *location = strstr(fmt_line, LOG_LINE_DELIM);
+
+            if(location != nullptr) {
+
+                for(int i = 0; i < LOG_LINE_DELIM_LENGTH; ++i)
+                    location[i] = '\0';
+
+                location += LOG_LINE_DELIM_LENGTH;
+            }
+
+            stream << fmt_line;
+
+            if(location != nullptr) {
+
+                stream << LOG_NEW_LINE;
+            }
+
+            fmt_line = location;
+
+        } while(fmt_line != nullptr);
+
+        stream << std::endl;
         
         delete[] time_str;
         delete[] fmt_log;
@@ -185,40 +212,3 @@ void Logger::raw(const char *format, ...) {
     
     va_end(args);
 }
-
-
-/*char* indent_newlines(const char *format) {
-    
-    char prefix_buffer[LOG_PREFIX_LENGTH];
-    memset(prefix_buffer, ' ', LOG_PREFIX_LENGTH);
-    
-    unsigned int format_len = strlen(format);
-    unsigned int num_newlines = 0;
-    for(unsigned int i = 0; i < format_len; ++i) {
-        
-        if(format[i] == '\n')
-            ++num_newlines;
-    }
-    
-    unsigned int new_format_len = (num_newlines * LOG_PREFIX_LENGTH) + format_len + 1;
-    char *new_format = new (std::nothrow) char[new_format_len];
-    if(new_format == NULL) {
-        
-         // FIXME: uhhh... do we log this? wont that be some SERIOUS RECURSION BRO?!
-    }
-    
-    memset(new_format, 0, new_format_len);
-    
-    unsigned int i = 0, k = 0;
-    for(; i < format_len; ++i, ++k) {
-        
-        new_format[k] = format[i];
-        if(format[i] == '\n') {
-            
-            strncat(new_format, prefix_buffer, LOG_PREFIX_LENGTH);
-            k += LOG_PREFIX_LENGTH;
-        }
-    }
-
-    return new_format;
-}*/
