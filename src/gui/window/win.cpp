@@ -16,7 +16,7 @@ void GLWindow::teardown_gl_context() {
     
     wglMakeCurrent(NULL, NULL);
     wglDeleteContext(hglrc);
-    ReleaseDC(hwnd, hdc); // FIXME: this is an issue, HWND is destroyed before we get here....
+    ReleaseDC(hwnd, hdc);
 }
 
 void GLWindow::swap_gl_buffers() {
