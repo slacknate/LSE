@@ -9,26 +9,14 @@ using namespace LSE;
 
 
 /*
-Engine event table.
-*/
-const EngineEventTable Engine::table = EngineEventTable({
-
-    EngineTableEntry(EVENT_QUIT, Engine::ID_QUIT, &Engine::on_quit),
-    EngineTableEntry(EVENT_ANY, ID_ANY, &Engine::on_event)
-});
-
-
-/*
 
 */
 Engine::Engine(int argc, char *argv[]) : handler(this) {
 
     this->window = NULL;
     this->status = OK;
-    this->key_focus = this->mouse_focus = NULL;
-    
+
     this->create_logs();
-    this->register_table(&Engine::table);
 
     LSE::InitSignals(this);
 }
@@ -39,7 +27,6 @@ Engine::Engine(int argc, char *argv[]) : handler(this) {
 */
 Engine::~Engine() {
     
-    this->event_list.Clear();
     this->close_logs();
 }
 
@@ -148,32 +135,32 @@ void* Engine::execute() {
 
         this->event_sem.wait();
 
-        ListNode *node = this->event_list.PopBack();
-        if(node) {
-            
-            Event *event = (Event *)node->GetData();
-            logger.verbose("Popping %s event off queue.", event->name);
-            
-            switch(event->type) {
-                
-                case EVENT_KEYBOARD:
-                    if(this->key_focus)
-                        this->key_focus->dispatch(this, EVENT_KEYBOARD, ID_ANY, event);
-                    break;
-                case EVENT_MOUSE:
-                    if(this->mouse_focus)
-                        this->mouse_focus->dispatch(this, EVENT_MOUSE, ID_ANY, event);
-                    break;
-                default:
-                    break;
-            }
-            
-            //delete node;
-        }
-        else {
-            
-            logger.verbose("No events in queue to pop.");
-        }
+//        Event *event = ::pop_event();
+//
+//        if(event == nullptr) {
+//
+//            logger.verbose("No events in queue.");
+//        }
+//        else {
+//
+//            logger.verbose("Handling %s event.", event->name);
+//
+//            switch(event->type) {
+//
+//                case EVENT_KEYBOARD:
+//                    if(this->key_focus)
+//                        this->key_focus->dispatch(this, EVENT_KEYBOARD, ID_ANY, event);
+//                    break;
+//                case EVENT_MOUSE:
+//                    if(this->mouse_focus)
+//                        this->mouse_focus->dispatch(this, EVENT_MOUSE, ID_ANY, event);
+//                    break;
+//                default:
+//                    break;
+//            }
+//
+//            delete event;
+//        }
     }
     
     logger.debug("Event queue thread terminating.");
@@ -234,13 +221,11 @@ int Engine::run() {
 /*
 Post an event to the event queue.
 */
-int Engine::on_event(Object *, unsigned int, unsigned int, void *ptr) {
+void Engine::on_event(Event *event) {
     
-    if(ptr != NULL) {
+    if(event != NULL) {
         
-        Event *event = (Event *)ptr;
         logger.verbose("Adding %s event to queue.", event->name);
-        this->event_list.PushFront(event);
 
         this->event_sem.post();
     }
@@ -248,23 +233,16 @@ int Engine::on_event(Object *, unsigned int, unsigned int, void *ptr) {
         
         logger.verbose("NULL event received.");
     }
-
-    return ptr != NULL;
 }
 
 
 /*
 Quit the application.
 */
-int Engine::on_quit(Object *, unsigned int, unsigned int, void *ptr) {
+void Engine::on_quit(Event *) {
     
     logger.debug("Received quit event. Stopping event loop.");
     this->running = false;
     
-    Event *event = (Event *)ptr;
-    logger.debug("Sending quit event to event queue.");
-    this->event_list.PushFront(event);
-
     this->event_sem.post();
-    return true;
 }

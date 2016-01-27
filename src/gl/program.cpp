@@ -3,6 +3,7 @@
 #include <cstdarg>
 #include <cstring>
 #include "gl/program.h"
+#include "gl/manager.h"
 #include "lse/globals.h"
 using namespace LSE;
 

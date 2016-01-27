@@ -1,9 +1,9 @@
 #ifndef LSE_EVENT_TABLE_H
 #define LSE_EVENT_TABLE_H
 
-#include <vector> // FIXME: don't use STL stuff...
-#include "lse/event/entry.h"
-#include "lse/event/types.h"
+#include <map>
+#include <vector>
+#include "lse/event/handler.h"
 
 namespace LSE {
     
@@ -13,60 +13,63 @@ we do not end up with circular inclusion.
 */
 class Object;
 
-/*
-Base class for an objects' event table.
-*/
-class EventTableBase {
-    
-    public:
-        
-        virtual int dispatch(Object *, Object *, unsigned int, unsigned int, void *) const { return 0; }
-};
+typedef std::vector< EventHandlerBase* > EventHandlers;
+typedef std::map< const EventType, EventHandlers* > EventHandlersMap;
 
 
 /*
 Class that is used to implement an objects' event table.
 */
-template <class T> class EventTable : public EventTableBase {
+class EventTable {
     
     private:
-        
-        typedef int (T::*EventMethod)(Object *, unsigned int, unsigned int, void *);
-        
-        std::vector< EventTableEntry<T> > items;
+
+        EventHandlersMap map;
     
     public:
-        
-        EventTable(std::initializer_list< EventTableEntry<T> > _items) {
-                        
-            unsigned int i = 0;
-            typename std::initializer_list< EventTableEntry<T> >::iterator curr;
-            for(curr = _items.begin(); curr != _items.end(); ++curr, ++i) {
-                
-                this->items.push_back(*curr);
+
+        ~EventTable() {
+
+            for(EventHandlersMap::iterator it = this->map.begin(); it != this->map.end(); ++it) {
+
+                EventHandlers *handlers = it->second;
+
+                while(!handlers->empty()) {
+
+                    EventHandlerBase *handler = handlers->back();
+                    handlers->pop_back();
+
+                    delete handler;
+                }
+
+                delete handlers;
             }
         }
-        
-        int dispatch(Object *target, Object *sender, unsigned int type, unsigned int id, void *ptr) const {
-            
+
+        template <class T> void subscribe(const EventType type, void (T::*const method)(Event *)) {
+
+            if(this->map.count(type) < 1)
+                this->map[type] = new EventHandlers();
+
+            this->map[type]->push_back(new EventHandler<T>(type, method));
+        }
+
+        template <class T> void handle(Object *target, Event *event) const {
+
             T *typed_target = (T *)target;
-            
-            int result = 0;
-            for(int i = 0; i < this->items.size(); ++i) {
-                
-                const EventTableEntry<T> &table_entry = this->items[i];
-                
-                const unsigned int handler_type = table_entry.type;
-                const unsigned int handler_id = table_entry.id;
-                const EventMethod handler_method = table_entry.method;
-                
-                if((handler_type == type || handler_type == EVENT_ANY) && (handler_id == id || handler_id == ID_ANY)) {
-                    
-                    result = (typed_target->*(handler_method))(sender, type, id, ptr);
+
+            EventHandlersMap::const_iterator handler_it = this->map.find(event->type);
+
+            if(handler_it != this->map.end()) {
+
+                EventHandlers *handlers = handler_it->second;
+
+                for(int i = 0; i < handlers->size(); ++i) {
+
+                    const EventHandler<T> *const handler = (EventHandler<T> *)(*handlers)[i];
+                    (typed_target->*(handler->method))(event);
                 }
             }
-            
-            return result; 
         }
 };
 

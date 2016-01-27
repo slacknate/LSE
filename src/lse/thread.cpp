@@ -3,13 +3,6 @@
 #include "lse/exception.h"
 using namespace LSE;
 
-/*
-Thread event table.
-*/
-const ThreadEventTable Thread::table = ThreadEventTable({
-
-    ThreadTableEntry(EVENT_QUIT, Thread::ID_QUIT, &Thread::on_quit)
-});
 
 /*
 Initialize our thread to a non-running state.
@@ -17,8 +10,8 @@ Initialize our thread to a non-running state.
 Thread::Thread() {
     
     this->running = false;
-    
-    this->register_table(&Thread::table);
+
+    this->subscribe<Thread>(EVENT_QUIT, &Thread::on_quit);
 }
 
 /*
@@ -86,8 +79,7 @@ bool Thread::join() {
 Give the user the ability to terminate
 a detached thread.
 */
-int Thread::on_quit(Object *, unsigned int, unsigned int, void *) {
+void Thread::on_quit(Event *) {
     
     running = false;
-    return true;
 }

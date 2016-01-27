@@ -9,7 +9,7 @@ void AbortHandler(int code) {
     
     logger.error("Abort signal received.\n");
     QuitEvent *quit_event = new QuitEvent();
-    engine->dispatch(NULL, EVENT_QUIT, Engine::ID_QUIT, quit_event);
+    engine->publish(quit_event);
     exit(code);
 }
 
@@ -17,7 +17,7 @@ void FPEHandler(int code) {
     
     logger.error("Floating Point Exception signal received.\n");
     QuitEvent *quit_event = new QuitEvent();
-    engine->dispatch(NULL, EVENT_QUIT, Engine::ID_QUIT, quit_event);
+    engine->publish(quit_event);
     exit(code);
 }
 
@@ -25,7 +25,7 @@ void IIHandler(int code) {
     
     logger.error("Illegal Instruction signal received.\n");
     QuitEvent *quit_event = new QuitEvent();
-    engine->dispatch(NULL, EVENT_QUIT, Engine::ID_QUIT, quit_event);
+    engine->publish(quit_event);
     exit(code);
 }
 
@@ -33,7 +33,7 @@ void InterruptHandler(int code) {
     
     logger.error("Interrupt signal received.\n");
     QuitEvent *quit_event = new QuitEvent();
-    engine->dispatch(NULL, EVENT_QUIT, Engine::ID_QUIT, quit_event);
+    engine->publish(quit_event);
     exit(code);
 }
 
@@ -41,7 +41,7 @@ void SegfaultHandler(int code) {
     
     logger.error("Segfault signal received.\n");
     QuitEvent *quit_event = new QuitEvent();
-    engine->dispatch(NULL, EVENT_QUIT, Engine::ID_QUIT, quit_event);
+    engine->publish(quit_event);
     exit(code);
 }
 
@@ -49,7 +49,7 @@ void TerminateHandler(int code) {
     
     logger.error("Terminate signal received.\n");
     QuitEvent *quit_event = new QuitEvent();
-    engine->dispatch(NULL, EVENT_QUIT, Engine::ID_QUIT, quit_event);
+    engine->publish(quit_event);
     exit(code);
 }
 

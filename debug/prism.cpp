@@ -2,11 +2,6 @@
 #include "prism.h"
 using namespace LSE;
 
-const PrismEventTable TestPrism::table = PrismEventTable({
-    
-    PrismTableEntry(EVENT_MOUSE,      TestPrism::ID_MOUSE,    &TestPrism::OnMouseMotion),
-    PrismTableEntry(EVENT_KEYBOARD,   TestPrism::ID_KEY,      &TestPrism::OnKey)
-});
 
 /*
 
@@ -14,14 +9,15 @@ const PrismEventTable TestPrism::table = PrismEventTable({
 TestPrism::TestPrism(GLWindow *win, double x, double y, double z, double w, double h, double d) : GLRectPrism(x, y, z, w, h, d) {
     
     window = win;
-    
-    this->register_table(&TestPrism::table);
+
+    this->subscribe<TestPrism>(EVENT_MOUSE, &TestPrism::OnMouseMotion);
+    this->subscribe<TestPrism>(EVENT_KEYBOARD, &TestPrism::OnKey);
 }
 
 /*
 
 */
-int TestPrism::OnMouseMotion(Object *, unsigned int, unsigned int, void *) {
+void TestPrism::OnMouseMotion(Event *) {
     
     /*SDL_MouseMotionEvent *event = (SDL_MouseMotionEvent *)ptr;
     if(event != NULL) {
@@ -37,17 +33,15 @@ int TestPrism::OnMouseMotion(Object *, unsigned int, unsigned int, void *) {
             Transform(q);
         }
     }*/
-    
-    return 1;
 }
 
 /*
 
 */
-int TestPrism::OnKey(Object *, unsigned int, unsigned int, void *ptr) {
+void TestPrism::OnKey(Event *ev) {
     
     printf("Key!\n");
-    KeyEvent *event = (KeyEvent *)ptr;
+    KeyEvent *event = (KeyEvent *)ev;
     
     Vertex& pos = window->cam_pos();
     Vertex& foc = window->cam_focus();
@@ -85,6 +79,4 @@ int TestPrism::OnKey(Object *, unsigned int, unsigned int, void *ptr) {
                 
         foc.x += 0.1;
     }
-    
-    return 1;
 }

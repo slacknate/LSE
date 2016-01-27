@@ -4,6 +4,7 @@
 #include <fstream>
 #include "io/handler.h"
 #include "lse/semaphore.h"
+#include "lse/event/table.h"
 #include "gui/window/window.h"
 
 namespace LSE {
@@ -15,10 +16,6 @@ class Engine : public Thread {
     
     private:
         
-        static const EventTable<Engine> table;
-        
-        List event_list; //
-        Object *key_focus, *mouse_focus;
         Semaphore event_sem;
         IOHandler handler;
         GLWindow *window; // OpenGL window
@@ -45,12 +42,9 @@ class Engine : public Thread {
             ID_QUIT = 1,
         };
         
-        int on_event(Object *sender, unsigned int type, unsigned int id, void *ptr);
-        int on_quit(Object *sender, unsigned int type, unsigned int id, void *ptr);
+        void on_event(Event *);
+        void on_quit(Event *);
 };
-
-typedef EventTable<Engine> EngineEventTable;
-typedef EventTableEntry<Engine> EngineTableEntry;
 
 }
 

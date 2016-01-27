@@ -10,8 +10,6 @@ class TestCam : public Object {
     
     private:
     
-        static const EventTable<TestCam> table;
-        
         GLWindow *window; // system provided opengl context
     
     public:
@@ -23,11 +21,8 @@ class TestCam : public Object {
             ID_KEY = 1
         };
         
-        int OnKey(Object *o, unsigned int type, unsigned int id, void *ptr);
+        int OnKey(Event *);
 };
-
-typedef EventTable<TestCam> CamEventTable;
-typedef EventTableEntry<TestCam> CamTableEntry;
 
 }
 

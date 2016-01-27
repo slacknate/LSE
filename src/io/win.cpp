@@ -309,14 +309,14 @@ LRESULT CALLBACK IOHandler::window_proc(HWND hwnd, unsigned int message, WPARAM 
         
         case WM_CLOSE: {
             
-            logger.debug("Window close message received. Sending quit event to engine.");
+            logger.debug("Window close message received. Publishing quit event.");
             
             // close our window
             PostQuitMessage(0);
             // terminate the engine
             
             QuitEvent *quit_event = new QuitEvent();
-            IOHandlerBase::handle_event(NULL, EVENT_QUIT, Engine::ID_QUIT, quit_event);
+            IOHandlerBase::publish(quit_event);
             break;
         }
         case WM_DESTROY: {
@@ -370,7 +370,7 @@ LRESULT CALLBACK IOHandler::window_proc(HWND hwnd, unsigned int message, WPARAM 
                 key_event->key = vkey_to_lkey(r_keyboard->VKey, r_keyboard->MakeCode, left_right);
                 key_event->state = key_state;
                 
-                IOHandlerBase::handle_event(NULL, EVENT_KEYBOARD, ID_ANY, key_event);
+                IOHandlerBase::publish(key_event);
             }
             else if(raw_input->header.dwType == RIM_TYPEMOUSE) {
             
@@ -405,7 +405,7 @@ LRESULT CALLBACK IOHandler::window_proc(HWND hwnd, unsigned int message, WPARAM 
                     logger.error("Invalid mouse state"); // TODO: real error handling
                 }
                 
-                IOHandlerBase::handle_event(NULL, EVENT_MOUSE, ID_ANY, mouse_event);
+                IOHandlerBase::publish(mouse_event);
             }
             else if(raw_input->header.dwType == RIM_TYPEHID) {
                 

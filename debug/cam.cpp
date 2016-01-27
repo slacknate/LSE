@@ -3,11 +3,6 @@
 #include "lse/defs.h"
 using namespace LSE;
 
-const CamEventTable TestCam::table = CamEventTable({
-    
-    CamTableEntry(EVENT_KEYBOARD, TestCam::ID_KEY, &TestCam::OnKey)
-});
-
 
 /*
 
@@ -15,14 +10,13 @@ const CamEventTable TestCam::table = CamEventTable({
 TestCam::TestCam(GLWindow *w) : Object() {
     
     window = w;
-    
-    this->register_table(&TestCam::table);
 }
+
 
 /*
 
 */
-int TestCam::OnKey(Object *, unsigned int, unsigned int, void *) {
+int TestCam::OnKey(Event *) {
             
     printf("Key!\n");
     return 1;

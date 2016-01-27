@@ -1,6 +1,7 @@
-#include <gui/window/base.h>
+#include "gui/window/base.h"
 #include "lse/engine.h"
 #include "lse/globals.h"
+#include "gl/manager.h"
 #include "lse/exception.h"
 using namespace LSE;
 

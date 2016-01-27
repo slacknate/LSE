@@ -11,8 +11,6 @@ class TestPrism : public GLRectPrism {
     
     private:
         
-        static const EventTable<TestPrism> table;
-        
         GLWindow *window; // system provided opengl context
     
     public:
@@ -25,12 +23,9 @@ class TestPrism : public GLRectPrism {
             ID_KEY
         };
         
-        int OnMouseMotion(Object *sender, unsigned int type, unsigned int id, void *ptr);
-        int OnKey(Object *o, unsigned int type, unsigned int id, void *ptr);
+        void OnMouseMotion(Event *);
+        void OnKey(Event *);
 };
-
-typedef EventTable<TestPrism> PrismEventTable;
-typedef EventTableEntry<TestPrism> PrismTableEntry;
 
 }
 

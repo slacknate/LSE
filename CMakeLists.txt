@@ -20,72 +20,71 @@ endif()
 
 set(SOURCES
 	# debug main files
-	${CMAKE_SOURCE_DIR}/debug/main.cpp
-	${CMAKE_SOURCE_DIR}/debug/cam.cpp
-	${CMAKE_SOURCE_DIR}/debug/prism.cpp
+	debug/main.cpp
+	debug/cam.cpp
+	debug/prism.cpp
 	
 	# gl source files
-	${CMAKE_SOURCE_DIR}/src/gl/light.cpp
-	${CMAKE_SOURCE_DIR}/src/gl/material.cpp
-	${CMAKE_SOURCE_DIR}/src/gl/manager.cpp
-	${CMAKE_SOURCE_DIR}/src/gl/model.cpp
-	${CMAKE_SOURCE_DIR}/src/gl/object.cpp
-	${CMAKE_SOURCE_DIR}/src/gl/primitive.cpp
-	${CMAKE_SOURCE_DIR}/src/gl/program.cpp
-	${CMAKE_SOURCE_DIR}/src/gl/rectangle.cpp
-	${CMAKE_SOURCE_DIR}/src/gl/rectprism.cpp
-	${CMAKE_SOURCE_DIR}/src/gl/shaders.cpp
-	${CMAKE_SOURCE_DIR}/src/gl/vertex.cpp
+	src/gl/light.cpp
+	src/gl/material.cpp
+	src/gl/manager.cpp
+	src/gl/model.cpp
+	src/gl/object.cpp
+	src/gl/primitive.cpp
+	src/gl/program.cpp
+	src/gl/rectangle.cpp
+	src/gl/rectprism.cpp
+	src/gl/shaders.cpp
+	src/gl/vertex.cpp
 	
 	# render surface source files
-	${CMAKE_SOURCE_DIR}/src/gui/screen/screen.cpp
-	${CMAKE_SOURCE_DIR}/src/gui/screen/shaders.cpp
+	src/gui/screen/screen.cpp
+	src/gui/screen/shaders.cpp
 	
 	# program window source files
-	${CMAKE_SOURCE_DIR}/src/gui/window/base.cpp
-	#${CMAKE_SOURCE_DIR}/src/gui/window/mac.cpp
-	#${CMAKE_SOURCE_DIR}/src/gui/window/nix.cpp
-	${CMAKE_SOURCE_DIR}/src/gui/window/win.cpp
+	src/gui/window/base.cpp
+	#src/gui/window/mac.cpp
+	#src/gui/window/nix.cpp
+	src/gui/window/win.cpp
 	
 	# user input/output source files
-	${CMAKE_SOURCE_DIR}/src/io/base.cpp
-	#${CMAKE_SOURCE_DIR}/src/io/mac.cpp
-	#${CMAKE_SOURCE_DIR}/src/io/nix.cpp
-	${CMAKE_SOURCE_DIR}/src/io/win.cpp
+	src/io/base.cpp
+	#src/io/mac.cpp
+	#src/io/nix.cpp
+	src/io/win.cpp
 	
 	# LSE internals source files
-	${CMAKE_SOURCE_DIR}/src/lse/defs.cpp
-	${CMAKE_SOURCE_DIR}/src/lse/engine.cpp
-	${CMAKE_SOURCE_DIR}/src/lse/exception.cpp
-	${CMAKE_SOURCE_DIR}/src/lse/globals.cpp
-	${CMAKE_SOURCE_DIR}/src/lse/list.cpp
-	${CMAKE_SOURCE_DIR}/src/lse/listnode.cpp
-	${CMAKE_SOURCE_DIR}/src/lse/logger.cpp
-	${CMAKE_SOURCE_DIR}/src/lse/mutex.cpp
-	${CMAKE_SOURCE_DIR}/src/lse/object.cpp
-	${CMAKE_SOURCE_DIR}/src/lse/semaphore.cpp
-	${CMAKE_SOURCE_DIR}/src/lse/signals.cpp
-	${CMAKE_SOURCE_DIR}/src/lse/thread.cpp
-	${CMAKE_SOURCE_DIR}/src/lse/event/types.cpp
+	src/lse/defs.cpp
+	src/lse/engine.cpp
+	src/lse/exception.cpp
+	src/lse/globals.cpp
+	src/lse/list.cpp
+	src/lse/listnode.cpp
+	src/lse/logger.cpp
+	src/lse/mutex.cpp
+	src/lse/object.cpp
+	src/lse/semaphore.cpp
+	src/lse/signals.cpp
+	src/lse/thread.cpp
+	src/lse/event/types.cpp
 	
 	# physics source files
-	${CMAKE_SOURCE_DIR}/src/phy/object.cpp
+	src/phy/object.cpp
 	
 	# utility source files
-	${CMAKE_SOURCE_DIR}/src/util/time.cpp
-	${CMAKE_SOURCE_DIR}/src/util/format.cpp
-	# ${CMAKE_SOURCE_DIR}/src/util/math/matrix.cpp
-	${CMAKE_SOURCE_DIR}/src/util/math/quaternion.cpp
-	${CMAKE_SOURCE_DIR}/src/util/math/vector.cpp
-	${CMAKE_SOURCE_DIR}/src/util/terrain/2D.cpp
-	${CMAKE_SOURCE_DIR}/src/util/terrain/3D.cpp
-	${CMAKE_SOURCE_DIR}/src/util/terrain/interpolate.cpp
-	)
-	
+	src/util/time.cpp
+	src/util/format.cpp
+	# src/util/math/matrix.cpp
+	src/util/math/quaternion.cpp
+	src/util/math/vector.cpp
+	src/util/terrain/2D.cpp
+	src/util/terrain/3D.cpp
+	src/util/terrain/interpolate.cpp)
+
 # need where to include stuff from.
 include_directories(
-	${CMAKE_SOURCE_DIR}/include
-	${CMAKE_SOURCE_DIR}/debug
+	include
+	debug
 )
 
 # now let's do some compiler flags

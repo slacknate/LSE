@@ -1,32 +1,43 @@
 #ifndef LSE_OBJECT_H
 #define LSE_OBJECT_H
 
+#include <queue>
 #include "lse/defs.h"
+#include "lse/mutex.h"
 #include "lse/event/table.h"
 
 namespace LSE {
+
+typedef std::queue<Event*> EventQueue;
 
 
 /*
 Base class for all Lucent Shards Engine objects.
 */
 class Object {
-    
+
     private:
-        
-        const EventTableBase *table_ptr; // pointer to our event table
-        
+
+        static Mutex event_mutex;
+        static EventTable event_table;
+        static EventQueue event_queue;
+
     protected:
-        
-        void register_table(const EventTableBase *tp);
-    
+
+        /*
+        * Subscribe to the given event type using
+        * the given class method to handle the events.
+        */
+        template <class T> void subscribe(const EventType type, void (T::*const method)(Event *)) {
+
+            event_table.subscribe<T>(type, method);
+        }
+
     public:
         
-        Object();
-
         virtual ~Object();
         
-        int dispatch(Object *sender, unsigned int type, unsigned int id, void *ptr);
+        void publish(Event *event);
 };
 
 }
