@@ -2,7 +2,6 @@
 #define LSE_BUFFER_H
 
 #include <new>
-#include <iostream>
 #include "lse/mutex.h"
 #include "lse/semaphore.h"
 
