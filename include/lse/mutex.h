@@ -20,9 +20,9 @@ class Mutex {
         Mutex();
         ~Mutex();
         
-        void Lock();
-        void TryLock();
-        void Unlock();
+        void lock();
+        void try_lock();
+        void unlock();
 };
 
 }

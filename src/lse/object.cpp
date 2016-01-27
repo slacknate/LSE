@@ -34,9 +34,9 @@ void Object::publish(Event *event) {
 
     if(event != nullptr) {
 
-        Object::event_mutex.Lock();
+        Object::event_mutex.lock();
         Object::event_queue.push(event);
-        Object::event_mutex.Unlock();
+        Object::event_mutex.unlock();
 
         logger.debug("Pushed %s event to the event queue.", event->name);
     }

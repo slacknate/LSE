@@ -32,7 +32,7 @@ template <class T> class Buffer {
         */
         unsigned int read_pos() {
             
-            read_pos_lock.Lock();
+            read_pos_lock.lock();
             
             unsigned int pos = this->_read_pos;
             
@@ -40,7 +40,7 @@ template <class T> class Buffer {
             if(this->_read_pos >= this->size)
                 this->_read_pos = 0;
             
-            read_pos_lock.Unlock();
+            read_pos_lock.unlock();
             
             return pos;   
         }
@@ -50,7 +50,7 @@ template <class T> class Buffer {
         */
         unsigned int write_pos() {
             
-            write_pos_lock.Lock();
+            write_pos_lock.lock();
             
             unsigned int pos = this->_write_pos;
             
@@ -58,7 +58,7 @@ template <class T> class Buffer {
             if(this->_write_pos >= this->size)
                 this->_write_pos = 0;
             
-            write_pos_lock.Unlock();
+            write_pos_lock.unlock();
             
             return pos;   
         }
@@ -90,8 +90,8 @@ template <class T> class Buffer {
         */
         void flush() {
             
-            read_pos_lock.Lock();
-            write_pos_lock.Lock();
+            read_pos_lock.lock();
+            write_pos_lock.lock();
             
             for(unsigned int i = 0; i < this->size; ++i) {
                 
@@ -101,8 +101,8 @@ template <class T> class Buffer {
                 }
             }
             
-            write_pos_lock.Unlock();
-            read_pos_lock.Unlock();
+            write_pos_lock.unlock();
+            read_pos_lock.unlock();
         }
         
         /*

@@ -27,7 +27,7 @@ Mutex::~Mutex() {
 /*
 Lock the mutex.
 */
-void Mutex::Lock() {
+void Mutex::lock() {
     
     if(initialized) {
         
@@ -39,7 +39,7 @@ void Mutex::Lock() {
 /*
 Attempt a non-blocking lock on the mutex.
 */
-void Mutex::TryLock() {
+void Mutex::try_lock() {
     
     if(initialized) {
         
@@ -51,7 +51,7 @@ void Mutex::TryLock() {
 /*
 Unlock the mutex.
 */
-void Mutex::Unlock() {
+void Mutex::unlock() {
     
     if(initialized) {
         
