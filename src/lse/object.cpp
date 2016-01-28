@@ -1,22 +1,27 @@
 #include "lse/object.h"
 #include "lse/globals.h"
+/* Every object type which subscribes to an event needs to be included here. */
+#include "lse/thread.h"
 using namespace LSE;
 
 
 /*
- * Mutex for protecting the integrity of the event queue.
+ * Semaphore to disallow popping
+ * events from an empty queue.
  */
-Mutex Object::event_mutex;
+Semaphore Object::event_sem;
 
-/*
- * Object-global event table.
- */
-EventTable Object::event_table;
 
 /*
  * Object-global event queue.
  */
 EventQueue Object::event_queue;
+
+
+/*
+ * Object-global event map.
+ */
+EventHandlersMap Object::event_map;
 
 
 /*
@@ -28,17 +33,85 @@ Object::~Object() {}
 
 
 /*
+ *
+ */
+void Object::handle(Event *event, Object *target, EventTopic topic) {
+
+    EventHandlersMap::const_iterator handler_it = Object::event_map.find(event->type);
+    if(handler_it != Object::event_map.end()) {
+
+        EventHandlers *handlers = handler_it->second;
+        for(size_t i = 0; i < handlers->size(); ++i) {
+
+            EventHandlerBase *handler = handlers->at(i);
+            Object *handler_obj = handler->obj;
+
+            if(target == nullptr) {
+
+                handler_obj->consume(event, handler);
+            }
+            else if(target == handler_obj) {
+
+                handler_obj->consume(event, handler);
+                break;  // FIXME: OH MAH GOD THIS IS TABOO @*)#$&%)*(@#$&%(*@#&$%@#N!!!1
+            }
+        }
+    }
+}
+
+
+/*
+ *
+ */
+EventTarget Object::get_target() {
+
+    return TARGET_INVALID;
+}
+
+
+/*
+ *
+ */
+void Object::consume(Event *event, EventHandlerBase *event_handler) {
+
+    switch(this->get_target()) {
+
+        case TARGET_THREAD: {
+
+            Thread *thread_target = (Thread *)this;
+            EventHandler<Thread> *thread_handler = (EventHandler<Thread> *)event_handler;
+            (thread_target->*(thread_handler->method))(event);
+
+            logger.verbose("Consumed event as thread.");
+            break;
+        }
+        default: {
+
+            // FIXME: should probably do more than just log this...
+            logger.error("Cannot determine event target type.");
+            break;
+        }
+    }
+}
+
+
+/*
  * Publish an event to the event queue.
  */
-void Object::publish(Event *event) {
+void Object::publish(Event *event, Object *target, EventTopic topic) {
 
     if(event != nullptr) {
 
-        Object::event_mutex.lock();
-        Object::event_queue.push(event);
-        Object::event_mutex.unlock();
+        struct EventContainer *container = new struct EventContainer;
 
-        logger.debug("Pushed %s event to the event queue.", event->name);
+        container->event = event;
+        container->target = target;
+        container->topic = topic;
+
+        Object::event_queue.push(container);
+        Object::event_sem.post();
+
+        logger.verbose("Pushed %s event to the event queue.", event->name);
     }
     else {
 

@@ -95,7 +95,7 @@ void Logger::write_log(LogLevel log_level, std::ostream &stream, char *fmt_log) 
 
             if(location != nullptr) {
 
-                for(int i = 0; i < LOG_LINE_DELIM_LENGTH; ++i)
+                for(size_t i = 0; i < LOG_LINE_DELIM_LENGTH; ++i)
                     location[i] = '\0';
 
                 location += LOG_LINE_DELIM_LENGTH;

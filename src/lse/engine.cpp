@@ -28,6 +28,21 @@ Engine::Engine(int argc, char *argv[]) : handler(this) {
 Engine::~Engine() {
     
     this->close_logs();
+
+    for(EventHandlersMap::iterator it = Object::event_map.begin(); it != Object::event_map.end(); ++it) {
+
+        EventHandlers *handlers = it->second;
+
+        while(!handlers->empty()) {
+
+            EventHandlerBase *handler = handlers->back();
+            handlers->pop_back();
+
+            delete handler;
+        }
+
+        delete handlers;
+    }
 }
 
 
@@ -125,47 +140,33 @@ void Engine::close_logs() {
 
 
 /*
-
-*/
+ * FIXME: this should probably not be doing friend class bullshit... oops!
+ */
 void* Engine::execute() {
-    
+
     logger.debug("Event queue thread started.");
     
     while(this->running) {
 
-        this->event_sem.wait();
+        Object::event_sem.wait();
 
-//        Event *event = ::pop_event();
-//
-//        if(event == nullptr) {
-//
-//            logger.verbose("No events in queue.");
-//        }
-//        else {
-//
-//            logger.verbose("Handling %s event.", event->name);
-//
-//            switch(event->type) {
-//
-//                case EVENT_KEYBOARD:
-//                    if(this->key_focus)
-//                        this->key_focus->dispatch(this, EVENT_KEYBOARD, ID_ANY, event);
-//                    break;
-//                case EVENT_MOUSE:
-//                    if(this->mouse_focus)
-//                        this->mouse_focus->dispatch(this, EVENT_MOUSE, ID_ANY, event);
-//                    break;
-//                default:
-//                    break;
-//            }
-//
-//            delete event;
-//        }
+        if(Object::event_queue.size() > 0) {
+
+            struct EventContainer *container = Object::event_queue.front();
+
+            logger.verbose("Popping event off event queue.");
+
+            Event *event = container->event;
+            Object *target = container->target;
+            EventTopic topic = container->topic;
+
+            Object::event_queue.pop();
+            Object::handle(event, target, topic);
+        }
     }
-    
+
     logger.debug("Event queue thread terminating.");
-    
-    return NULL;
+    return nullptr;
 }
 
 
@@ -207,6 +208,7 @@ int Engine::run() {
             logger.error("An OpenGL window was never associated with this instance of LSE::Engine.");
         }
 
+        Object::event_sem.post();  // FIXME: JANK ALERT!!!
         this->join();
     }
     catch(std::exception &e) {
@@ -215,34 +217,4 @@ int Engine::run() {
     }
     
     return this->status;
-}
-
-
-/*
-Post an event to the event queue.
-*/
-void Engine::on_event(Event *event) {
-    
-    if(event != NULL) {
-        
-        logger.verbose("Adding %s event to queue.", event->name);
-
-        this->event_sem.post();
-    }
-    else {
-        
-        logger.verbose("NULL event received.");
-    }
-}
-
-
-/*
-Quit the application.
-*/
-void Engine::on_quit(Event *) {
-    
-    logger.debug("Received quit event. Stopping event loop.");
-    this->running = false;
-    
-    this->event_sem.post();
 }
