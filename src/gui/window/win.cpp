@@ -92,7 +92,7 @@ void* GLWindow::execute() {
     
     // Begin the message queue
     MSG msg;
-    while(GetMessage(&msg, NULL, 0, 0)) {
+    while(GetMessage(&msg, hwnd, 0, 0)) {
         
         TranslateMessage(&msg);
         DispatchMessage(&msg);
