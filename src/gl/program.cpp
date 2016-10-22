@@ -191,31 +191,27 @@ Check if the shader attached to the given ID is valid.
 */
 bool GLProgram::ValidateShader(const char *fileName, unsigned int shaderID, ShaderType lseType) {
     
-    int buffSize = 0;
-    glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &buffSize);
-    if(buffSize > 0) {
-                    
+    int compile_success = 0;
+    glGetShaderiv(shaderID, GL_COMPILE_STATUS, &compile_success);
+
+    if(!compile_success) {
+
+        int buffSize = 0;
+        glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &buffSize);
+
         char buffer[buffSize];
-        memset(buffer, 0, buffSize);
+        memset(buffer, 0, (size_t)buffSize);
+
         glGetShaderInfoLog(shaderID, buffSize, &buffSize, buffer);
-        if(!strcmp(buffer, "No errors.\n") || !strcmp(buffer, "")) { // might need to add more here for compatibility
-            
-            return true;
-        }
-        else {
-            
-            if(lseType == SHADER_INVALID)
-                logger.error("Shader read from \"%s\" failed validation:\n%s", fileName, buffer);
-            else
-                logger.error("%s shader read from stream failed validation:\n%s", ShaderString(lseType), buffer);
-        }
-    }
-    else {
-                    
-        logger.error("An error occurred while obtaining the shader logger.");
+
+        if(lseType == SHADER_INVALID)
+            logger.error("Shader read from \"%s\" failed validation:\n%s", fileName, buffer);
+
+        else
+            logger.error("%s shader read from stream failed validation:\n%s", ShaderString(lseType), buffer);
     }
     
-    return false;
+    return (bool)compile_success;
 }
 
 /*
@@ -225,10 +221,10 @@ bool GLProgram::ValidateProgram() {
     
     glValidateProgram(progID);
     
-    int success = false;
-    glGetProgramiv(progID, GL_VALIDATE_STATUS, &success);
+    int validate_success = 0;
+    glGetProgramiv(progID, GL_VALIDATE_STATUS, &validate_success);
     
-    return success;
+    return (bool)validate_success;
 }
 
 /*
