@@ -82,8 +82,6 @@ void* Logger::execute() {
 /*
 Write a log entry to disk. We only record entries which are
 greater or equal log level to the log level of the logger.
-
-TODO: auto newline around 80 characters
 */
 void Logger::write_log(LogLevel log_level, std::ostream &stream, char *fmt_log) {
     
