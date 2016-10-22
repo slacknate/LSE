@@ -122,7 +122,7 @@ void Object::publish(Event *event, Object *target, EventTopic topic) {
 
         Object::event_sem.post();
 
-        logger.verbose("Pushed %s event to the event queue.", event->name);
+        logger.verbose("Pushed %s to the event queue.", event->name);
     }
     else {
 
