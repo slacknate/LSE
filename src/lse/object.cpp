@@ -6,6 +6,14 @@ using namespace LSE;
 
 
 /*
+ * Mutex to disallow multiple
+ * objects from pushing to the
+ * event queue at the same time.
+ */
+Mutex Object::queue_mutex;
+
+
+/*
  * Semaphore to disallow popping
  * events from an empty queue.
  */
@@ -108,7 +116,10 @@ void Object::publish(Event *event, Object *target, EventTopic topic) {
         container->target = target;
         container->topic = topic;
 
+        Object::queue_mutex.lock();
         Object::event_queue.push(container);
+        Object::queue_mutex.unlock();
+
         Object::event_sem.post();
 
         logger.verbose("Pushed %s event to the event queue.", event->name);

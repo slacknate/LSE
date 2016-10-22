@@ -154,13 +154,16 @@ void* Engine::execute() {
 
             struct EventContainer *container = Object::event_queue.front();
 
-            logger.verbose("Popping event off event queue.");
+            logger.verbose("Popping event (%p) off event queue.", container);
 
             Event *event = container->event;
             Object *target = container->target;
             EventTopic topic = container->topic;
 
+            Object::queue_mutex.lock();
             Object::event_queue.pop();
+            Object::queue_mutex.unlock();
+
             Object::handle(event, target, topic);
         }
     }

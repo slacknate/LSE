@@ -5,6 +5,7 @@
 #include <queue>
 #include <vector>
 #include "lse/defs.h"
+#include "lse/mutex.h"
 #include "lse/semaphore.h"
 #include "lse/event/types.h"
 #include "lse/event/handler.h"
@@ -34,6 +35,7 @@ class Object {
     private:
 
         // FIXME: aside from the Engine friend class crap these don't need to be members...
+        static Mutex queue_mutex;
         static Semaphore event_sem;
         static EventQueue event_queue;
         static EventHandlersMap event_map;
