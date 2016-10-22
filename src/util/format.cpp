@@ -10,7 +10,7 @@ namespace LSE {
  * Format a string with the given parameters.
  * This is more or less a wrapper around vformat.
  */
-char* format(const char *fmt, ...) {
+char* format(const char *fmt, size_t max_chars, ...) {
 
     char *formatted = nullptr;
 
@@ -19,7 +19,7 @@ char* format(const char *fmt, ...) {
 
     try {
 
-        formatted = vformat(fmt, args);
+        formatted = vformat(fmt, max_chars, args);
     }
     catch(std::exception &err) {
 
@@ -41,23 +41,14 @@ char* format(const char *fmt, ...) {
  * raise an exception indicating that we were unable
  * to calculate the formatted string length.
  */
-char* vformat(const char *fmt, va_list &args) {
+char* vformat(const char *fmt, size_t max_chars, va_list &args) {
 
-    char *formatted = nullptr;
+    // Allow for an extra character to accommodate for NULL termination.
+    // The NULL is auto-appended by vsnprintf.
+    size_t fmt_length = max_chars + 1;
 
-    int num_written = vsnprintf(NULL, 0, fmt, args);
-    if(num_written > 0) {
-
-        size_t fmt_length = (size_t)num_written;
-
-        // Allocate an extra character to accommodate for null termination.
-        formatted = LSE::calloc<char>(fmt_length + 1);
-        vsnprintf(formatted, fmt_length, fmt, args);
-    }
-    else if(num_written < 0) {
-
-        throw EXCEPTION("Failed to get formatted string length.");
-    }
+    char *formatted = LSE::calloc<char>(fmt_length);
+    vsnprintf(formatted, fmt_length, fmt, args);
 
     return formatted;
 }
@@ -68,7 +59,7 @@ char* vformat(const char *fmt, va_list &args) {
  * Format a unicode string with the given parameters.
  * This is more or less a wrapper around vwformat.
  */
-wchar_t* wformat(const wchar_t *fmt, ...) {
+wchar_t* wformat(const wchar_t *fmt, size_t max_chars, ...) {
 
     wchar_t *formatted = nullptr;
 
@@ -99,7 +90,7 @@ wchar_t* wformat(const wchar_t *fmt, ...) {
  * raise an exception indicating that we were unable
  * to calculate the formatted string length.
  */
-wchar_t* vwformat(const wchar_t *fmt, va_list &args) {
+wchar_t* vwformat(const wchar_t *fmt, size_t max_chars, va_list &args) {
 
     wchar_t *formatted = nullptr;
 

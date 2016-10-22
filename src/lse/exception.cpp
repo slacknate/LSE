@@ -8,6 +8,13 @@
 using namespace LSE;
 
 /*
+ * Have a hard length limit for exception messages
+ * so we do not have to have a wack, slow, format method
+ * that can detect message length.
+ */
+const unsigned int EXC_MESSAGE_MAX_LENGTH = 80;
+
+/*
  * Create an exception, with a corresponding error message.
  * The error message is built from a format string and variadic
  * parameters. If a problem occurs during string formatting,
@@ -24,7 +31,7 @@ Exception::Exception(const char *file, int line, const char *fmt, ...) noexcept 
 
     try{
 
-        this->error_message = vformat(fmt, args);
+        this->error_message = vformat(fmt, EXC_MESSAGE_MAX_LENGTH, args);
     }
     catch(std::exception &err) {
 

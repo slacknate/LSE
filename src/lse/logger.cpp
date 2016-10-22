@@ -8,6 +8,13 @@
 #include "util/memory.h"
 using namespace LSE;
 
+/*
+ * Have a hard length limit for log messages
+ * so we do not have to have a wack, slow, format method
+ * that can detect message length.
+ */
+const unsigned int LOG_MAX_LENGTH = 120 - TIME_STR_LENGTH - 6;
+
 const unsigned int LOG_BUFFER_SIZE = 32;
 const unsigned int LOG_LINE_DELIM_LENGTH = 2;
 
@@ -85,35 +92,8 @@ void Logger::write_log(LogLevel log_level, std::ostream &stream, char *fmt_log) 
         char *time_str = LSE::calloc<char>(TIME_STR_LENGTH);            
         LSE::get_local_time(time_str);
 
-        stream << "[" << time_str << "] " << LOG_LEVEL_PREFIXS[log_level] << ": "; //<< fmt_log << std::endl;
+        stream << "[" << time_str << "] " << LOG_LEVEL_PREFIXS[log_level] << ": " << fmt_log << std::endl;
 
-        char *fmt_line = fmt_log;
-
-        do {
-
-            char *location = strstr(fmt_line, LOG_LINE_DELIM);
-
-            if(location != nullptr) {
-
-                for(size_t i = 0; i < LOG_LINE_DELIM_LENGTH; ++i)
-                    location[i] = '\0';
-
-                location += LOG_LINE_DELIM_LENGTH;
-            }
-
-            stream << fmt_line;
-
-            if(location != nullptr) {
-
-                stream << LOG_NEW_LINE;
-            }
-
-            fmt_line = location;
-
-        } while(fmt_line != nullptr);
-
-        stream << std::endl;
-        
         delete[] time_str;
         delete[] fmt_log;
     }
@@ -125,7 +105,7 @@ void Logger::write_log(LogLevel log_level, std::ostream &stream, char *fmt_log) 
 */
 void Logger::log_event(LogLevel log_level, std::ostream &stream, const char *fmt, va_list &args) {
 
-    LogEvent log_event = LogEvent(log_level, stream, vformat(fmt, args));
+    LogEvent log_event = LogEvent(log_level, stream, vformat(fmt, LOG_MAX_LENGTH, args));
     this->buffer.push(log_event);
 
     this->log_sem.post();
