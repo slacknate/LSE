@@ -22,8 +22,8 @@ template <class T> class Buffer {
 
         const unsigned int size; // size of the buffer
         
-        unsigned int _read_pos; // actual read position
-        unsigned int _write_pos; // actual write position
+        unsigned int read_pos; // actual read position
+        unsigned int write_pos; // actual write position
         
         T **buffer; // the actual buffer memory!
         
@@ -32,9 +32,9 @@ template <class T> class Buffer {
          */
         void inc_read_pos() {
 
-            ++this->_read_pos;
-            if(this->_read_pos >= this->size)
-                this->_read_pos = 0;
+            ++this->read_pos;
+            if(this->read_pos >= this->size)
+                this->read_pos = 0;
         }
         
         /*
@@ -42,9 +42,9 @@ template <class T> class Buffer {
          */
         void inc_write_pos() {
             
-            ++this->_write_pos;
-            if(this->_write_pos >= this->size)
-                this->_write_pos = 0;
+            ++this->write_pos;
+            if(this->write_pos >= this->size)
+                this->write_pos = 0;
         }
         
     public:
@@ -58,8 +58,8 @@ template <class T> class Buffer {
              * Initially read and write pointer both
              * point to our first item in the buffer.
              */
-            this->_read_pos = 0;
-            this->_write_pos = 0;
+            this->read_pos = 0;
+            this->write_pos = 0;
 
             /*
              * Initialize all our buffer items to nullptr.
@@ -106,7 +106,7 @@ template <class T> class Buffer {
 
             write_lock.lock();
 
-            unsigned int pos = this->_write_pos;
+            unsigned int pos = this->write_pos;
             this->inc_write_pos();
 
             write_lock.unlock();
@@ -136,7 +136,7 @@ template <class T> class Buffer {
 
             read_lock.lock();
 
-            unsigned int pos = this->_read_pos;
+            unsigned int pos = this->read_pos;
             this->inc_read_pos();
 
             read_lock.unlock();
