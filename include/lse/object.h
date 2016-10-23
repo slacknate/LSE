@@ -4,12 +4,12 @@
 #include <map>
 #include <queue>
 #include <vector>
+
 #include "lse/defs.h"
 #include "lse/mutex.h"
 #include "lse/semaphore.h"
 #include "lse/event/types.h"
 #include "lse/event/handler.h"
-#include "lse/event/targets.h"
 
 namespace LSE {
 
@@ -20,6 +20,7 @@ struct EventContainer {
     Object *target;
     EventTopic topic;
 };
+
 
 typedef std::queue<struct EventContainer*> EventQueue;
 
@@ -56,13 +57,18 @@ class Object {
             Object::event_map[type]->push_back(new EventHandler<T>(type, (T *const)this, method, topic));
         }
 
-        virtual EventTarget get_target();
+        template <class T> void consume_as(Event *event, EventHandlerBase *event_handler) {
+
+            T *target = (T *)this;
+            EventHandler<T> *handler = (EventHandler<T> *)event_handler;
+            (target->*(handler->method))(event);
+        }
 
     public:
-        
+
         virtual ~Object();
 
-        void consume(Event *event, EventHandlerBase *event_handler);
+        virtual void consume(Event *event, EventHandlerBase *event_handler) {};
         void publish(Event *event, Object *target=nullptr, EventTopic topic=TOPIC_ANY);
 
     friend class Engine;  // FIXME: this is some jank... whoops!

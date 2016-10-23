@@ -17,8 +17,6 @@ class Thread : public Object {
 
         virtual void* execute()=0;
 
-        virtual EventTarget get_target();
-
     protected:
 
         pthread_t thread; // event loop thread ID
@@ -35,6 +33,14 @@ class Thread : public Object {
         bool join();
 
         void on_quit(Event *);
+
+        /*
+         * FIXME: implement in LSE::Object.
+         */
+        void consume(Event *event, EventHandlerBase *event_handler) {
+
+            this->consume_as<Thread>(event, event_handler);
+        }
 };
 
 }

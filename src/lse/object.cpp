@@ -67,40 +67,15 @@ void Object::handle(Event *event, Object *target, EventTopic topic) {
     }
 }
 
-
 /*
- *
+ * FIXME: figure out how to implement and do proper cast!
  */
-EventTarget Object::get_target() {
-
-    return TARGET_INVALID;
-}
-
-
-/*
- *
- */
-void Object::consume(Event *event, EventHandlerBase *event_handler) {
-
-    switch(this->get_target()) {
-
-        case TARGET_THREAD: {
-
-            Thread *thread_target = (Thread *)this;
-            EventHandler<Thread> *thread_handler = (EventHandler<Thread> *)event_handler;
-            (thread_target->*(thread_handler->method))(event);
-
-            logger.verbose("Consumed event as thread.");
-            break;
-        }
-        default: {
-
-            // FIXME: should probably do more than just log this...
-            logger.error("Cannot determine event target type.");
-            break;
-        }
-    }
-}
+//void Object::consume(Event *event, EventHandlerBase *event_handler) {
+//
+//    this->consume_as< ??? >(event, event_handler);
+//
+//    logger.verbose("Event consumed.");
+//}
 
 
 /*

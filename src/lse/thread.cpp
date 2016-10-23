@@ -35,14 +35,6 @@ void* Thread::thread_method(void *arg) {
 }
 
 /*
- *
- */
-EventTarget Thread::get_target() {
-
-    return TARGET_THREAD;
-}
-
-/*
 Run the thread.
 */
 bool Thread::start() {
