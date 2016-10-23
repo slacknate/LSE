@@ -237,8 +237,6 @@ void GLWindowBase::render() {
     for(int i = 0; i < draw_list.Size(); ++i) {
         
         GLObject *gl_object = (GLObject *) draw_list[i]->GetData();
-        //Quaternion q(1.0, 2.0, 3.0, 10.0*cos(PI/190.0));
-        //gl_object->Transform(q);
         gl_object->Render();
         
         if(1 == 2) // FIXME: real condition
