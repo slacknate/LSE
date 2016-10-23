@@ -39,13 +39,21 @@ void Mutex::lock() {
 /*
 Attempt a non-blocking lock on the mutex.
 */
-void Mutex::try_lock() {
+bool Mutex::try_lock() {
     
+    bool result = false;
+
     if(initialized) {
         
-        if(pthread_mutex_trylock(&mutex))
+        int lock_state = pthread_mutex_trylock(&mutex);
+
+        if(lock_state != 0 && lock_state != EBUSY)
             logger.errn("Failed trying mutex lock");
+
+        result = !lock_state;
     }
+
+    return result;
 }
 
 /*

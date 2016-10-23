@@ -21,7 +21,7 @@ class Mutex {
         ~Mutex();
         
         void lock();
-        void try_lock();
+        bool try_lock();
         void unlock();
 };
 
