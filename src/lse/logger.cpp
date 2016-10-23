@@ -50,7 +50,7 @@ Stop the logger write-to-disk thread.
 bool Logger::join() {
     
     running = false;
-    this->log_sem.post();
+    this->buffer.push(nullptr);
     return Thread::join();
 }
 
@@ -60,22 +60,15 @@ Thread to write log events to their respective log files.
 */
 void* Logger::execute() {
     
+    /*
+     * FIXME: probably should drain log buffer before quitting.
+     */
     while(this->running) {
 
-        this->log_sem.wait();
-        
-        /*
-        When we stop the logger, the post to the semaphore, but the buffer is
-        empty. Thusly we need to make sure to skip writing a log event if
-        we are terminating the logger.
-        */
-        if(this->running) {
+        LogMessage *container = this->buffer.pop();
 
-            LogMessage *container = this->buffer.pop();
+        if(container != nullptr) {
 
-            /*
-            Explode the log event tuple, pass the elements to write_log.
-            */
             this->write_log(container->level, container->stream, container->message);
             
             delete container;
@@ -139,8 +132,6 @@ void Logger::log_event(LogLevel level, std::ostream &stream, const char *fmt, va
         LogMessage *container = new LogMessage(level, stream, vformat(fmt, LOG_MAX_LENGTH, args));
 
         this->buffer.push(container);
-
-        this->log_sem.post();
     }
 }
 

@@ -53,8 +53,7 @@ class Logger : public Thread {
         
         LogLevel level;
         LogBuffer buffer;
-        Semaphore log_sem;
-        
+
         void* execute();
 
         void write_log(LogLevel level, std::ostream &stream, char *message);
