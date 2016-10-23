@@ -1,12 +1,11 @@
 #ifndef LSE_LOGGER_H
 #define LSE_LOGGER_H
 
-#include <tuple>
+#include <queue>
 #include <cstdarg>
 #include <ostream>
 #include "lse/thread.h"
 #include "lse/semaphore.h"
-#include "util/buffer.h"
 
 namespace LSE {
 
@@ -35,7 +34,7 @@ class LogMessage {
 };
 
 
-typedef Buffer<LogMessage> LogBuffer;
+typedef std::queue<LogMessage*> LogQueue;
 
 /*
 Logger class used as the global logger.
@@ -52,7 +51,8 @@ class Logger : public Thread {
     private:
         
         LogLevel level;
-        LogBuffer buffer;
+        LogQueue queue;
+        Semaphore log_sem;
 
         void* execute();
 

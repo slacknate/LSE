@@ -15,7 +15,6 @@ using namespace LSE;
  */
 const unsigned int LOG_MAX_LENGTH = 120 - TIME_STR_LENGTH - 6;
 
-const unsigned int LOG_BUFFER_SIZE = 32;
 const unsigned int LOG_LINE_DELIM_LENGTH = 2;
 
 const char *const LOG_NEW_LINE = "\n              ";
@@ -39,9 +38,9 @@ LogMessage::LogMessage(LogLevel _level, std::ostream& _stream, char* _message) :
 
 
 /*
-Initialize our log buffers memory.
-*/
-Logger::Logger(LogLevel _level) : level(_level), buffer(LOG_BUFFER_SIZE) {}
+ *
+ */
+Logger::Logger(LogLevel _level) : level(_level) {}
 
 
 /*
@@ -50,7 +49,7 @@ Stop the logger write-to-disk thread.
 bool Logger::join() {
     
     running = false;
-    this->buffer.push(nullptr);
+    this->queue.push(nullptr);
     return Thread::join();
 }
 
@@ -60,12 +59,12 @@ Thread to write log events to their respective log files.
 */
 void* Logger::execute() {
     
-    /*
-     * FIXME: probably should drain log buffer before quitting.
-     */
-    while(this->running) {
+    while(this->running || this->queue.size() > 0) {
 
-        LogMessage *container = this->buffer.pop();
+        this->log_sem.wait();
+
+        LogMessage *container = this->queue.front();
+        this->queue.pop();
 
         if(container != nullptr) {
 
@@ -131,7 +130,9 @@ void Logger::log_event(LogLevel level, std::ostream &stream, const char *fmt, va
 
         LogMessage *container = new LogMessage(level, stream, vformat(fmt, LOG_MAX_LENGTH, args));
 
-        this->buffer.push(container);
+        this->queue.push(container);
+
+        this->log_sem.post();
     }
 }
 
