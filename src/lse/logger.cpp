@@ -95,7 +95,34 @@ void Logger::write_log(LogLevel level, std::ostream &stream, char *message) {
     char *time_str = LSE::calloc<char>(TIME_STR_LENGTH);
     LSE::get_local_time(time_str);
 
-    stream << "[" << time_str << "] " << LOG_LEVEL_PREFIXS[level] << ": " << message << std::endl;
+    stream << "[" << time_str << "] " << LOG_LEVEL_PREFIXS[level] << ": ";
+
+    char *delimited = message;
+
+    do {
+
+        char *location = strstr(delimited, LOG_LINE_DELIM);
+
+        if(location != nullptr) {
+
+            for(int i = 0; i < LOG_LINE_DELIM_LENGTH; ++i)
+                location[i] = '\0';
+
+            location += LOG_LINE_DELIM_LENGTH;
+        }
+
+        stream << delimited;
+
+        if(location != nullptr) {
+
+            stream << LOG_NEW_LINE;
+        }
+
+        delimited = location;
+
+    } while(delimited != nullptr);
+
+    stream << std::endl;
 
     delete[] time_str;
     delete[] message;
