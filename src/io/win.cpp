@@ -395,16 +395,13 @@ LRESULT CALLBACK IOHandler::window_proc(HWND hwnd, unsigned int message, WPARAM 
                         mouse_event->state = lbutton[1];
                     }
                 }
-                else if(r_mouse->usFlags == MOUSE_MOVE_RELATIVE) {
+
+                if(r_mouse->usFlags == MOUSE_MOVE_RELATIVE) {
                     
                     mouse_event->dX = r_mouse->lLastX;
                     mouse_event->dY = r_mouse->lLastY;
                 }
-                else {
-                    
-                    logger.error("Invalid mouse state"); // TODO: real error handling
-                }
-                
+
                 IOHandlerBase::publish(mouse_event);
             }
             else if(raw_input->header.dwType == RIM_TYPEHID) {
