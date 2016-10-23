@@ -32,6 +32,13 @@ const char *const LOG_LEVEL_PREFIXS[] = {
 
 
 /*
+ *
+ */
+LogMessage::LogMessage(LogLevel _level, std::ostream& _stream, char* _message) :
+        level(_level), stream(_stream), message(_message) {}
+
+
+/*
 Initialize our log buffers memory.
 */
 Logger::Logger(LogLevel _level) : level(_level), buffer(LOG_BUFFER_SIZE) {}
@@ -63,15 +70,15 @@ void* Logger::execute() {
         we are terminating the logger.
         */
         if(this->running) {
-            
-            LogEvent *log_event = this->buffer.pop();
-            
+
+            LogMessage *container = this->buffer.pop();
+
             /*
             Explode the log event tuple, pass the elements to write_log.
             */
-            this->write_log(std::get<0>(*log_event), std::get<1>(*log_event), std::get<2>(*log_event));
+            this->write_log(container->level, container->stream, container->message);
             
-            delete log_event;
+            delete container;
         }
     }
     
@@ -83,30 +90,31 @@ void* Logger::execute() {
 Write a log entry to disk. We only record entries which are
 greater or equal log level to the log level of the logger.
 */
-void Logger::write_log(LogLevel log_level, std::ostream &stream, char *fmt_log) {
+void Logger::write_log(LogLevel level, std::ostream &stream, char *message) {
     
-    if(log_level <= this->level) {
-        
-        char *time_str = LSE::calloc<char>(TIME_STR_LENGTH);            
-        LSE::get_local_time(time_str);
+    char *time_str = LSE::calloc<char>(TIME_STR_LENGTH);
+    LSE::get_local_time(time_str);
 
-        stream << "[" << time_str << "] " << LOG_LEVEL_PREFIXS[log_level] << ": " << fmt_log << std::endl;
+    stream << "[" << time_str << "] " << LOG_LEVEL_PREFIXS[level] << ": " << message << std::endl;
 
-        delete[] time_str;
-        delete[] fmt_log;
-    }
+    delete[] time_str;
+    delete[] message;
 }
 
 
 /*
 
 */
-void Logger::log_event(LogLevel log_level, std::ostream &stream, const char *fmt, va_list &args) {
+void Logger::log_event(LogLevel level, std::ostream &stream, const char *fmt, va_list &args) {
 
-    LogEvent log_event = LogEvent(log_level, stream, vformat(fmt, LOG_MAX_LENGTH, args));
-    this->buffer.push(log_event);
+    if(level <= this->level) {
 
-    this->log_sem.post();
+        LogMessage *container = new LogMessage(level, stream, vformat(fmt, LOG_MAX_LENGTH, args));
+
+        this->buffer.push(container);
+
+        this->log_sem.post();
+    }
 }
 
 

@@ -22,8 +22,20 @@ enum LogLevel : unsigned int {
     LOG_LEVEL_RAW
 };
 
-typedef std::tuple<LogLevel, std::ostream&, char *> LogEvent;
-typedef Buffer<LogEvent> LogBuffer;
+
+class LogMessage {
+
+    public:
+
+        LogLevel level;
+        std::ostream& stream;
+        char* message;
+
+        LogMessage(LogLevel _level, std::ostream& _stream, char* _message);
+};
+
+
+typedef Buffer<LogMessage> LogBuffer;
 
 /*
 Logger class used as the global logger.
@@ -45,8 +57,8 @@ class Logger : public Thread {
         
         void* execute();
 
-        void write_log(LogLevel log_level, std::ostream &stream, char *fmt_log);
-        void log_event(LogLevel log_level, std::ostream &stream, const char *fmt, va_list &args);
+        void write_log(LogLevel level, std::ostream &stream, char *message);
+        void log_event(LogLevel level, std::ostream &stream, const char *fmt, va_list &args);
         
     public:
         
