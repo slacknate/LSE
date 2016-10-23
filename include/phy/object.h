@@ -23,7 +23,7 @@ class PHObject : public Object {
     protected:
         
         Vector linearVelocity, angularVelocity; // object linear and angular velocity
-        double pX, pY, pZ; // location of this object in 3D space
+        Vector pos; // location of this object in 3D space
         double mass; // object mass
         
     public:

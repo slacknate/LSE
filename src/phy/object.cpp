@@ -5,11 +5,8 @@ using namespace LSE;
 Set our objects point and create a new velocity vector
 with the given veloctiy. Default velocity is zero.
 */
-PHObject::PHObject(double x, double y, double z) {
+PHObject::PHObject(double x, double y, double z) : pos(x, y, z) {
     
-    pX = x;
-    pY = y;
-    pZ = z;
     mass = 1.0;
 }
 
