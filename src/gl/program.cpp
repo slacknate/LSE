@@ -284,6 +284,7 @@ int GLProgram::AddShader(const char *buffer, ShaderType lseType) {
                     }
                     else {
                     
+                        logger.error("An error occurred while creating shader from \"%s\": %s.", buffer, gl_error());
                         glDeleteShader(shaderID);
                     }
                 }
@@ -335,6 +336,7 @@ int GLProgram::AddShader(const char *buffer, ShaderType lseType) {
                 }
                 else {
                     
+                    logger.error("An error occurred while creating shader from \"%s\": %s.", buffer, gl_error());
                     glDeleteShader(shaderID);
                 }
             }
