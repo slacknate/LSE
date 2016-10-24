@@ -17,14 +17,14 @@ class GLRectPrism : public GLPrimitive {
     
     protected:
         
-        double width, height, depth; // prism attributes
+        float width, height, depth; // prism attributes
         
         void CalcVertices();
         void CalcIndices();
         
     public:
         
-        GLRectPrism(double x, double y, double z, double w, double h, double d);
+        GLRectPrism(float x, float y, float z, float w, float h, float d);
 };
 
 }

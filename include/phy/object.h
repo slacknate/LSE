@@ -12,7 +12,7 @@ Physics constants.
 */
 const int PHY_UPD_TIME   = 1;
 const float PHY_UPD_MULT = 0.001f;
-const double PI          = 3.14159265359;
+const float PI          = 3.14159265359;
 
 /*
 Class that describes an object which will have physical interaction
@@ -24,13 +24,13 @@ class PHObject : public Object {
         
         Vector linearVelocity, angularVelocity; // object linear and angular velocity
         Vertex pos; // location of this object in 3D space
-        double mass; // object mass
+        float mass; // object mass
         
     public:
         
-        PHObject(double x, double y, double z);
+        PHObject(float x, float y, float z);
         
-        void ApplyForce(Vector& force, Vector &normal, double x, double y, double z);
+        void ApplyForce(Vector& force, Vector &normal, float x, float y, float z);
         //static unsigned int Update(unsigned int delay, void *arg);
 };
 

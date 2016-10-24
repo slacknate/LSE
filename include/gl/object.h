@@ -16,25 +16,28 @@ class GLObject : public PHObject {
     protected:
         
         GLProgram program; // shader program
-        Quaternion quat; // object orientation
-        
+        Quaternion rotation; // object orientation
+        float translation[16];
+
         virtual void CalcNormals() {} // calculate normal vectors to all surfaces
+
+        void init_translation_matrix();
         
     public:
         
-        GLObject(double x, double y, double z);
+        GLObject(float x, float y, float z);
         
         GLProgram* GetProgram();
         
-        void Move(double dX, double dY, double dZ);
-        void Transform(Quaternion& q);
+        void translate(Vector& v);
+        void rotate(Quaternion& q);
         
         void Render();
         
         virtual void Draw() {} // object specific render method
         virtual void RenderNormals() {} // object specific normal render method
-        virtual bool Hit(double, double, double) { return false; } // collision detection method
-        virtual Vector GetNormalAt(double, double, double) { return Vector(); } // object specific surface normal algorithm
+        virtual bool Hit(float, float, float) { return false; } // collision detection method
+        virtual Vector GetNormalAt(float, float, float) { return Vector(); } // object specific surface normal algorithm
 };
 
 }

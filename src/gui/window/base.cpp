@@ -12,7 +12,7 @@ We save the opengl clear bitmask,
 as well as the canvas height, width,
 and aspect ratio information.
 */
-GLWindowBase::GLWindowBase(const char *const title, unsigned int m, int w, int h, double angle, double zi, double za) {
+GLWindowBase::GLWindowBase(const char *const title, unsigned int m, int w, int h, float angle, float zi, float za) {
     
     this->mask = m;
     this->window_title = title;
@@ -197,13 +197,13 @@ Reference:
 */
 void GLWindowBase::aspect_ratio() {
     
-    double aspect = ((double)width/(double)height);
-    double dz = zmin - zmax;
+    float aspect = ((float)width/(float)height);
+    float dz = zmin - zmax;
     
     if((dz == 0) || (sin(fovy * PI / 360.0) == 0) || (aspect == 0))
 	   return;
 	   
-    double cotangent = 1.0 / tan(fovy * PI / 360.0);
+    float cotangent = 1.0 / tan(fovy * PI / 360.0);
     
     PROJ_MATRIX[0] = cotangent / aspect;
     PROJ_MATRIX[1] = 0.0;

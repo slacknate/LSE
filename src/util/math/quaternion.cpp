@@ -18,7 +18,7 @@ Quaternion::Quaternion() {
 /*
 Initialize our quaternion given all four components.
 */
-Quaternion::Quaternion(double x, double y, double z, double w) {
+Quaternion::Quaternion(float x, float y, float z, float w) {
 
     this->x = x;
     this->y = y;
@@ -31,7 +31,7 @@ Quaternion::Quaternion(double x, double y, double z, double w) {
 /*
 Get the X component.
 */
-double Quaternion::i() {
+float Quaternion::i() {
     
     return this->x;
 }
@@ -39,7 +39,7 @@ double Quaternion::i() {
 /*
 Get the Y component.
 */
-double Quaternion::j() {
+float Quaternion::j() {
     
     return this->y;
 }
@@ -47,7 +47,7 @@ double Quaternion::j() {
 /*
 Get the Z component.
 */
-double Quaternion::k() {
+float Quaternion::k() {
     
     return this->z;
 }
@@ -55,7 +55,7 @@ double Quaternion::k() {
 /*
 Get the scalar component.
 */
-double Quaternion::s() {
+float Quaternion::s() {
     
     return this->w;
 }
@@ -63,7 +63,7 @@ double Quaternion::s() {
 /*
 Get the length of the quaternion.
 */
-double Quaternion::norm() {
+float Quaternion::norm() {
     
     return sqrt(pow(this->x, 2.0) + pow(this->y, 2.0) + pow(this->z, 2.0) + pow(this->w, 2.0));
 }
@@ -81,7 +81,7 @@ Make this quaternion a unit quaternion in its current direction.
 */
 void Quaternion::normalize() {
     
-    double size = this->norm();
+    float size = this->norm();
     
     if(size > 0) {
 
@@ -108,17 +108,17 @@ Reference:
 */
 void Quaternion::update_matrix() {
     
-    double xx = this->x * this->x;
-    double xy = this->x * this->y;
-    double xz = this->x * this->z;
-    double xw = this->x * this->w;
+    float xx = this->x * this->x;
+    float xy = this->x * this->y;
+    float xz = this->x * this->z;
+    float xw = this->x * this->w;
 
-    double yy = this->y * this->y;
-    double yz = this->y * this->z;
-    double yw = this->y * this->w;
+    float yy = this->y * this->y;
+    float yz = this->y * this->z;
+    float yw = this->y * this->w;
 
-    double zz = this->z * this->z;
-    double zw = this->z * this->w;
+    float zz = this->z * this->z;
+    float zw = this->z * this->w;
 
     this->matrix[0]  = 1 - 2 * ( yy + zz );
     this->matrix[1]  = 2 * ( xy - zw );
@@ -145,7 +145,7 @@ void Quaternion::update_matrix() {
 Return the address of the first element of the matrix
 to be passed to OpenGL or Direct3D for rotation.
 */
-double* Quaternion::get_matrix() {
+float* Quaternion::get_matrix() {
     
     return &this->matrix[0];
 }
@@ -153,7 +153,7 @@ double* Quaternion::get_matrix() {
 /*
 Quaternion scalar multiplication.
 */
-Quaternion Quaternion::operator*(const double& scalar) {
+Quaternion Quaternion::operator*(const float& scalar) {
     
     return Quaternion(this->x * scalar, this->y * scalar, this->z * scalar, this->w * scalar);
 }
@@ -161,7 +161,7 @@ Quaternion Quaternion::operator*(const double& scalar) {
 /*
 Quaternion scalar division.
 */
-Quaternion Quaternion::operator/(const double& scalar) {
+Quaternion Quaternion::operator/(const float& scalar) {
     
     return Quaternion(this->x / scalar, this->y / scalar, this->z / scalar, this->w / scalar);
 }
@@ -209,7 +209,7 @@ Multiply two quaternion.
 */
 Quaternion Quaternion::operator*(const Quaternion& other) {
     
-    double new_x, new_y, new_z, new_w;
+    float new_x, new_y, new_z, new_w;
 
     new_x = (this->w * other.x) + (this->x * other.w) + (this->y * other.z) - (this->z * other.y);
     new_y = (this->w * other.y) + (this->y * other.w) - (this->x * other.z) + (this->z * other.x);

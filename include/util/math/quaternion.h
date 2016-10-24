@@ -15,26 +15,26 @@ class Quaternion {
     
     private:
         
-        double x, y, z, w; // Quaternion components
-        double matrix[16]; // Quaternion represented as a rotation matrix
+        float x, y, z, w; // Quaternion components
+        float matrix[16]; // Quaternion represented as a rotation matrix
         
     public:
         
         Quaternion();
-        Quaternion(double x, double y, double z, double w);
+        Quaternion(float x, float y, float z, float w);
         
-        double i();
-        double j();
-        double k();
-        double s();
-        double norm();
+        float i();
+        float j();
+        float k();
+        float s();
+        float norm();
         Quaternion conjugate();
         void normalize();
         void update_matrix();
-        double* get_matrix();
+        float* get_matrix();
         
-        Quaternion operator*(const double& scalar);
-        Quaternion operator/(const double& scalar);
+        Quaternion operator*(const float& scalar);
+        Quaternion operator/(const float& scalar);
         Vertex operator*(Vertex& v);
         Vector operator*(Vector& v);
         Quaternion operator+(const Quaternion& other);

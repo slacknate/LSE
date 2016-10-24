@@ -5,7 +5,7 @@ using namespace LSE;
 Initialize our quad. Store size attributes
 and allocate all necessary memory.
 */
-GLRectangle::GLRectangle(double x, double y, double z, double w, double h)  : GLPrimitive(x, y, z) {
+GLRectangle::GLRectangle(float x, float y, float z, float w, float h)  : GLPrimitive(x, y, z) {
     
     width = w;
     height = h;

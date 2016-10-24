@@ -17,7 +17,7 @@ class GLRectangle : public GLPrimitive {
     
     protected:
         
-        double width, height; // quad attributes
+        float width, height; // quad attributes
         
         void CalcVertices();
         void CalcIndices();
@@ -25,7 +25,7 @@ class GLRectangle : public GLPrimitive {
         
     public:
         
-        GLRectangle(double x, double y, double z, double w, double h);
+        GLRectangle(float x, float y, float z, float w, float h);
 };
 
 }

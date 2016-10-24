@@ -21,15 +21,15 @@ class GLPrimitive : public GLObject {
         
         int numVertices; // number of vertices that make up this primitive
         int numElements; // number of elements that make up this primitive
-        double *vertices;
-        double *normals;
-        double *colors;
+        float *vertices;
+        float *normals;
+        float *colors;
         int *texCoords;
         int *indices;
         bool initialized; // true when memory allocation has succeeded and all vertices and normals have been calculated
         
         bool SameSide(Vertex &vertA, Vertex &vertB, Vertex &vertC, Vertex &vertD);
-        bool InTriangle(Vertex &vertA, Vertex &vertB, Vertex &vertC, Vertex &ref, double x, double y, double z);
+        bool InTriangle(Vertex &vertA, Vertex &vertB, Vertex &vertC, Vertex &ref, float x, float y, float z);
         void CalcNormals();
         void MemAllocate(int nv, int ne);
         
@@ -40,14 +40,14 @@ class GLPrimitive : public GLObject {
         
     public:
         
-        GLPrimitive(double x, double y, double z);
+        GLPrimitive(float x, float y, float z);
         ~GLPrimitive();
         
-        //void Transform(Quaternion& q);
+        //void rotate(Quaternion& q);
         void Draw();
         void RenderNormals();
-        bool Hit(double x, double y, double z);
-        Vector GetNormalAt(double x, double y, double z);
+        bool Hit(float x, float y, float z);
+        Vector GetNormalAt(float x, float y, float z);
 };
 
 }

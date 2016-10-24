@@ -5,7 +5,7 @@ using namespace LSE;
 Set our objects point and create a new velocity vector
 with the given veloctiy. Default velocity is zero.
 */
-PHObject::PHObject(double x, double y, double z) : pos(x, y, z) {
+PHObject::PHObject(float x, float y, float z) : pos(x, y, z) {
     
     mass = 1.0;
 }
@@ -17,20 +17,20 @@ in 3D space is the impact point of the force.
 test me
 fix me -> need to know the center of mass
 */
-void PHObject::ApplyForce(Vector &force, Vector &normal, double x, double y, double z) {
+void PHObject::ApplyForce(Vector &force, Vector &normal, float x, float y, float z) {
     
     //  get the component of force that is converted to linear velocity
     Vector inverseNormal = normal; // does this create a copy of normal even though normal is a reference? - the answer is yes, thanks hbock!
     inverseNormal = inverseNormal * -1;
-    double dotProd = force * inverseNormal;
+    float dotProd = force * inverseNormal;
     Vector linearForce = inverseNormal;
     linearForce.normalize();
     linearForce = linearForce * dotProd;
     
     //  get the component of force that is converted to angular velocity
-    double tailX = x - force.i() + linearForce.i();
-    double tailY = y - force.j() + linearForce.j();
-    double tailZ = z - force.k() + linearForce.k();
+    float tailX = x - force.i() + linearForce.i();
+    float tailY = y - force.j() + linearForce.j();
+    float tailZ = z - force.k() + linearForce.k();
     Vector angularForce(x - tailX, y - tailY, z - tailZ);
     
     linearVelocity = linearVelocity + (linearForce / mass);

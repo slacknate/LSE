@@ -4,7 +4,7 @@
 using namespace LSE;
 
 GLWindow::GLWindow(const char *const title, unsigned int mask,
-                           int width, int height, double angle, double zi, double za) :
+                           int width, int height, float angle, float zi, float za) :
                            GLWindowBase(title, mask, width, height, angle, zi, za) { }
 
 void GLWindow::setup_gl_context() {

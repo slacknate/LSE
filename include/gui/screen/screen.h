@@ -15,7 +15,7 @@ class GLScreen {
     private:
         
         GLProgram program; //
-        double *vertices; //
+        float *vertices; //
         int *tex_coords; //
         int *indices; //
         

@@ -1,3 +1,4 @@
+#include <cstdio>
 #include "gl/object.h"
 #include "gl/shaders.h"
 #include "lse/globals.h"
@@ -7,22 +8,26 @@ using namespace LSE;
 /*
 Initialize our object to a position.
 */
-GLObject::GLObject(double x, double y, double z) : PHObject(x, y, z) {
-    
-    program.AddShader(GetObjShaders(SHADER_VERT), SHADER_VERT);
-    program.AddShader(GetObjShaders(SHADER_FRAG), SHADER_FRAG);
-        
+GLObject::GLObject(float x, float y, float z) : PHObject(x, y, z) {
+
+    this->init_translation_matrix();
+
+    /*
+     * FIXME: LOL hard-coded paths!
+     */
+    program.AddShader("H:\\CLion\\LSE\\shaders\\ObjShaders.frag", SHADER_INVALID);
+    program.AddShader("H:\\CLion\\LSE\\shaders\\ObjShaders.vert", SHADER_INVALID);
+
     program.BindAttrib(VERT_POSITION, "VERT_POSITION");
     program.BindAttrib(VERT_NORMAL, "VERT_NORMAL");
     program.BindAttrib(VERT_COLOR, "VERT_COLOR");
     program.BindAttrib(VERT_TEX_COORD, "VERT_TEX_COORD");
-        
+
     if(!program.Finalize())
         throw EXCEPTION("OpenGL shader program failed to verify");
-        
+
     program.BindUniform(MAT4, "VIEW_MAT", 1, GL_FALSE, &VIEW_MATRIX[0]);
     program.BindUniform(MAT4, "PROJ_MAT", 1, GL_FALSE, &PROJ_MATRIX[0]);
-    program.BindUniform(MAT4, "ROT_MAT", 1, GL_FALSE, quat.get_matrix());
 }
 
 /*
@@ -33,23 +38,51 @@ GLProgram* GLObject::GetProgram() {
     return &program;
 }
 
+void GLObject::init_translation_matrix() {
+
+    this->translation[0] = 1.0;
+    this->translation[1] = 0.0;
+    this->translation[2] = 0.0;
+    this->translation[3] = 0.0;
+    this->translation[4] = 0.0;
+    this->translation[5] = 1.0;
+    this->translation[6] = 0.0;
+    this->translation[7] = 0.0;
+    this->translation[8] = 0.0;
+    this->translation[9] = 0.0;
+    this->translation[10] = 1.0;
+    this->translation[11] = 0.0;
+    this->translation[12] = this->pos.x;
+    this->translation[13] = this->pos.y;
+    this->translation[14] = this->pos.z;
+    this->translation[15] = 1.0;
+}
+
 /*
 
 */
-void GLObject::Move(double dX, double dY, double dZ) {
+void GLObject::translate(Vector& v) {
 
-    this->pos.z += dX;
-    this->pos.y += dY;
-    this->pos.z += dZ;
+    this->pos.x += v.i();
+    this->pos.y += v.j();
+    this->pos.z += v.k();
+
+    this->translation[12] += v.i();
+    this->translation[13] += v.j();
+    this->translation[14] += v.k();
+
+//    fprintf(stderr, "translate: %f -- %f -- %f\n", this->translation[12], this->translation[13], this->translation[14]);
 }
 
 /*
 Change this objects orientation.
 */
-void GLObject::Transform(Quaternion& q) {
-    
-    quat = q * quat;
-    quat.normalize();
+void GLObject::rotate(Quaternion& q) {
+
+    this->rotation = q * this->rotation;
+    this->rotation.normalize();
+
+//    fprintf(stderr, "rotate: %f -- %f -- %f\n", this->rotation.i(), this->rotation.j(), this->rotation.k());
 }
 
 /*
@@ -60,18 +93,15 @@ object when we have valid coordinates.
 void GLObject::Render() {
     
     //  isolate this object from the rest 
-    //glPushMatrix();
+    glPushMatrix();
     
     //  bind to this objects shader program
     program.Bind();
-    
-    //  translate to our position -> replace, this shit is deprecated (AKA we need to do some matrix schtuff!)
-    glTranslated(this->pos.x, this->pos.y, this->pos.z);
-    
-    Quaternion q(0.0, 0.0, 0.1, 10.0*cos(PI/180.0));
-    q.normalize();
-    Transform(q);
-    
+
+    //  update our transformation matrices
+    program.BindUniform(MAT4, "TRANS_MAT", 1, GL_FALSE, this->translation);
+    program.BindUniform(MAT4, "ROT_MAT", 1, GL_FALSE, this->rotation.get_matrix());
+
     //  draw our object
     Draw();
     
@@ -79,5 +109,5 @@ void GLObject::Render() {
     program.Unbind();
     
     //  go back to the last frame of reference 
-    //glPopMatrix();
+    glPopMatrix();
 }

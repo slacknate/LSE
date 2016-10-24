@@ -4,7 +4,7 @@ using namespace LSE;
 /*
 Initialize our vertex.
 */
-Vertex::Vertex(double c1, double c2, double c3) {
+Vertex::Vertex(float c1, float c2, float c3) {
     
     x = c1;
     y = c2;

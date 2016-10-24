@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
         int width = 640;
         int height = 480;
         int depth = 128;
-        unsigned int flags = SDL_OPENGL | /*SDL_RESIZABLE |*/ SDL_HWSURFACE | SDL_DOUBLEBUF;
+        unsigned int flags = SDL_OPENGL | /*SDL_RESIZABLE |*/ SDL_HWSURFACE | SDL_floatBUF;
         SDL_Surface *canvas = SDL_SetVideoMode(640, 480, 32, flags);
         if(canvas != NULL) {
             

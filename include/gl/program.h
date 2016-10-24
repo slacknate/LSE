@@ -23,12 +23,13 @@ typedef enum {
 GLSL Shader attribute constants.
 */
 typedef enum {
-    
+
     VERT_POSITION = 0,
     VERT_NORMAL,
     VERT_COLOR,
     VERT_TEX_COORD,
-    LIGHT_DATA,    
+
+    LIGHT_DATA,
     MATERIAL_DATA
 } AttrPos;
 
@@ -80,7 +81,7 @@ TODO:
 */
 class GLProgram {
     
-    private:
+    public:
         
         unsigned int progID, lastID; // program IDs used to bind and unbind to this program
         List shaderIDs; // list of all shader IDs

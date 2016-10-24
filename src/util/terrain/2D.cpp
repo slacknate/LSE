@@ -40,7 +40,7 @@ Terrain2D InterpNoise2D(float startX, float startZ, int width, int depth, int sa
                     
                     for(int d = 0; d < modDepth; d += sampleRate) {
                         
-                        points[w][d] = fractal.get(startX + double(w), startZ + double(d));
+                        points[w][d] = fractal.get(startX + float(w), startZ + float(d));
                         
                         if(d == 0)
                             --d;
@@ -108,28 +108,28 @@ Terrain2D GenTerrain2D(int seed, float startX, float startZ, int width, int dept
     f0.setNumOctaves(3);
 	f0.setFrequency(0.157);
 	f0.setGain(10.362);
-	f0.setLacunarity(double(sampleRates[0]));
+	f0.setLacunarity(float(sampleRates[0]));
 	
 	anl::CImplicitFractal f1(anl::FBM, anl::SIMPLEX, anl::CUBIC);
     f1.setSeed(seed);
     f1.setNumOctaves(3);
 	f1.setFrequency(0.872);
 	f1.setGain(2479.789);
-	f1.setLacunarity(double(sampleRates[1]));
+	f1.setLacunarity(float(sampleRates[1]));
 	
 	anl::CImplicitFractal f2(anl::FBM, anl::SIMPLEX, anl::CUBIC);
     f2.setSeed(seed);
     f2.setNumOctaves(3);
 	f2.setFrequency(12.444);
 	f2.setGain(37.556);
-	f2.setLacunarity(double(sampleRates[2]));
+	f2.setLacunarity(float(sampleRates[2]));
 	
 	anl::CImplicitFractal f3(anl::FBM, anl::SIMPLEX, anl::CUBIC);
     f3.setSeed(seed);
     f3.setNumOctaves(3);
 	f3.setFrequency(17.533);
 	f3.setGain(5357.891);
-	f3.setLacunarity(double(sampleRates[3]));
+	f3.setLacunarity(float(sampleRates[3]));
     
     Terrain2D p0 = InterpNoise2D(startX, startZ, width, depth, sampleRates[0], low, high, f0);
     Terrain2D p1 = InterpNoise2D(startX, startZ, width, depth, sampleRates[1], low, high, f1);

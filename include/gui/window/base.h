@@ -37,7 +37,7 @@ class GLWindowBase : public Thread {
         //int glewStatus, glStatus; // return code of glewInit()
         const char *window_title;
         unsigned int width, height; // canvas width and height
-        double fovy, zmin, zmax; // aspect ratio parameters
+        float fovy, zmin, zmax; // aspect ratio parameters
         unsigned int mask; // opengl bit clear mask
         
         void place_camera();
@@ -49,7 +49,7 @@ class GLWindowBase : public Thread {
 
     public:
 
-        GLWindowBase(const char *const title, unsigned int m, int w, int h, double angle, double zi, double za);
+        GLWindowBase(const char *const title, unsigned int m, int w, int h, float angle, float zi, float za);
 
         void setup_io(IOHandler *h);
 

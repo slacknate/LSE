@@ -5,7 +5,7 @@ using namespace LSE;
 /*
 
 */
-GLModel::GLModel(char *fileName, double x, double y, double z) : GLObject(x, y, z) {
+GLModel::GLModel(char *fileName, float x, float y, float z) : GLObject(x, y, z) {
     
     if(fileName) {
         

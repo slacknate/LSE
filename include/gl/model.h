@@ -18,7 +18,7 @@ class GLModel : public GLObject {
         
     public:
         
-        GLModel(char *fileName, double x, double y, double z);
+        GLModel(char *fileName, float x, float y, float z);
         ~GLModel();
 };
 

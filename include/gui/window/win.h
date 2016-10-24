@@ -22,7 +22,7 @@ class GLWindow : public GLWindowBase {
         
     public:
         
-        GLWindow(const char *const title, unsigned int m, int w, int h, double angle, double zi, double za);
+        GLWindow(const char *const title, unsigned int m, int w, int h, float angle, float zi, float za);
 
         void* execute();
 };

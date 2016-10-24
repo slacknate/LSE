@@ -12,26 +12,26 @@ class Vector {
     
     private:
         
-        double x, y, z; // Vector components
+        float x, y, z; // Vector components
         
     public:
         
         Vector();
-        Vector(double x, double y, double z);
+        Vector(float x, float y, float z);
         
-        double i();
-        double j();
-        double k();
-        double length();
+        float i();
+        float j();
+        float k();
+        float length();
         void normalize();
         void orthagonalize(Vector &v);
         
-        Vector operator*(const double& scalar);
-        Vector operator/(const double& scalar);
+        Vector operator*(const float& scalar);
+        Vector operator/(const float& scalar);
         Vector operator+(const Vector& other);
         Vector operator-(const Vector& other);
-        double operator^(Vector& other);
-        double operator*(const Vector& other);
+        float operator^(Vector& other);
+        float operator*(const Vector& other);
         Vector operator%(const Vector& other);
         bool operator==(const Vector& other);
         bool operator!=(const Vector& other);

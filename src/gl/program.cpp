@@ -205,10 +205,12 @@ bool GLProgram::ValidateShader(const char *fileName, unsigned int shaderID, Shad
         glGetShaderInfoLog(shaderID, buffSize, &buffSize, buffer);
 
         if(lseType == SHADER_INVALID)
-            logger.error("Shader read from \"%s\" failed validation:\n%s", fileName, buffer);
+            logger.error("Shader read from \"%s\" failed validation:\n", fileName);
 
         else
-            logger.error("%s shader read from stream failed validation:\n%s", ShaderString(lseType), buffer);
+            logger.error("%s shader read from stream failed validation:\n", ShaderString(lseType));
+
+        logger.error("%s", buffer);
     }
     
     return (bool)compile_success;
@@ -393,39 +395,39 @@ Bind a uniform variable.
 void GLProgram::BindUniform(UniformType type, const char *const name, ...) {
     
     Bind();
-    
-    unsigned int location = glGetUniformLocation(progID, name);
+
+    int location = glGetUniformLocation(progID, name);
     
     va_list argList;
     va_start(argList, name);
     
     if(type == FL1) {
         
-        float v0 = va_arg(argList, double);
+        float v0 = va_arg(argList, float);
         
         glUniform1f(location, v0);
     }
     else if(type == FL2) {
         
-        float v0 = va_arg(argList, double);
-        float v1 = va_arg(argList, double);
+        float v0 = va_arg(argList, float);
+        float v1 = va_arg(argList, float);
         
         glUniform2f(location, v0, v1);
     }
     else if(type == FL3) {
         
-        float v0 = va_arg(argList, double);
-        float v1 = va_arg(argList, double);
-        float v2 = va_arg(argList, double);
+        float v0 = va_arg(argList, float);
+        float v1 = va_arg(argList, float);
+        float v2 = va_arg(argList, float);
         
         glUniform3f(location, v0, v1, v2);
     }
     else if(type == FL4) {
         
-        float v0 = va_arg(argList, double);
-        float v1 = va_arg(argList, double);
-        float v2 = va_arg(argList, double);
-        float v3 = va_arg(argList, double);
+        float v0 = va_arg(argList, float);
+        float v1 = va_arg(argList, float);
+        float v2 = va_arg(argList, float);
+        float v3 = va_arg(argList, float);
         
         glUniform4f(location, v0, v1, v2, v3);
     }
@@ -601,8 +603,8 @@ bool GLProgram::Finalize() {
 Set this program to be the one in current use.
 */
 void GLProgram::Bind() {
-    
-    glGetIntegerv(GL_CURRENT_PROGRAM, (int*)&lastID);
+
+    glGetIntegerv(GL_CURRENT_PROGRAM, (int *)&lastID);
     glUseProgram(progID);
 }
 

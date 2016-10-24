@@ -7,9 +7,9 @@ class Vertex {
     
     public:
         
-        double x, y, z; // vertex components
+        float x, y, z; // vertex components
         
-        Vertex(double c1=0.0, double c2=0.0, double c3=0.0);
+        Vertex(float c1=0.0, float c2=0.0, float c3=0.0);
 };
 
 }

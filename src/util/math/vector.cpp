@@ -15,7 +15,7 @@ Vector::Vector() {
 /*
 Initialize our vector.
 */
-Vector::Vector(double x, double y, double z) {
+Vector::Vector(float x, float y, float z) {
     
     this->x = x;
     this->y = y;
@@ -25,7 +25,7 @@ Vector::Vector(double x, double y, double z) {
 /*
 Get the X component.
 */
-double Vector::i() {
+float Vector::i() {
     
     return this->x;
 }
@@ -33,7 +33,7 @@ double Vector::i() {
 /*
 Get the Y component.
 */
-double Vector::j() {
+float Vector::j() {
     
     return this->y;
 }
@@ -41,7 +41,7 @@ double Vector::j() {
 /*
 Get the Z component.
 */
-double Vector::k() {
+float Vector::k() {
     
     return this->z;
 }
@@ -49,9 +49,9 @@ double Vector::k() {
 /*
 Get the length of the vector.
 */
-double Vector::length() {
+float Vector::length() {
     
-    return sqrt(pow(this->x, 2.0) + pow(this->y, 2.0) + pow(this->z, 2.0));
+    return (float)sqrt(pow(this->x, 2.0) + pow(this->y, 2.0) + pow(this->z, 2.0));
 }
 
 /*
@@ -59,7 +59,7 @@ Make this vector a unit vector in its current direction.
 */
 void Vector::normalize() {
     
-    double size = this->length();
+    float size = this->length();
     if(size > 0) {
         
         this->x /= size;
@@ -79,7 +79,7 @@ void Vector::orthagonalize(Vector &v) {
 /*
 Vector scalar multiplication.
 */
-Vector Vector::operator*(const double& scalar) {
+Vector Vector::operator*(const float& scalar) {
     
     return Vector(this->x * scalar, this->y * scalar, this->z * scalar);
 }
@@ -87,7 +87,7 @@ Vector Vector::operator*(const double& scalar) {
 /*
 Vector scalar division.
 */
-Vector Vector::operator/(const double& scalar) {
+Vector Vector::operator/(const float& scalar) {
     
     return Vector(this->x / scalar, this->y / scalar, this->z / scalar);
 }
@@ -111,7 +111,7 @@ Vector Vector::operator-(const Vector& other) {
 /*
 Get the angle between two vector, in radians.
 */
-double Vector::operator^(Vector& other) {
+float Vector::operator^(Vector& other) {
     
     return acos((float)((*this * other)/(this->length() * other.length())));
 }
@@ -119,7 +119,7 @@ double Vector::operator^(Vector& other) {
 /*
 Get the dot product of two vector.
 */
-double Vector::operator*(const Vector& other) {
+float Vector::operator*(const Vector& other) {
     
     return (this->x * other.x) + (this->y * other.y) + (this->z * other.z);
 }
@@ -129,9 +129,9 @@ Get the cross product of two vector.
 */
 Vector Vector::operator%(const Vector& other) {
     
-    double x = (this->y * other.z) - (this->z * other.y);
-    double y = (this->z * other.x) - (this->x * other.z);
-    double z = (this->x * other.y) - (this->y * other.x);
+    float x = (this->y * other.z) - (this->z * other.y);
+    float y = (this->z * other.x) - (this->x * other.z);
+    float z = (this->x * other.y) - (this->y * other.x);
     
     return Vector(x, y, z);
 }

@@ -23,7 +23,7 @@ GLScreen::GLScreen(int new_width, int new_height) : frame_buffer_id(0), render_b
 
     this->program.BindUniform(IN1, "FRAG_TEXTURE", 0);
 
-    this->vertices = new double [3*SCREEN_VERT_COUNT];
+    this->vertices = new float [3*SCREEN_VERT_COUNT];
     this->indices = new int [3*SCREEN_ELEM_COUNT];
     this->tex_coords = new int [2*SCREEN_VERT_COUNT];
 
@@ -202,7 +202,7 @@ void GLScreen::render() {
     glEnableVertexAttribArray(VERT_POSITION);
     glEnableVertexAttribArray(VERT_TEX_COORD);
         
-    glVertexAttribPointer(VERT_POSITION, 3, GL_DOUBLE, GL_FALSE, 0, this->vertices);
+    glVertexAttribPointer(VERT_POSITION, 3, GL_FLOAT, GL_FALSE, 0, this->vertices);
     glVertexAttribPointer(VERT_TEX_COORD, 2, GL_INT, GL_FALSE, 0, this->tex_coords);
         
     glDrawElements(GL_TRIANGLES, 3*SCREEN_ELEM_COUNT, GL_UNSIGNED_INT, this->indices);
