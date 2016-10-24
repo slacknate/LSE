@@ -18,10 +18,10 @@ GLScreen::GLScreen(int new_width, int new_height) : frame_buffer_id(0), render_b
     this->program.AddShader(GetScreenShaders(SHADER_VERT), SHADER_VERT);
     this->program.AddShader(GetScreenShaders(SHADER_FRAG), SHADER_FRAG);
         
-    if(!this->program.Finalize())
+    if(!this->program.finalize())
         throw EXCEPTION("OpenGL failed to initialize");
 
-    this->program.BindUniform(IN1, "FRAG_TEXTURE", 0);
+    this->program.uniform(IN1, "FRAG_TEXTURE", 0);
 
     this->vertices = new float [3*SCREEN_VERT_COUNT];
     this->indices = new int [3*SCREEN_ELEM_COUNT];
@@ -174,7 +174,7 @@ void GLScreen::resize(int new_width, int new_height) {
 }
 
 /*
-Bind to our frame buffer.
+bind to our frame buffer.
 */
 void GLScreen::bind_fbo() {
     
@@ -182,7 +182,7 @@ void GLScreen::bind_fbo() {
 }
 
 /*
-Unbind from our framebuffer.
+unbind from our framebuffer.
 */
 void GLScreen::unbind_fbo() {
     
@@ -197,7 +197,7 @@ void GLScreen::render() {
     glBindTexture(GL_TEXTURE_2D, this->color_tex_id);
     glActiveTexture(GL_TEXTURE0);
 
-    this->program.Bind();
+    this->program.bind();
     
     glEnableVertexAttribArray(VERT_POSITION);
     glEnableVertexAttribArray(VERT_TEX_COORD);
@@ -210,7 +210,7 @@ void GLScreen::render() {
     glDisableVertexAttribArray(VERT_TEX_COORD);
     glDisableVertexAttribArray(VERT_POSITION);
 
-    this->program.Unbind();
+    this->program.unbind();
     
     glBindTexture(GL_TEXTURE_2D, 0);
 }

@@ -382,19 +382,19 @@ bool GLProgram::RemoveShader(unsigned int shaderID) {
 }
 
 /*
-Bind a vertex attribute.
+bind a vertex attribute.
 */
-void GLProgram::BindAttrib(AttrPos position, const char *const name) {
+void GLProgram::bind_attrib(AttrPos position, const char *const name) {
     
-    glBindAttribLocation(progID, position, name);
+    glBindAttribLocation(this->progID, position, name);
 }
 
 /*
-Bind a uniform variable.
+bind a uniform variable.
 */
-void GLProgram::BindUniform(UniformType type, const char *const name, ...) {
-    
-    Bind();
+void GLProgram::uniform(UniformType type, const char *const name, ...) {
+
+    bind();
 
     int location = glGetUniformLocation(progID, name);
     
@@ -584,15 +584,15 @@ void GLProgram::BindUniform(UniformType type, const char *const name, ...) {
     }
     
     va_end(argList);
-    
-    Unbind();
+
+    unbind();
 }
 
 /*
-Bind vertex attribute locations, link the program,
+bind vertex attribute locations, link the program,
 and validate it.
 */
-bool GLProgram::Finalize() {
+bool GLProgram::finalize() {
     
     glLinkProgram(progID);
     
@@ -602,7 +602,7 @@ bool GLProgram::Finalize() {
 /*
 Set this program to be the one in current use.
 */
-void GLProgram::Bind() {
+void GLProgram::bind() {
 
     glGetIntegerv(GL_CURRENT_PROGRAM, (int *)&lastID);
     glUseProgram(progID);
@@ -611,7 +611,7 @@ void GLProgram::Bind() {
 /*
 Set the "invalid" program to be the one in current use.
 */
-void GLProgram::Unbind() {
+void GLProgram::unbind() {
     
     glUseProgram(lastID);
 }

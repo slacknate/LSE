@@ -100,13 +100,13 @@ class GLProgram {
         int AddShader(const char *buffer, ShaderType type=SHADER_INVALID);
         bool RemoveShader(unsigned int shaderID);
         
-        void BindAttrib(AttrPos position, const char *const name);
-        void BindUniform(UniformType type, const char *const name, ...);
+        void bind_attrib(AttrPos position, const char *const name);
+        void uniform(UniformType type, const char *const name, ...);
         
-        bool Finalize();
+        bool finalize();
         
-        void Bind();
-        void Unbind();
+        void bind();
+        void unbind();
 };
 
 bool valid_shader_type(ShaderType type);

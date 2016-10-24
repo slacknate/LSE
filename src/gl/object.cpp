@@ -18,16 +18,19 @@ GLObject::GLObject(float x, float y, float z) : PHObject(x, y, z) {
     program.AddShader("H:\\CLion\\LSE\\shaders\\ObjShaders.frag", SHADER_INVALID);
     program.AddShader("H:\\CLion\\LSE\\shaders\\ObjShaders.vert", SHADER_INVALID);
 
-    program.BindAttrib(VERT_POSITION, "VERT_POSITION");
-    program.BindAttrib(VERT_NORMAL, "VERT_NORMAL");
-    program.BindAttrib(VERT_COLOR, "VERT_COLOR");
-    program.BindAttrib(VERT_TEX_COORD, "VERT_TEX_COORD");
+    program.bind_attrib(VERT_POSITION, "VERT_POSITION");
+    program.bind_attrib(VERT_NORMAL, "VERT_NORMAL");
+    program.bind_attrib(VERT_COLOR, "VERT_COLOR");
+    program.bind_attrib(VERT_TEX_COORD, "VERT_TEX_COORD");
 
-    if(!program.Finalize())
+    if(!program.finalize())
         throw EXCEPTION("OpenGL shader program failed to verify");
 
-    program.BindUniform(MAT4, "VIEW_MAT", 1, GL_FALSE, &VIEW_MATRIX[0]);
-    program.BindUniform(MAT4, "PROJ_MAT", 1, GL_FALSE, &PROJ_MATRIX[0]);
+    /*
+     * FIXME: these need to be updated sometimes...
+     */
+    program.uniform(MAT4, "VIEW_MAT", 1, GL_FALSE, &VIEW_MATRIX[0]);
+    program.uniform(MAT4, "PROJ_MAT", 1, GL_FALSE, &PROJ_MATRIX[0]);
 }
 
 /*
@@ -96,17 +99,17 @@ void GLObject::Render() {
     glPushMatrix();
     
     //  bind to this objects shader program
-    program.Bind();
+    program.bind();
 
     //  update our transformation matrices
-    program.BindUniform(MAT4, "TRANS_MAT", 1, GL_FALSE, this->translation);
-    program.BindUniform(MAT4, "ROT_MAT", 1, GL_FALSE, this->rotation.get_matrix());
+    program.uniform(MAT4, "TRANS_MAT", 1, GL_FALSE, this->translation);
+    program.uniform(MAT4, "ROT_MAT", 1, GL_FALSE, this->rotation.get_matrix());
 
     //  draw our object
     Draw();
     
     //  unbind the shader
-    program.Unbind();
+    program.unbind();
     
     //  go back to the last frame of reference 
     glPopMatrix();
