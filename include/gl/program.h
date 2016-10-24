@@ -9,7 +9,7 @@ namespace LSE {
 /*
 LSE Shader types.
 */
-typedef enum {
+enum ShaderType {
     
     SHADER_INVALID = 0,
     SHADER_VERT,
@@ -17,12 +17,12 @@ typedef enum {
     SHADER_TEVA,
     SHADER_GEOM,
     SHADER_FRAG,
-} ShaderType;
+};
 
 /*
 GLSL Shader attribute constants.
 */
-typedef enum {
+enum AttrPos {
 
     VERT_POSITION = 0,
     VERT_NORMAL,
@@ -31,12 +31,12 @@ typedef enum {
 
     LIGHT_DATA,
     MATERIAL_DATA
-} AttrPos;
+};
 
 /*
 GLSL uniform type identifiers.
 */
-typedef enum {
+enum UniformType {
     
     FL1 = 0,
     FL2,
@@ -71,7 +71,7 @@ typedef enum {
     MAT34,
     MAT42,
     MAT43,
-} UniformType;
+};
 
 /*
 Class which describes an OpenGL shader program.
