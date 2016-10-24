@@ -97,8 +97,8 @@ class GLProgram {
         GLProgram();
         ~GLProgram();
         
-        int AddShader(const char *buffer, ShaderType type=SHADER_INVALID);
-        bool RemoveShader(unsigned int shaderID);
+        int add_shader(const char *buffer, ShaderType type = SHADER_INVALID);
+        bool remove_shader(unsigned int shaderID);
         
         void bind_attrib(AttrPos position, const char *const name);
         void uniform(UniformType type, const char *const name, ...);

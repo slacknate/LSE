@@ -15,8 +15,8 @@ GLObject::GLObject(float x, float y, float z) : PHObject(x, y, z) {
     /*
      * FIXME: LOL hard-coded paths!
      */
-    program.AddShader("H:\\CLion\\LSE\\shaders\\ObjShaders.frag", SHADER_INVALID);
-    program.AddShader("H:\\CLion\\LSE\\shaders\\ObjShaders.vert", SHADER_INVALID);
+    program.add_shader("H:\\CLion\\LSE\\shaders\\ObjShaders.frag", SHADER_INVALID);
+    program.add_shader("H:\\CLion\\LSE\\shaders\\ObjShaders.vert", SHADER_INVALID);
 
     program.bind_attrib(VERT_POSITION, "VERT_POSITION");
     program.bind_attrib(VERT_NORMAL, "VERT_NORMAL");

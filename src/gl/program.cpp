@@ -56,7 +56,7 @@ as well as the program.
 GLProgram::~GLProgram() {
     
     for(int i = 0; i < shaderIDs.Size(); ++i)
-        RemoveShader(*(unsigned int *)shaderIDs[i]->GetData());
+        remove_shader(*(unsigned int *) shaderIDs[i]->GetData());
     
     shaderIDs.Clear();
     
@@ -238,7 +238,7 @@ and pass the read text to the shader compiler.
 Otherwise, the buffer is treated as the shader source,
 and the method passes the text to the shader compiler.
 */
-int GLProgram::AddShader(const char *buffer, ShaderType lseType) {
+int GLProgram::add_shader(const char *buffer, ShaderType lseType) {
     
     unsigned int shaderID = 0;
     
@@ -359,7 +359,7 @@ int GLProgram::AddShader(const char *buffer, ShaderType lseType) {
 /*
 Remove the shader with the given ID from the program.
 */
-bool GLProgram::RemoveShader(unsigned int shaderID) {
+bool GLProgram::remove_shader(unsigned int shaderID) {
     
     // make sure the given shader is in the list of shaders present in this program
     bool valid = false;
