@@ -156,48 +156,6 @@ void GLPrimitive::CalcColors() {
 }
 
 /*
-Change the orientation of our object,
-by an offset represented by the Quaternion q.
-fix me -> offload this to the graphics card?
-*/
-/*void GLPrimitive::rotate(Quaternion& q) {
-
-    if(initialized) {
-
-        // loop through each strip
-        for(int i = 0; i < numVertices; ++i) {
-
-            // get the current vertex
-            Vertex vert(vertices[(3*i)], vertices[(3*i)+1], vertices[(3*i)+2]);
-
-            // transform the vertex
-            vert = q * vert;
-
-            // store the vertex back to memory
-            vertices[(3*i)] = vert.x;
-            vertices[(3*i)+1] = vert.y;
-            vertices[(3*i)+2] = vert.z;
-        }
-
-        // loop through each strip
-        for(int i = 0; i < numVertices; ++i) {
-
-            // calculate vertex array indices
-            // get the current normal
-            Vector normal(normals[(3*i)], normals[(3*i)+1], normals[(3*i)+2]);
-
-            // transform the normal
-            normal = q * normal;
-
-            // store the normal back to memory
-            normals[(3*i)]   = normal.i();
-            normals[(3*i)+1] = normal.j();
-            normals[(3*i)+2] = normal.k();
-        }
-    }
-}*/
-
-/*
 Draw our primitive as a triangle strip.
 fix me -> add textures
 use shaders... lighting/color/textures wont work without it

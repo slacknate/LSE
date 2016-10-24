@@ -43,7 +43,6 @@ class GLPrimitive : public GLObject {
         GLPrimitive(float x, float y, float z);
         ~GLPrimitive();
         
-        //void rotate(Quaternion& q);
         void Draw();
         void RenderNormals();
         bool Hit(float x, float y, float z);
