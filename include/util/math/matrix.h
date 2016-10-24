@@ -14,7 +14,7 @@ class Matrix {
     private:
         
         unsigned int rows, columns; // matrix dimensions
-        float *data; // matrix data
+        float *matrix; // matrix data
         
     public:
         
@@ -22,7 +22,7 @@ class Matrix {
         Matrix(const Matrix& other);
         ~Matrix();
         
-        float*raw_matrix();
+        float* get_matrix();
         
         Matrix inverse();
         Matrix transpose();
@@ -31,13 +31,12 @@ class Matrix {
         
         float determinant();
         
-        void operator*(const double& scalar);
-        void operator/(const double& scalar);
+        void operator*(const float& scalar);
+        void operator/(const float& scalar);
         Matrix operator+(const Matrix& other);
         Matrix operator-(const Matrix& other);
         Matrix operator*(const Matrix& other);
         Matrix operator/(Matrix& other);
-        float* operator[](const int& rIndex);
         bool operator==(const Matrix& other);
         bool operator!=(const Matrix& other);
 };
