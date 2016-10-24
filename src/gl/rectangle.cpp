@@ -21,22 +21,22 @@ void GLRectangle::CalcVertices() {
     // v0
     vertices[0] = -width/2.0;
     vertices[1] = -height/2.0;
-    vertices[2] = pZ;
+    vertices[2] = this->pos.z;
     
     // v1
     vertices[3] = width/2.0;
     vertices[4] = -height/2.0;
-    vertices[5] = pZ;
+    vertices[5] = this->pos.z;
     
     // v2
     vertices[6] = width/2.0;
     vertices[7] = height/2.0;
-    vertices[8] = pZ;
+    vertices[8] = this->pos.z;
     
     // v3
     vertices[9] = -width/2.0;
     vertices[10] = height/2.0;
-    vertices[11] = pZ;
+    vertices[11] = this->pos.z;
 }
 
 /*

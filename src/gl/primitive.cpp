@@ -275,8 +275,8 @@ void GLPrimitive::RenderNormals() {
             // draw the normal, starting from our object position
             glColor4f(1.0, 0.0, 0.0, 0.0);
             glBegin(GL_LINES);
-                glVertex3f(pX, pY, pZ);
-                glVertex3f(pX + normal.i(), pY + normal.j(), pZ + normal.k());
+                glVertex3f(this->pos.x, this->pos.y, this->pos.z);
+                glVertex3f(this->pos.x + normal.i(), this->pos.y + normal.j(), this->pos.z + normal.k());
             glEnd();
             glColor4f(1.0, 1.0, 1.0, 1.0);
             

@@ -37,10 +37,10 @@ GLProgram* GLObject::GetProgram() {
 
 */
 void GLObject::Move(double dX, double dY, double dZ) {
-    
-    pX += dX;
-    pY += dY;
-    pZ += dZ;
+
+    this->pos.z += dX;
+    this->pos.y += dY;
+    this->pos.z += dZ;
 }
 
 /*
