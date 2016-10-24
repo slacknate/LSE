@@ -66,7 +66,7 @@ void GLObject::Render() {
     program.Bind();
     
     //  translate to our position -> replace, this shit is deprecated (AKA we need to do some matrix schtuff!)
-    glTranslated(pX, pY, pZ);
+    glTranslated(this->pos.x, this->pos.y, this->pos.z);
     
     Quaternion q(0.0, 0.0, 0.1, 10.0*cos(PI/180.0));
     q.normalize();
