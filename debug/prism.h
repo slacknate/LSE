@@ -15,7 +15,7 @@ class TestPrism : public GLRectPrism {
     
     public:
         
-        TestPrism(GLWindow *win, double x, double y, double z, double w, double h, double d);
+        TestPrism(GLWindow *win, float x, float y, float z, float w, float h, float d);
         
         enum {
             
@@ -25,6 +25,14 @@ class TestPrism : public GLRectPrism {
         
         void OnMouseMotion(Event *);
         void OnKey(Event *);
+
+        /*
+         * FIXME: implement in LSE::Object.
+         */
+        void consume(Event *event, EventHandlerBase *event_handler) {
+
+            this->consume_as<TestPrism>(event, event_handler);
+        }
 };
 
 }

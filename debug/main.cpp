@@ -17,11 +17,8 @@ int main(int argc, char *argv[]) {
     GLWindow *window = new GLWindow("Engine", mask, 640, 480, 90.0, 1.0, 20.0);
     engine.attach_window(window);
 
-//    glEnable(GL_DEPTH_TEST);
-//    glClearColor(0.0, 0.0, 0.0, 1.0);
-//
-//    TestPrism *prism = new TestPrism(window, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
-//    window->push_gl(prism);
-    
+    glEnable(GL_DEPTH_TEST);
+    glClearColor(0.0, 0.0, 0.0, 1.0);
+
     return engine.run();
 }

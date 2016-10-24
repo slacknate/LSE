@@ -6,7 +6,7 @@ using namespace LSE;
 /*
 
 */
-TestPrism::TestPrism(GLWindow *win, double x, double y, double z, double w, double h, double d) : GLRectPrism(x, y, z, w, h, d) {
+TestPrism::TestPrism(GLWindow *win, float x, float y, float z, float w, float h, float d) : GLRectPrism(x, y, z, w, h, d) {
     
     window = win;
 
@@ -17,22 +17,22 @@ TestPrism::TestPrism(GLWindow *win, double x, double y, double z, double w, doub
 /*
 
 */
-void TestPrism::OnMouseMotion(Event *) {
+void TestPrism::OnMouseMotion(Event *ev) {
     
-    /*SDL_MouseMotionEvent *event = (SDL_MouseMotionEvent *)ptr;
+    MouseEvent *event = (MouseEvent *)ev;
     if(event != NULL) {
-        
-        if(event->state == SDL_PRESSED) {
-            
-            Vector v(event->yrel, event->xrel, 0);
+
+//        if(event->button == MOUSE_LEFT && event->state == STATE_DOWN) {
+
+            Vector v(event->dY, event->dX, 0);
             v.normalize();
 
-            Quaternion q(10.0*cos(3.14159265359/180.0), v.I(), v.J(), v.K());
+            Quaternion q((float)cos(PI/180.0), v.i(), v.j(), v.k());
             q.normalize();
-        
-            Transform(q);
-        }
-    }*/
+
+            rotate(q);
+//        }
+    }
 }
 
 /*
@@ -40,43 +40,43 @@ void TestPrism::OnMouseMotion(Event *) {
 */
 void TestPrism::OnKey(Event *ev) {
     
-    printf("Key!\n");
     KeyEvent *event = (KeyEvent *)ev;
-    
-    Vertex& pos = window->cam_pos();
-    Vertex& foc = window->cam_focus();
+
+    if(event->key == 'W') {
+
+        Vector v(0.0f, 0.0f, 0.5f);
+        this->translate(v);
+    }
+    else if(event->key == 'A') {
+
+        Vector v(-0.5f, 0.0f, 0.0f);
+        this->translate(v);
+    }
+    else if(event->key == 'S') {
+
+        Vector v(0.0f, 0.0f, -0.5f);
+        this->translate(v);
+    }
+    else if(event->key == 'D') {
+
+        Vector v(0.5f, 0.0f, 0.0f);
+        this->translate(v);
+    }
             
-    if(event->key == 'w') {
-                
-        pos.z += 0.1;
-    }
-    else if(event->key == 'a') {
-                
-        pos.x -= 0.1;
-    }
-    else if(event->key == 's') {
-                
-        pos.z -= 0.1;
-    }
-    else if(event->key == 'd') {
-                
-        pos.x += 0.1;
-    }
-            
-    if(event->key == 'i') {
-                
-        foc.z += 0.1;
-    }
-    else if(event->key == 'j') {
-                
-        foc.x -= 0.1;
-    }
-    else if(event->key == 'k') {
-                
-        foc.z -= 0.1;
-    }
-    else if(event->key == 'l') {
-                
-        foc.x += 0.1;
-    }
+//    if(event->key == 'i') {
+//
+//        foc.z += 0.1;
+//    }
+//    else if(event->key == 'j') {
+//
+//        foc.x -= 0.1;
+//    }
+//    else if(event->key == 'k') {
+//
+//        foc.z -= 0.1;
+//    }
+//    else if(event->key == 'l') {
+//
+//        foc.x += 0.1;
+//    }
 }
