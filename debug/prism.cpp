@@ -44,22 +44,22 @@ void TestPrism::OnKey(Event *ev) {
 
     if(event->key == 'W') {
 
-        Vector v(0.0f, 0.0f, 0.5f);
+        Vector v(0.0f, 0.0f, -0.5f);
         this->translate(v);
     }
     else if(event->key == 'A') {
 
-        Vector v(-0.5f, 0.0f, 0.0f);
+        Vector v(0.5f, 0.0f, 0.0f);
         this->translate(v);
     }
     else if(event->key == 'S') {
 
-        Vector v(0.0f, 0.0f, -0.5f);
+        Vector v(0.0f, 0.0f, 0.5f);
         this->translate(v);
     }
     else if(event->key == 'D') {
 
-        Vector v(0.5f, 0.0f, 0.0f);
+        Vector v(-0.5f, 0.0f, 0.0f);
         this->translate(v);
     }
             
