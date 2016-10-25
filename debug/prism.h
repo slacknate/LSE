@@ -12,6 +12,7 @@ class TestPrism : public GLRectPrism {
     private:
         
         GLWindow *window; // system provided opengl context
+        bool grabbed;
     
     public:
         

@@ -7,8 +7,9 @@ using namespace LSE;
 
 */
 TestPrism::TestPrism(GLWindow *win, float x, float y, float z, float w, float h, float d) : GLRectPrism(x, y, z, w, h, d) {
-    
+
     window = win;
+    grabbed = false;
 
     this->subscribe<TestPrism>(EVENT_MOUSE, &TestPrism::OnMouseMotion);
     this->subscribe<TestPrism>(EVENT_KEYBOARD, &TestPrism::OnKey);
@@ -22,16 +23,22 @@ void TestPrism::OnMouseMotion(Event *ev) {
     MouseEvent *event = (MouseEvent *)ev;
     if(event != NULL) {
 
-//        if(event->button == MOUSE_LEFT && event->state == STATE_DOWN) {
+        if(event->button == MOUSE_LEFT && event->state == STATE_UP)
+            this->grabbed = false;
 
-            Vector v(event->dY, event->dX, 0);
+        if(event->button == MOUSE_LEFT && event->state == STATE_DOWN)
+            this->grabbed = true;
+
+        if(this->grabbed) {
+
+            Vector v(-event->dY, -event->dX, 0.0f);
             v.normalize();
 
-            Quaternion q((float)cos(PI/180.0), v.i(), v.j(), v.k());
+            Quaternion q(v.i(), v.j(), v.k(), 100.0f*(float)cos(PI/180.0));
             q.normalize();
 
             rotate(q);
-//        }
+        }
     }
 }
 
