@@ -80,8 +80,6 @@ void GLObject::translate(Vector& v) {
     this->translation[12] += v.i();
     this->translation[13] += v.j();
     this->translation[14] += v.k();
-
-//    fprintf(stderr, "translate: %f -- %f -- %f\n", this->translation[12], this->translation[13], this->translation[14]);
 }
 
 /*
@@ -91,8 +89,6 @@ void GLObject::rotate(Quaternion& q) {
 
     this->rotation = this->rotation * q;
     this->rotation.normalize();
-
-//    fprintf(stderr, "rotate: %f -- %f -- %f\n", this->rotation.i(), this->rotation.j(), this->rotation.k());
 }
 
 /*
