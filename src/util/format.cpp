@@ -47,7 +47,7 @@ char* vformat(const char *fmt, size_t max_chars, va_list &args) {
     // The NULL is auto-appended by vsnprintf.
     size_t fmt_length = max_chars + 1;
 
-    char *formatted = LSE::calloc<char>(fmt_length);
+    char *formatted = LSE::CALLOC(char, fmt_length);
     vsnprintf(formatted, fmt_length, fmt, args);
 
     return formatted;

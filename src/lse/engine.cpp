@@ -63,7 +63,7 @@ void Engine::log_banner(const char *const title) {
     std::cout << "\n--------------------";
     std::cerr << "\n--------------------";
     
-    char *time_str = LSE::calloc<char>(TIME_STR_LENGTH);
+    char *time_str = LSE::CALLOC(char, TIME_STR_LENGTH);
     LSE::get_local_time(time_str);
     
     std::cout << " Log " << title << ": [" << time_str << "] ";
@@ -84,10 +84,10 @@ void Engine::create_logs() {
 
     logger.start();
     
-    char *date_and_day_str = LSE::calloc<char>(DAY_DATE_STR_LENGTH);
+    char *date_and_day_str = LSE::CALLOC(char, DAY_DATE_STR_LENGTH);
     LSE::get_day_and_date(date_and_day_str);
     
-    char *message_log_name = LSE::calloc<char>(DAY_DATE_STR_LENGTH + 9);
+    char *message_log_name = LSE::CALLOC(char, DAY_DATE_STR_LENGTH + 9);
     strncpy(message_log_name, date_and_day_str, DAY_DATE_STR_LENGTH);
     strncat(message_log_name, "_cout.log", 9);
     
@@ -100,7 +100,7 @@ void Engine::create_logs() {
     //this->message_log.open(message_log_name, std::fstream::out | std::fstream::app);
     //this->cout_buff = std::cout.rdbuf(&this->message_log);
     
-    char *error_log_name = LSE::calloc<char>(DAY_DATE_STR_LENGTH + 9);
+    char *error_log_name = LSE::CALLOC(char, DAY_DATE_STR_LENGTH + 9);
     strncpy(error_log_name, date_and_day_str, DAY_DATE_STR_LENGTH);
     strncat(error_log_name, "_cerr.log", 9);
     

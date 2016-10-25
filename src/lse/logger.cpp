@@ -84,7 +84,7 @@ greater or equal log level to the log level of the logger.
 */
 void Logger::write_log(LogLevel level, std::ostream &stream, char *message) {
     
-    char *time_str = LSE::calloc<char>(TIME_STR_LENGTH);
+    char *time_str = LSE::CALLOC(char, TIME_STR_LENGTH);
     LSE::get_local_time(time_str);
 
     stream << "[" << time_str << "] " << LOG_LEVEL_PREFIXS[level] << ": ";
