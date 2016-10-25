@@ -212,103 +212,103 @@ void GLProgram::uniform(UniformType type, const char *const name, ...) {
 
     int location = glGetUniformLocation(this->prog_id, name);
     
-    va_list argList;
-    va_start(argList, name);
+    va_list args;
+    va_start(args, name);
     
     if(type == FL1) {
         
-        float v0 = va_arg(argList, float);
+        float v0 = va_arg(args, float);
         
         glUniform1f(location, v0);
     }
     else if(type == FL2) {
         
-        float v0 = va_arg(argList, float);
-        float v1 = va_arg(argList, float);
+        float v0 = va_arg(args, float);
+        float v1 = va_arg(args, float);
         
         glUniform2f(location, v0, v1);
     }
     else if(type == FL3) {
         
-        float v0 = va_arg(argList, float);
-        float v1 = va_arg(argList, float);
-        float v2 = va_arg(argList, float);
+        float v0 = va_arg(args, float);
+        float v1 = va_arg(args, float);
+        float v2 = va_arg(args, float);
         
         glUniform3f(location, v0, v1, v2);
     }
     else if(type == FL4) {
         
-        float v0 = va_arg(argList, float);
-        float v1 = va_arg(argList, float);
-        float v2 = va_arg(argList, float);
-        float v3 = va_arg(argList, float);
+        float v0 = va_arg(args, float);
+        float v1 = va_arg(args, float);
+        float v2 = va_arg(args, float);
+        float v3 = va_arg(args, float);
         
         glUniform4f(location, v0, v1, v2, v3);
     }
     else if(type == IN1) {
         
-        int v0 = va_arg(argList, int);
+        int v0 = va_arg(args, int);
         
         glUniform1i(location, v0);
     }
     else if(type == IN2) {
         
-        int v0 = va_arg(argList, int);
-        int v1 = va_arg(argList, int);
+        int v0 = va_arg(args, int);
+        int v1 = va_arg(args, int);
         
         glUniform2i(location, v0, v1);
     }
     else if(type == IN3) {
         
-        int v0 = va_arg(argList, int);
-        int v1 = va_arg(argList, int);
-        int v2 = va_arg(argList, int);
+        int v0 = va_arg(args, int);
+        int v1 = va_arg(args, int);
+        int v2 = va_arg(args, int);
         
         glUniform3i(location, v0, v1, v2);
     }
     else if(type == IN4) {
         
-        int v0 = va_arg(argList, int);
-        int v1 = va_arg(argList, int);
-        int v2 = va_arg(argList, int);
-        int v3 = va_arg(argList, int);
+        int v0 = va_arg(args, int);
+        int v1 = va_arg(args, int);
+        int v2 = va_arg(args, int);
+        int v3 = va_arg(args, int);
         
         glUniform4i(location, v0, v1, v2, v3);
     }
     else if(type == UI1) {
         
-        unsigned int v0 = va_arg(argList, unsigned int);
+        unsigned int v0 = va_arg(args, unsigned int);
         
         glUniform1ui(location, v0);
     }
     else if(type == UI2) {
         
-        unsigned int v0 = va_arg(argList, unsigned int);
-        unsigned int v1 = va_arg(argList, unsigned int);
+        unsigned int v0 = va_arg(args, unsigned int);
+        unsigned int v1 = va_arg(args, unsigned int);
         
         glUniform2ui(location, v0, v1);
     }
     else if(type == UI3) {
         
-        unsigned int v0 = va_arg(argList, unsigned int);
-        unsigned int v1 = va_arg(argList, unsigned int);
-        unsigned int v2 = va_arg(argList, unsigned int);
+        unsigned int v0 = va_arg(args, unsigned int);
+        unsigned int v1 = va_arg(args, unsigned int);
+        unsigned int v2 = va_arg(args, unsigned int);
         
         glUniform3ui(location, v0, v1, v2);
     }
     else if(type == UI4) {
         
-        unsigned int v0 = va_arg(argList, unsigned int);
-        unsigned int v1 = va_arg(argList, unsigned int);
-        unsigned int v2 = va_arg(argList, unsigned int);
-        unsigned int v3 = va_arg(argList, unsigned int);
+        unsigned int v0 = va_arg(args, unsigned int);
+        unsigned int v1 = va_arg(args, unsigned int);
+        unsigned int v2 = va_arg(args, unsigned int);
+        unsigned int v3 = va_arg(args, unsigned int);
         
         glUniform4ui(location, v0, v1, v2, v3);
     }
     else if(type == FLV1 || type == FLV2 || type == FLV3 || type == FLV4) {
         
-        int count = va_arg(argList, int);
-        float *value = va_arg(argList, float *);
+        int count = va_arg(args, int);
+        float *value = va_arg(args, float *);
         
         switch(type) {
             
@@ -326,8 +326,8 @@ void GLProgram::uniform(UniformType type, const char *const name, ...) {
     }
     else if(type == INV1 || type == INV2 || type == INV3 || type == INV4) {
         
-        int count = va_arg(argList, int);
-        int *value = va_arg(argList, int *);
+        int count = va_arg(args, int);
+        int *value = va_arg(args, int *);
         
         switch(type) {
             
@@ -345,8 +345,8 @@ void GLProgram::uniform(UniformType type, const char *const name, ...) {
     }
     else if(type == UIV1 || type == UIV2 || type == UIV3 || type == UIV4) {
         
-        int count = va_arg(argList, int);
-        unsigned int *value = va_arg(argList, unsigned int *);
+        int count = va_arg(args, int);
+        unsigned int *value = va_arg(args, unsigned int *);
         
         switch(type) {
             
@@ -364,9 +364,9 @@ void GLProgram::uniform(UniformType type, const char *const name, ...) {
     }
     else if(type == MAT2 || type == MAT3 || type == MAT4 || type == MAT23 || type == MAT24 || type == MAT32 || type == MAT34 || type == MAT42 || type == MAT43) {
         
-        int count = va_arg(argList, int);
-        bool transpose = va_arg(argList, int);
-        float *value = va_arg(argList, float *);
+        int count = va_arg(args, int);
+        bool transpose = va_arg(args, int);
+        float *value = va_arg(args, float *);
         
         switch(type) {
             
@@ -397,7 +397,7 @@ void GLProgram::uniform(UniformType type, const char *const name, ...) {
         logger.error("Cannot bind uniform: unknown type.");
     }
     
-    va_end(argList);
+    va_end(args);
 
     unbind();
 }
