@@ -160,6 +160,8 @@ int GLProgram::add_shader(const char *buffer, ShaderType type) {
                 // attach the compiled shader to the program and put it in our shaders vector
                 glAttachShader(this->prog_id, shader_id);
                 shaders.push_back(shader_id);
+
+                logger.debug("%s shader created with ID %u.", SHADER_STRINGS[type], shader_id);
             }
             else {
 
