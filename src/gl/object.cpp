@@ -89,7 +89,7 @@ Change this objects orientation.
 */
 void GLObject::rotate(Quaternion& q) {
 
-    this->rotation = q * this->rotation;
+    this->rotation = this->rotation * q;
     this->rotation.normalize();
 
 //    fprintf(stderr, "rotate: %f -- %f -- %f\n", this->rotation.i(), this->rotation.j(), this->rotation.k());

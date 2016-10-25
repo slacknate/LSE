@@ -31,7 +31,7 @@ void TestPrism::OnMouseMotion(Event *ev) {
 
         if(this->grabbed) {
 
-            Vector v(-event->dY, -event->dX, 0.0f);
+            Vector v(event->dY, event->dX, 0.0f);
             v.normalize();
 
             Quaternion q(v.i(), v.j(), v.k(), 100.0f*(float)cos(PI/180.0));
