@@ -36,7 +36,7 @@ namespace LSE {
  */
 bool valid_shader_type(ShaderType s) {
     
-    return s >= SHADER_INVALID && s < SHADER_FRAG;
+    return s >= SHADER_INVALID && s <= SHADER_FRAG;
 }
 
 }
