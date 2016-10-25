@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 2.8)
 # Name of project + type of source (C++ = CXX)
 project(LSE CXX)
 
+add_subdirectory(sdump)
+
 if(WIN32)
     add_definitions(-DWIN32=1)
     add_definitions(-DUNIX=0)
