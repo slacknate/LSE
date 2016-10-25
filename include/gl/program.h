@@ -1,8 +1,8 @@
 #ifndef LSE_GL_PROG_H
 #define LSE_GL_PROG_H
 
+#include <vector>
 #include "lse/defs.h"
-#include "lse/list.h"
 
 namespace LSE {
 
@@ -73,6 +73,8 @@ enum UniformType {
     MAT43,
 };
 
+typedef std::vector<unsigned int> ShaderVector;
+
 /*
 Class which describes an OpenGL shader program.
 
@@ -83,22 +85,20 @@ class GLProgram {
     
     public:
         
-        unsigned int progID, lastID; // program IDs used to bind and unbind to this program
-        List shaderIDs; // list of all shader IDs
-        
-        char* ReadShader(const char *fileName);
-        GLenum GetShaderType(const char *fileName);
-        GLenum GetShaderType(ShaderType type);
-        bool ValidateShader(const char *fileName, unsigned int shaderID, ShaderType type);
-        bool ValidateProgram();
+        unsigned int prog_id, last_id; // program IDs used to bind and unbind to this program
+        ShaderVector shaders;
+
+        GLenum gl_shader_type(ShaderType type);
+        bool validate_shader(unsigned int shader_id, ShaderType type);
+        bool validate_program();
              
     public:
         
         GLProgram();
         ~GLProgram();
         
-        int add_shader(const char *buffer, ShaderType type = SHADER_INVALID);
-        bool remove_shader(unsigned int shaderID);
+        int add_shader(const char *buffer, ShaderType type);
+        void remove_shader(unsigned int shader_id);
         
         void bind_attrib(AttrPos position, const char *const name);
         void uniform(UniformType type, const char *const name, ...);

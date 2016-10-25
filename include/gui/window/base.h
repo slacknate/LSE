@@ -6,6 +6,7 @@
 #include "gl/program.h"
 
 #include "io/handler.h"
+#include "lse/list.h"
 #include "lse/thread.h"
 #include "lse/semaphore.h"
 #include "gui/screen/screen.h"

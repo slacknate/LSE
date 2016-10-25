@@ -5,6 +5,7 @@
 #include "gl/program.h"
 #include "gl/manager.h"
 #include "lse/globals.h"
+#include "lse/exception.h"
 using namespace LSE;
 
 /*
@@ -41,12 +42,12 @@ bool valid_shader_type(ShaderType s) {
 }
 
 /*
-Generate out OpenGL program.
-*/
+ * Initialize our OpenGL program.
+ */
 GLProgram::GLProgram() {
     
-    lastID = 0;
-    progID = glCreateProgram();
+    this->last_id = 0;
+    this->prog_id = glCreateProgram();
 }
 
 /*
@@ -55,162 +56,60 @@ as well as the program.
 */
 GLProgram::~GLProgram() {
     
-    for(int i = 0; i < shaderIDs.Size(); ++i)
-        remove_shader(*(unsigned int *) shaderIDs[i]->GetData());
-    
-    shaderIDs.Clear();
-    
-    glDeleteProgram(progID);
+    for(unsigned int i = 0; i < this->shaders.size(); ++i)
+        glDeleteShader(this->shaders[i]);
+
+    glDeleteProgram(this->prog_id);
 }
 
-/*
-Read in the shader source file. Return a NULL
-pointer if there were errors. On success, the
-contents of the shader file are returned,
-and the caller is responsible for freeing
-the memory.
-*/
-char* GLProgram::ReadShader(const char *fileName) {
-    
-    char *shaderSource = NULL;
-    
-    FILE *shader = fopen(fileName, "rb");
-    if(shader) {          
-        
-        // get shader source file size
-        fseek (shader, 0, SEEK_END);
-        int fileSize = ftell(shader);
-        rewind(shader);
-        
-        shaderSource = new (std::nothrow) char [fileSize+1];
-        if(shaderSource) {
-            
-            fread(shaderSource, sizeof(char), fileSize, shader);
-            shaderSource[fileSize] = '\0'; // explicitly null terminate for safety with glShaderSource()
-            
-            if(ferror(shader)) {
-                
-                delete[] shaderSource;
-                shaderSource = NULL;
-                
-                logger.error("An error occurred while reading the shader source.");
-            }
-        }
-        else {
-            
-            logger.error("Failed to allocate memory for shader source.");
-        }
-    }
-    else {
-            
-        logger.error("Shader source file unable to be read.");
-    }
-    
-    return shaderSource;
-}
-
-/*
-Get the shader type from the file extension.
-*/
-GLenum GLProgram::GetShaderType(const char *fileName) {
-    
-    GLenum type = 0; // fix me -> check to make sure this is indeed an invalid value
-    
-    bool hasExtension = false;
-    char *extension = NULL;
-    int extLength = 0;
-        
-    // check for the shader file extension
-    unsigned int ext;
-    for(ext = 0; ext < strlen(fileName) && !hasExtension; ++ext) {
-        
-        if(fileName[ext] == '.')
-            hasExtension = true;
-    }
-       
-    if(hasExtension) {
-            
-        extLength = strlen(fileName) - ext;
-        extension = new (std::nothrow) char [extLength+1];
-    }
-    
-    if(extension) {
-            
-        strncpy(extension, &fileName[ext], extLength);
-        extension[extLength] = '\0';
-            
-        // determine the shader type
-        if(!strcmp(extension, "vert"))
-            type = GL_VERTEX_SHADER;
-        else if(!strcmp(extension, "tcon"))
-            type = GL_TESS_CONTROL_SHADER;
-        else if(!strcmp(extension, "teva"))
-            type = GL_TESS_EVALUATION_SHADER;
-        else if(!strcmp(extension, "geom"))
-            type = GL_GEOMETRY_SHADER;
-        else if(!strcmp(extension, "frag"))
-            type = GL_FRAGMENT_SHADER;
-        else
-            logger.error("Unknown file extension. Unable to determine OpenGL shader type.");
-            
-        delete[] extension;   
-    }
-    else {
-            
-        logger.error("No shader file extension found. Unable to determine OpenGL shader type.");
-    }
-        
-    return type;
-}
 
 /*
 Get the OpenGL shader type from the LSE shader type.
 */
-GLenum GLProgram::GetShaderType(ShaderType lseType) {
+GLenum GLProgram::gl_shader_type(ShaderType type) {
     
-    GLenum glType = 0; // fix me -> check to make sure this is indeed an invalid value
+    GLenum gl_type = 0; // FIXME: check to make sure this is indeed an invalid value
     
-    if(lseType == SHADER_VERT)
-        glType = GL_VERTEX_SHADER;
-    else if(lseType == SHADER_TCON)
-        glType = GL_TESS_CONTROL_SHADER;
-    else if(lseType == SHADER_TEVA)
-        glType = GL_TESS_EVALUATION_SHADER;
-    else if(lseType == SHADER_GEOM)
-        glType = GL_GEOMETRY_SHADER;
-    else if(lseType == SHADER_FRAG)
-        glType = GL_FRAGMENT_SHADER;
+    if(type == SHADER_VERT)
+        gl_type = GL_VERTEX_SHADER;
+
+    else if(type == SHADER_TCON)
+        gl_type = GL_TESS_CONTROL_SHADER;
+
+    else if(type == SHADER_TEVA)
+        gl_type = GL_TESS_EVALUATION_SHADER;
+
+    else if(type == SHADER_GEOM)
+        gl_type = GL_GEOMETRY_SHADER;
+
+    else if(type == SHADER_FRAG)
+        gl_type = GL_FRAGMENT_SHADER;
+
     else
-        logger.error("Invalid Shader type. Unable to determine OpenGL shader type.");
+        throw EXCEPTION("Invalid LSE Shader type. Unable to determine OpenGL shader type.");
     
-    return glType;
+    return gl_type;
 }
 
 /*
 Check if the shader attached to the given ID is valid.
 */
-bool GLProgram::ValidateShader(const char *fileName, unsigned int shaderID, ShaderType lseType) {
+bool GLProgram::validate_shader(unsigned int shader_id, ShaderType type) {
     
     int compile_success = 0;
-    glGetShaderiv(shaderID, GL_COMPILE_STATUS, &compile_success);
+    glGetShaderiv(shader_id, GL_COMPILE_STATUS, &compile_success);
 
     if(!compile_success) {
 
-        int buffSize = 0;
-        glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &buffSize);
+        int buff_size = 0;
+        glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &buff_size);
 
-        char buffer[buffSize];
-        memset(buffer, 0, (size_t)buffSize);
+        char buffer[buff_size];
+        memset(buffer, 0, (size_t)buff_size);
 
-        glGetShaderInfoLog(shaderID, buffSize, &buffSize, buffer);
+        glGetShaderInfoLog(shader_id, buff_size, &buff_size, buffer);
 
-        if(lseType == SHADER_INVALID)
-            logger.error("Shader read from \"%s\" failed validation:\n", fileName);
-
-        else
-            logger.error("%s shader read from stream failed validation:\n", ShaderString(lseType));
-
-        logger.error("%s", buffer);
+        throw EXCEPTION("Shader %d failed validation: %s", shader_id, buffer);
     }
     
     return (bool)compile_success;
@@ -219,12 +118,12 @@ bool GLProgram::ValidateShader(const char *fileName, unsigned int shaderID, Shad
 /*
 Check if the whole program is valid.
 */
-bool GLProgram::ValidateProgram() {
+bool GLProgram::validate_program() {
     
-    glValidateProgram(progID);
+    glValidateProgram(this->prog_id);
     
     int validate_success = 0;
-    glGetProgramiv(progID, GL_VALIDATE_STATUS, &validate_success);
+    glGetProgramiv(this->prog_id, GL_VALIDATE_STATUS, &validate_success);
     
     return (bool)validate_success;
 }
@@ -238,114 +137,43 @@ and pass the read text to the shader compiler.
 Otherwise, the buffer is treated as the shader source,
 and the method passes the text to the shader compiler.
 */
-int GLProgram::add_shader(const char *buffer, ShaderType lseType) {
+int GLProgram::add_shader(const char *buffer, ShaderType type) {
     
-    unsigned int shaderID = 0;
+    unsigned int shader_id = 0;
     
     if(buffer) {
-        
-        if(lseType == SHADER_INVALID) {
-        
-            char *shaderSource = ReadShader(buffer);
-            if(shaderSource) {
-            
-                shaderID = glCreateShader(GetShaderType(buffer));
-                if(shaderID) {
-                    
-                    char sl_version_str[64];
-                    memset(sl_version_str, 0, 64);
-                    snprintf((char *)sl_version_str, 64, "%d", sl_version());
-                    
-                    unsigned int size[] = { 9, strlen(sl_version_str), 1, strlen(shaderSource) };
-                    const char *const sourceWithVersion[] = { "#version ", sl_version_str, "\n", shaderSource };
-                    
-                    logger.debug("Prepending GLSL version '%s' to shader source.", sl_version_str);
-                    
-                    // send the shader source code to the GPU, and compile it
-                    glShaderSource(shaderID, 4, (const char**)sourceWithVersion, (int *)size);
-                    glCompileShader(shaderID);
-                        
-                    if(ValidateShader(buffer, shaderID, lseType)) {
-                    
-                        // attach the compiled shader to the program, and store the shader ID in our list
-                        glAttachShader(progID, shaderID);
-                        
-                        unsigned int *newID = new (std::nothrow) unsigned int;
-                        if(newID != NULL) {
-                            
-                            *newID = shaderID;
-                            shaderIDs.PushBack(newID);
-                            
-                            logger.debug("Shader file \"%s\" bound to ID %u and attached to program %u.", buffer, shaderID, progID);
-                        }
-                        else {
-                            
-                            logger.error("Failed to allocate memory for element in shader ID list.");
-                            glDeleteShader(shaderID);
-                        }
-                    }
-                    else {
-                    
-                        logger.error("An error occurred while creating shader from \"%s\": %s.", buffer, gl_error());
-                        glDeleteShader(shaderID);
-                    }
-                }
-                else {
-                        
-                    logger.error("An error occurred while creating shader from \"%s\": %s.", buffer, gl_error());
-                }
-            
-                delete[] shaderSource;
-                shaderSource = NULL;
+
+        shader_id = glCreateShader(gl_shader_type(type));
+        if(shader_id) {
+
+            char sl_version_str[64];
+            memset(sl_version_str, 0, 64);
+            snprintf((char *)sl_version_str, 64, "%d", sl_version());
+
+            unsigned int size[] = { 9, strlen(sl_version_str), 1, strlen(buffer) };
+            const char *const src_with_version[] = { "#version ", sl_version_str, "\n", buffer };
+
+            logger.verbose("Prepending GLSL version '%s' to shader source.", sl_version_str);
+
+            // send the shader source code to the GPU, and compile it
+            glShaderSource(shader_id, 4, (const char**)src_with_version, (int *)size);
+            glCompileShader(shader_id);
+
+            if(this->validate_shader(shader_id, type)) {
+
+                // attach the compiled shader to the program and put it in our shaders vector
+                glAttachShader(this->prog_id, shader_id);
+                shaders.push_back(shader_id);
+            }
+            else {
+
+                logger.error("An error occurred while creating shader: %s.", gl_error());
+                glDeleteShader(shader_id);
             }
         }
         else {
-            
-            shaderID = glCreateShader(GetShaderType(lseType));
-            if(shaderID) {
-                
-                char sl_version_str[64];
-                memset(sl_version_str, 0, 64);
-                snprintf((char *)sl_version_str, 64, "%d", sl_version());
-                
-                unsigned int size[] = { 9, strlen(sl_version_str), 1, strlen(buffer) };
-                const char *const sourceWithVersion[] = { "#version ", sl_version_str, "\n", buffer };
-                
-                logger.debug("Prepending GLSL version '%s' to shader source.", sl_version_str);
-                
-                // send the shader source code to the GPU, and compile it
-                glShaderSource(shaderID, 4, (const char**)sourceWithVersion, (int *)size);
-                glCompileShader(shaderID);
-                        
-                if(ValidateShader(NULL, shaderID, lseType)) {
-                    
-                    // attach the compiled shader to the program, and store the shader ID in our list
-                    glAttachShader(progID, shaderID);    
-                    
-                    unsigned int *newID = new (std::nothrow) unsigned int;
-                    if(newID != NULL) {
-                            
-                        *newID = shaderID;
-                        shaderIDs.PushBack(newID);
-                            
-                        logger.debug("%s shader loaded from stream bound to ID %u and attached to program %u.", ShaderString(lseType), shaderID, progID);
-                    }
-                    else {
-                            
-                        logger.error("Failed to allocate memory for element in shader ID list.");
-                        glDeleteShader(shaderID);
-                    }
-                }
-                else {
-                    
-                    logger.error("An error occurred while creating shader from \"%s\": %s.", buffer, gl_error());
-                    glDeleteShader(shaderID);
-                }
-            }
-            else {
-                        
-                logger.error("An error occurred while creating shader from \"%s\": %s.", buffer, gl_error());
-            }
+
+            logger.error("An error occurred while creating shader: %s.", gl_error());
         }
     }
     else {
@@ -353,32 +181,22 @@ int GLProgram::add_shader(const char *buffer, ShaderType lseType) {
        logger.error("Shader input may not be NULL."); 
     }
     
-    return shaderID;
+    return shader_id;
 }
 
 /*
 Remove the shader with the given ID from the program.
 */
-bool GLProgram::remove_shader(unsigned int shaderID) {
-    
-    // make sure the given shader is in the list of shaders present in this program
-    bool valid = false;
-    for(int i = 0; i < shaderIDs.Size() && !valid; ++i) {
-        
-        if(*(unsigned int*)shaderIDs[i]->GetData() == shaderID)
-            valid = true;
-    }
+void GLProgram::remove_shader(unsigned int shader_id) {
     
     // only try to remove the shader if we are in fact in possession of it
-    if(valid) {
+    if(glIsShader(shader_id)) {
         
-        glDetachShader(progID, shaderID);
-        glDeleteShader(shaderID);
+        glDetachShader(this->prog_id, shader_id);
+        glDeleteShader(shader_id);
         
-        logger.debug("Shader %u was removed from program %u.", shaderID, progID);
+        logger.debug("Shader %u was removed from program %u.", shader_id, this->prog_id);
     }
-    
-    return valid;
 }
 
 /*
@@ -386,7 +204,7 @@ bind a vertex attribute.
 */
 void GLProgram::bind_attrib(AttrPos position, const char *const name) {
     
-    glBindAttribLocation(this->progID, position, name);
+    glBindAttribLocation(this->prog_id, position, name);
 }
 
 /*
@@ -396,7 +214,7 @@ void GLProgram::uniform(UniformType type, const char *const name, ...) {
 
     bind();
 
-    int location = glGetUniformLocation(progID, name);
+    int location = glGetUniformLocation(this->prog_id, name);
     
     va_list argList;
     va_start(argList, name);
@@ -594,24 +412,24 @@ and validate it.
 */
 bool GLProgram::finalize() {
     
-    glLinkProgram(progID);
+    glLinkProgram(this->prog_id);
     
-    return ValidateProgram();
+    return validate_program();
 }
 
 /*
-Set this program to be the one in current use.
-*/
+ * Set this program to be the one in current use.
+ */
 void GLProgram::bind() {
 
-    glGetIntegerv(GL_CURRENT_PROGRAM, (int *)&lastID);
-    glUseProgram(progID);
+    glGetIntegerv(GL_CURRENT_PROGRAM, (int *)&this->last_id);
+    glUseProgram(this->prog_id);
 }
 
 /*
-Set the "invalid" program to be the one in current use.
-*/
+ * Set the program to be the last known bound program.
+ */
 void GLProgram::unbind() {
     
-    glUseProgram(lastID);
+    glUseProgram(this->last_id);
 }

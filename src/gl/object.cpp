@@ -3,6 +3,7 @@
 #include "gl/shaders.h"
 #include "lse/globals.h"
 #include "lse/exception.h"
+#include "util/file.h"
 using namespace LSE;
 
 /*
@@ -15,8 +16,14 @@ GLObject::GLObject(float x, float y, float z) : PHObject(x, y, z) {
     /*
      * FIXME: LOL hard-coded paths!
      */
-    program.add_shader("H:\\CLion\\LSE\\shaders\\ObjShaders.frag", SHADER_INVALID);
-    program.add_shader("H:\\CLion\\LSE\\shaders\\ObjShaders.vert", SHADER_INVALID);
+    unsigned char *vert_shader = read_file("H:\\CLion\\LSE\\shaders\\ObjShaders.vert");
+    unsigned char *frag_shader = read_file("H:\\CLion\\LSE\\shaders\\ObjShaders.frag");
+
+    program.add_shader((const char *)vert_shader, SHADER_VERT);
+    program.add_shader((const char *)frag_shader, SHADER_FRAG);
+
+    delete[] vert_shader;
+    delete[] frag_shader;
 
     program.bind_attrib(VERT_POSITION, "VERT_POSITION");
     program.bind_attrib(VERT_NORMAL, "VERT_NORMAL");
