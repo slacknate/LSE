@@ -73,6 +73,7 @@ set(SOURCES
 	
 	# utility source files
 	src/util/time.cpp
+	src/util/file.cpp
 	src/util/format.cpp
 	src/util/math/matrix.cpp
 	src/util/math/quaternion.cpp
