@@ -9,8 +9,8 @@
 using namespace LSE;
 
 /*
-LSE Shader type strings.
-*/
+ * LSE Shader type strings.
+ */
 static const char *const SHADER_STRINGS[] = {
     
     "Invalid",
