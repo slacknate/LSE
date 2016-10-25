@@ -22,8 +22,8 @@ static const char *const SHADER_STRINGS[] = {
 };
 
 /*
-Return the shader type name as a string.
-*/
+ * Return the shader type name as a string.
+ */
 const char* ShaderString(ShaderType s) {
     
     return SHADER_STRINGS[s];
@@ -32,11 +32,11 @@ const char* ShaderString(ShaderType s) {
 namespace LSE {
 
 /*
-LSE Shader type validation function.
-*/
+ * LSE Shader type validation function.
+ */
 bool valid_shader_type(ShaderType s) {
     
-    return s >= 0 && s < 6;
+    return s >= SHADER_INVALID && s < SHADER_FRAG;
 }
 
 }
@@ -51,9 +51,9 @@ GLProgram::GLProgram() {
 }
 
 /*
-Detach and delete all attached shaders,
-as well as the program.
-*/
+ * Detach and delete all attached shaders,
+ * as well as the program.
+ */
 GLProgram::~GLProgram() {
     
     for(unsigned int i = 0; i < this->shaders.size(); ++i)
@@ -64,8 +64,8 @@ GLProgram::~GLProgram() {
 
 
 /*
-Get the OpenGL shader type from the LSE shader type.
-*/
+ * Get the OpenGL shader type from the LSE shader type.
+ */
 GLenum GLProgram::gl_shader_type(ShaderType type) {
     
     GLenum gl_type = 0; // FIXME: check to make sure this is indeed an invalid value
@@ -92,8 +92,8 @@ GLenum GLProgram::gl_shader_type(ShaderType type) {
 }
 
 /*
-Check if the shader attached to the given ID is valid.
-*/
+ * Check if the shader attached to the given ID is valid.
+ */
 bool GLProgram::validate_shader(unsigned int shader_id, ShaderType type) {
     
     int compile_success = 0;
@@ -116,8 +116,8 @@ bool GLProgram::validate_shader(unsigned int shader_id, ShaderType type) {
 }
 
 /*
-Check if the whole program is valid.
-*/
+ * Check if the whole program is valid.
+ */
 bool GLProgram::validate_program() {
     
     glValidateProgram(this->prog_id);
@@ -129,13 +129,9 @@ bool GLProgram::validate_program() {
 }
 
 /*
-Add a new shader to the program.
-If the shader type parameter is SHADER_INVALID,
-the provided buffer is assumed to be a file name,
-and the method attempts to open the file, read it,
-and pass the read text to the shader compiler.
-Otherwise, the buffer is treated as the shader source,
-and the method passes the text to the shader compiler.
+ * Add a new shader to the program.
+ * The parameter ``buffer`` contains the shader
+ * source code which is passed to the compiler.
 */
 int GLProgram::add_shader(const char *buffer, ShaderType type) {
     
@@ -185,8 +181,8 @@ int GLProgram::add_shader(const char *buffer, ShaderType type) {
 }
 
 /*
-Remove the shader with the given ID from the program.
-*/
+ * Remove the shader with the given ID from the program.
+ * */
 void GLProgram::remove_shader(unsigned int shader_id) {
     
     // only try to remove the shader if we are in fact in possession of it
@@ -200,16 +196,16 @@ void GLProgram::remove_shader(unsigned int shader_id) {
 }
 
 /*
-bind a vertex attribute.
-*/
+ * Bind a vertex attribute.
+ */
 void GLProgram::bind_attrib(AttrPos position, const char *const name) {
     
     glBindAttribLocation(this->prog_id, position, name);
 }
 
 /*
-bind a uniform variable.
-*/
+ * Set the value for a uniform variable.
+ */
 void GLProgram::uniform(UniformType type, const char *const name, ...) {
 
     bind();
@@ -407,9 +403,8 @@ void GLProgram::uniform(UniformType type, const char *const name, ...) {
 }
 
 /*
-bind vertex attribute locations, link the program,
-and validate it.
-*/
+ * Bind vertex attribute locations, link the program, and validate it.
+ */
 bool GLProgram::finalize() {
     
     glLinkProgram(this->prog_id);
