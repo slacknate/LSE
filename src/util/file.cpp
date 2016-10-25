@@ -1,7 +1,8 @@
 #include <cstdio>
 #include "util/file.h"
 #include "util/memory.h"
-using namespace LSE;
+
+namespace LSE {
 
 
 /*
@@ -45,4 +46,7 @@ unsigned char* read_file(const char *const file_name) {
     }
 
     return buffer;
+}
+
+
 }
