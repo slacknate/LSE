@@ -8,12 +8,15 @@
 #include "lse/exception.h"
 using namespace LSE;
 
+
+namespace LSE {
+
+
 /*
  * LSE Shader type strings.
  */
 static const char *const SHADER_STRINGS[] = {
     
-    "Invalid",
     "Vertex",
     "Tesselation control",
     "Tesselation evaluation",
@@ -21,22 +24,13 @@ static const char *const SHADER_STRINGS[] = {
     "Fragment"
 };
 
-/*
- * Return the shader type name as a string.
- */
-const char* ShaderString(ShaderType s) {
-    
-    return SHADER_STRINGS[s];
-}
-
-namespace LSE {
 
 /*
  * LSE Shader type validation function.
  */
 bool valid_shader_type(ShaderType s) {
     
-    return s >= SHADER_INVALID && s <= SHADER_FRAG;
+    return s >= SHADER_VERT && s <= SHADER_FRAG;
 }
 
 }
@@ -109,7 +103,7 @@ bool GLProgram::validate_shader(unsigned int shader_id, ShaderType type) {
 
         glGetShaderInfoLog(shader_id, buff_size, &buff_size, buffer);
 
-        throw EXCEPTION("Shader %d failed validation: %s", shader_id, buffer);
+        throw EXCEPTION("%s shader %d failed validation: %s", SHADER_STRINGS[type], shader_id, buffer);
     }
     
     return (bool)compile_success;

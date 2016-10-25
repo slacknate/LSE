@@ -11,8 +11,7 @@ LSE Shader types.
 */
 enum ShaderType {
     
-    SHADER_INVALID = 0,
-    SHADER_VERT,
+    SHADER_VERT = 0,
     SHADER_TCON,
     SHADER_TEVA,
     SHADER_GEOM,

@@ -142,7 +142,6 @@ Array of all built in LSE Shaders.
 */
 static const char *const SHADERS[] = {
 
-	"Invalid\0",
 	VERTEX_SHADER,
 	TESS_CONTROL_SHADER,
 	TESS_EVAL_SHADER,
