@@ -33,7 +33,7 @@ Exception::Exception(const char *file, int line, const char *fmt, ...) noexcept 
 
         this->error_message = vformat(fmt, EXC_MESSAGE_MAX_LENGTH, args);
     }
-    catch(std::exception &err) {
+    catch(std::exception) {
 
         this->error_message = fmt;  // Sorry, your string formatting done goofed. Too bad for you!
     }
