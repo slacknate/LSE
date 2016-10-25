@@ -132,7 +132,7 @@ bool GLProgram::validate_program() {
  * Add a new shader to the program.
  * The parameter ``buffer`` contains the shader
  * source code which is passed to the compiler.
-*/
+ */
 int GLProgram::add_shader(const char *buffer, ShaderType type) {
     
     unsigned int shader_id = 0;
@@ -182,7 +182,7 @@ int GLProgram::add_shader(const char *buffer, ShaderType type) {
 
 /*
  * Remove the shader with the given ID from the program.
- * */
+ */
 void GLProgram::remove_shader(unsigned int shader_id) {
     
     // only try to remove the shader if we are in fact in possession of it
