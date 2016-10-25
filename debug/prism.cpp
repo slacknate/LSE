@@ -21,24 +21,22 @@ TestPrism::TestPrism(GLWindow *win, float x, float y, float z, float w, float h,
 void TestPrism::OnMouseMotion(Event *ev) {
     
     MouseEvent *event = (MouseEvent *)ev;
-    if(event != NULL) {
 
-        if(event->button == MOUSE_LEFT && event->state == STATE_UP)
-            this->grabbed = false;
+    if(event->button == MOUSE_LEFT && event->state == STATE_UP)
+        this->grabbed = false;
 
-        if(event->button == MOUSE_LEFT && event->state == STATE_DOWN)
-            this->grabbed = true;
+    if(event->button == MOUSE_LEFT && event->state == STATE_DOWN)
+        this->grabbed = true;
 
-        if(this->grabbed) {
+    if(this->grabbed) {
 
-            Vector v(event->dY, event->dX, 0.0f);
-            v.normalize();
+        Vector v(event->dY, event->dX, 0.0f);
+        v.normalize();
 
-            Quaternion q(v.i(), v.j(), v.k(), 100.0f*(float)cos(PI/180.0));
-            q.normalize();
+        Quaternion q(v.i(), v.j(), v.k(), 100.0f*(float)cos(PI/180.0));
+        q.normalize();
 
-            rotate(q);
-        }
+        rotate(q);
     }
 }
 
