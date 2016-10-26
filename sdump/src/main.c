@@ -233,7 +233,7 @@ void dump_shader(const char *const file_name, FILE *dest_fp) {
         for(i = 0; i < file_length; ++i) {
 
             /*
-             * Newline and indent after reading 10 characters
+             * Newline and indent after reading 10 characters.
              */
             if(i % 10 == 0)
                 fprintf(dest_fp, "\n\t");
@@ -243,6 +243,12 @@ void dump_shader(const char *const file_name, FILE *dest_fp) {
              */
             fprintf(dest_fp, "0x%02X, ", shader_contents[i]);
         }
+
+        /*
+         * Newline and indent after reading 10 characters.
+         */
+        if(i % 10 == 0)
+            fprintf(dest_fp, "\n\t");
 
         /*
          * NULL terminate the array.
