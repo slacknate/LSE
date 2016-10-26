@@ -1,5 +1,10 @@
 #include "gui/screen/screen.h"
-#include "gui/screen/shaders.h"
+/*
+ * The following two headers are
+ * auto-generated at build time.
+ */
+#include "gui/screen/fragshader.h"
+#include "gui/screen/vertshader.h"
 #include "lse/globals.h"
 #include "lse/exception.h"
 using namespace LSE;
@@ -15,8 +20,8 @@ our frame buffer object.
 */
 GLScreen::GLScreen(int new_width, int new_height) : frame_buffer_id(0), render_buffer_id(0), color_tex_id(0), normal_tex_id(0) {
 
-    this->program.add_shader(GetScreenShaders(SHADER_VERT), SHADER_VERT);
-    this->program.add_shader(GetScreenShaders(SHADER_FRAG), SHADER_FRAG);
+    this->program.add_shader(VERT_SHADER, SHADER_VERT);
+    this->program.add_shader(FRAG_SHADER, SHADER_FRAG);
         
     if(!this->program.finalize())
         throw EXCEPTION("OpenGL failed to initialize");

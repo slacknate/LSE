@@ -1,6 +1,11 @@
 #include <cstdio>
 #include "gl/object.h"
-#include "gl/shaders.h"
+/*
+ * The following two headers are
+ * auto-generated at build time.
+ */
+#include "gl/fragshader.h"
+#include "gl/vertshader.h"
 #include "lse/globals.h"
 #include "lse/exception.h"
 #include "util/file.h"
@@ -13,17 +18,8 @@ GLObject::GLObject(float x, float y, float z) : PHObject(x, y, z) {
 
     this->init_translation_matrix();
 
-    /*
-     * FIXME: LOL hard-coded paths!
-     */
-    unsigned char *vert_shader = read_file("H:\\CLion\\LSE\\shaders\\ObjShaders.vert");
-    unsigned char *frag_shader = read_file("H:\\CLion\\LSE\\shaders\\ObjShaders.frag");
-
-    program.add_shader((const char *)vert_shader, SHADER_VERT);
-    program.add_shader((const char *)frag_shader, SHADER_FRAG);
-
-    delete[] vert_shader;
-    delete[] frag_shader;
+    program.add_shader(VERT_SHADER, SHADER_VERT);
+    program.add_shader(FRAG_SHADER, SHADER_FRAG);
 
     program.bind_attrib(VERT_POSITION, "VERT_POSITION");
     program.bind_attrib(VERT_NORMAL, "VERT_NORMAL");

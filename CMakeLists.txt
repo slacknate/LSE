@@ -5,19 +5,21 @@ cmake_minimum_required(VERSION 2.8)
 project(LSE CXX)
 
 add_subdirectory(sdump)
+add_subdirectory(shaders/gl)
+add_subdirectory(shaders/screen)
 
 if(WIN32)
-    add_definitions(-DWIN32=1)
-    add_definitions(-DUNIX=0)
-    add_definitions(-DAPPLE=0)
+	add_definitions(-DWIN32=1)
+	add_definitions(-DUNIX=0)
+	add_definitions(-DAPPLE=0)
 elseif(UNIX AND !APPLE)
-    add_definitions(-DWIN32=0)
-    add_definitions(-DUNIX=1)
-    add_definitions(-DAPPLE=0)
+	add_definitions(-DWIN32=0)
+	add_definitions(-DUNIX=1)
+	add_definitions(-DAPPLE=0)
 elseif(APPLE AND !UNIX)
-    add_definitions(-DWIN32=0)
-    add_definitions(-DUNIX=0)
-    add_definitions(-DAPPLE=1)
+	add_definitions(-DWIN32=0)
+	add_definitions(-DUNIX=0)
+	add_definitions(-DAPPLE=1)
 endif()
 
 set(SOURCES
@@ -36,13 +38,11 @@ set(SOURCES
 	src/gl/program.cpp
 	src/gl/rectangle.cpp
 	src/gl/rectprism.cpp
-	src/gl/shaders.cpp
 	src/gl/vertex.cpp
 	
 	# render surface source files
 	src/gui/screen/screen.cpp
-	src/gui/screen/shaders.cpp
-	
+
 	# program window source files
 	src/gui/window/base.cpp
 	#src/gui/window/mac.cpp
@@ -100,3 +100,7 @@ add_executable(lse ${SOURCES})
 # ok, it needs to link against some libraries
 # -lgdi32 -lanl -lglew32 -lopengl32 -lpthread
 target_link_libraries(lse anl glew32 opengl32 pthread)
+
+# Executable output is dependent on our shaders being compiled.
+add_dependencies(lse gl_shaders)
+add_dependencies(lse screen_shaders)

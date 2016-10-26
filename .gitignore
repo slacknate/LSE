@@ -1,7 +1,14 @@
-bin/*
-.idea/*
+# Auto generated shader headers
+include/gl/vertshader.h
+include/gl/fragshader.h
+include/gui/screen/vertshader.h
+include/gui/screen/fragshader.h
+
+# Binary files
 *.o
 *.exe
 *.a
 *.dll
-*.layout
+
+# CLion project directory
+.idea/*
