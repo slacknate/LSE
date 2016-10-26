@@ -173,16 +173,12 @@ void* Engine::execute() {
 }
 
 /*
- * FIXME: REMOVE THIS!!
- */
-#include "prism.h"
-/*
 Run the engine.
 We set the engine pointer of 
 the GLContext object, and 
 begin the context event loop thread.
 */
-int Engine::run() {
+int Engine::run(void (*ready)(GLWindow *w)) {
     
     try {
 
@@ -203,8 +199,7 @@ int Engine::run() {
                  * FIXME: uhh. we cant make any GLObjects until window->setup_gl() has been invoked...
                  * Figure out how to do that intelligently rather than here!
                  */
-                TestPrism *prism = new TestPrism(window, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0);
-                window->push_gl(prism);
+                ready(this->window);
 
                 while(this->running)
                     this->window->render();

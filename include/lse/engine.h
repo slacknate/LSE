@@ -32,7 +32,10 @@ class Engine : public Thread {
         ~Engine();
         
         void attach_window(GLWindow *w);
-        int run();
+        /*
+         * TODO: determine if this ready callback is shitty or not.
+         */
+        int run(void (*ready)(GLWindow *w));
 };
 
 }

@@ -5,6 +5,16 @@ using namespace LSE;
 
 
 /*
+ * GLWindow ready callback function.
+ */
+void ready_func(GLWindow *window) {
+
+    TestPrism *prism = new TestPrism(window, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0);
+    window->push_gl(prism);
+}
+
+
+/*
 Program entry point.
 Create an OpenGL context and a scene to
 render. Run the engine.
@@ -20,5 +30,5 @@ int main(int argc, char *argv[]) {
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.0, 0.0, 0.0, 1.0);
 
-    return engine.run();
+    return engine.run(ready_func);
 }
