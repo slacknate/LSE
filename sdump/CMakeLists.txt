@@ -4,4 +4,6 @@ project(SDUMP C)
 
 set(SOURCES main.c)
 
+set(CMAKE_C_FLAGS "-Wall -Wextra")
+
 add_executable(sdump ${SOURCES})
