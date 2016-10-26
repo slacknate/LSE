@@ -3,8 +3,8 @@
  * The following two headers are
  * auto-generated at build time.
  */
-#include "gui/screen/fragshader.h"
-#include "gui/screen/vertshader.h"
+#include "gui/screen/shaders/screenvert.h"
+#include "gui/screen/shaders/screenfrag.h"
 #include "lse/globals.h"
 #include "lse/exception.h"
 using namespace LSE;

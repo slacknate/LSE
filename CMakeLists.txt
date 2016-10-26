@@ -1,12 +1,11 @@
 # need minimum version (2.8 is good)
 cmake_minimum_required(VERSION 2.8)
 
-# Name of project + type of source (C++ = CXX)
+# Name of project + type of source (C++ = CXX).
 project(LSE CXX)
 
+# Tool to generate shader headers from shader source code.
 add_subdirectory(sdump)
-add_subdirectory(shaders/gl)
-add_subdirectory(shaders/screen)
 
 if(WIN32)
 add_definitions(-DWIN32=1)
@@ -23,6 +22,7 @@ add_definitions(-DAPPLE=1)
 endif()
 
 set(SOURCES
+
 	# debug main files
 	debug/main.cpp
 	debug/cam.cpp
@@ -82,10 +82,12 @@ set(SOURCES
 	src/util/math/vector.cpp
 	src/util/terrain/2D.cpp
 	src/util/terrain/3D.cpp
-	src/util/terrain/interpolate.cpp)
+	src/util/terrain/interpolate.cpp
+)
 
 # need where to include stuff from.
 include_directories(
+
 	include
 	debug
 )
@@ -97,6 +99,10 @@ set(CMAKE_CXX_FLAGS "-Wall -Wextra -std=c++11")
 # now let's make an executable
 add_executable(lse ${SOURCES})
 
+# Create our shader headers from shader source code.
+add_custom_target(gl_shaders ALL COMMAND sdump "${CMAKE_SOURCE_DIR}/include/gl/shaders")
+add_custom_target(screen_shaders ALL COMMAND sdump "${CMAKE_SOURCE_DIR}/include/gui/screen/shaders")
+
 # ok, it needs to link against some libraries
 # -lgdi32 -lanl -lglew32 -lopengl32 -lpthread
 target_link_libraries(lse anl glew32 opengl32 pthread)
@@ -104,3 +110,7 @@ target_link_libraries(lse anl glew32 opengl32 pthread)
 # Executable output is dependent on our shaders being compiled.
 add_dependencies(lse gl_shaders)
 add_dependencies(lse screen_shaders)
+
+# Shader headers can only be generated if sdump is built.
+add_dependencies(gl_shaders sdump)
+add_dependencies(screen_shaders sdump)

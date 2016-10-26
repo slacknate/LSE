@@ -1,8 +1,8 @@
 # Auto generated shader headers
-include/gl/vertshader.h
-include/gl/fragshader.h
-include/gui/screen/vertshader.h
-include/gui/screen/fragshader.h
+include/gl/shaders/objvert.h
+include/gl/shaders/objfrag.h
+include/gui/screen/shaders/screenvert.h
+include/gui/screen/shaders/screenfrag.h
 
 # Binary files
 *.o

@@ -4,8 +4,8 @@
  * The following two headers are
  * auto-generated at build time.
  */
-#include "gl/fragshader.h"
-#include "gl/vertshader.h"
+#include "gl/shaders/objfrag.h"
+#include "gl/shaders/objvert.h"
 #include "lse/globals.h"
 #include "lse/exception.h"
 #include "util/file.h"

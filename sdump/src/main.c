@@ -76,6 +76,35 @@ const char *const HEADER_FMT_BOT = "\n\n};\n\n\n"
 
 
 /*
+ * Get the name of a while without
+ * the file extension.
+ */
+void get_base_name(char *base_name) {
+
+    char *remaining = base_name;
+    char *ext_ptr = NULL;
+
+    while(1) {
+
+        ext_ptr = strchr(remaining, '.');
+
+        if(ext_ptr != NULL)
+            remaining = ext_ptr + 1;
+
+        else
+            break;
+    }
+
+    /*
+     * Truncate the file name where the extension delimiter is.
+     */
+    unsigned int ext_index = (unsigned int)(remaining - base_name - 1);
+    base_name[ext_index] = '\0';
+}
+
+
+
+/*
  * Return the shader type given the file name.
  * The type is determined by the file extension.
  * We tokenize the string on the '.' character
@@ -127,8 +156,12 @@ void upper(char *string, char *dest) {
     
     if(string != NULL) {
 
+        /*
+         * Copy str_len + 1 so we account for the
+         * auto NULL termination provided by snprintf.
+         */
         size_t str_len = strlen(string);
-        snprintf(dest, str_len, "%s", string);
+        snprintf(dest, str_len + 1, "%s", string);
 
         int i;
         for(i = 0; i < str_len; ++i) {
@@ -225,9 +258,9 @@ void dump_shader(const char *const file_name, FILE *dest_fp) {
 
 int main(int argc, char *argv[]) {
     
-    if(argc < 2) {
+    if(argc < 1) {
         
-        printf("usage: sdump src-directory name\n");
+        printf("usage: sdump src-directory\n");
     }
     else {
         
@@ -279,7 +312,15 @@ int main(int argc, char *argv[]) {
                  */
                 if(!S_ISDIR(file_stat.st_mode)) {
 
-                    unsigned int shader_type = get_shader_type(ent->d_name);
+                    /*
+                     * The strtok call in get_shader_type
+                     * in-place substitues '.' with '\0' so
+                     * we should copy that string so we do not
+                     * modify the stat struct data.
+                     */
+                    char tokenized_name[64];
+                    snprintf(tokenized_name, 64, "%s", ent->d_name);
+                    unsigned int shader_type = get_shader_type(tokenized_name);
 
                     /*
                      * Ensure we only read shader files.
@@ -288,35 +329,43 @@ int main(int argc, char *argv[]) {
 
                         printf("Reading shader '%s'.\n", full_path);
 
-                        char file_name[64];
-                        snprintf(file_name, 64, "%sshader.h", SHADER_NAMES_LOWER[shader_type]);
+                        char base_name[64];
+                        snprintf(base_name, 64, "%s", ent->d_name);
+                        get_base_name(base_name);
+                        if(base_name != NULL) {
 
-                        /*
-                         * Write out our compiled shader to a header.
-                         */
-                        FILE *header_fp = fopen(file_name, "wb");
-                        if(header_fp != NULL) {
+                            char file_name[64];
+                            snprintf(file_name, 64, "%s%s.h", base_name, SHADER_NAMES_LOWER[shader_type]);
 
-                            char obj_name[64];
-                            upper(argv[2], obj_name);
+                            /*
+                             * Write out our compiled shader to a header.
+                             */
+                            FILE *header_fp = fopen(file_name, "wb");
+                            if(header_fp != NULL) {
 
-                            time_t raw_time;
-                            time(&raw_time);
-                            struct tm *tm_ptr = localtime(&raw_time);
+                                char obj_name[64];
+                                upper(base_name, obj_name);
 
-                            char time_str[64];
-                            strftime(time_str, 64, "%c", tm_ptr);
+                                time_t raw_time;
+                                time(&raw_time);
+                                struct tm *tm_ptr = localtime(&raw_time);
 
-                            const char *const shader_type_name = SHADER_NAMES_UPPER[shader_type];
+                                char time_str[64];
+                                strftime(time_str, 64, "%c", tm_ptr);
 
-                            fprintf(header_fp, HEADER_FMT_TOP, obj_name, shader_type_name,
-                                    obj_name, shader_type_name, time_str, shader_type_name);
+                                const char *const shader_type_name = SHADER_NAMES_UPPER[shader_type];
 
-                            dump_shader(full_path, header_fp);
+                                fprintf(header_fp, HEADER_FMT_TOP, obj_name, shader_type_name,
+                                        obj_name, shader_type_name, time_str, shader_type_name);
 
-                            fprintf(header_fp, HEADER_FMT_BOT);
+                                dump_shader(full_path, header_fp);
 
-                            fclose(header_fp);
+                                fprintf(header_fp, HEADER_FMT_BOT);
+
+                                fclose(header_fp);
+                            }
+
+                            free(base_name);
                         }
                     }
                 }
