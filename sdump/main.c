@@ -236,7 +236,7 @@ void dump_shader(const char *const file_name, FILE *dest_fp) {
              * Newline and indent after reading 10 characters.
              */
             if(i % 10 == 0)
-                fprintf(dest_fp, "\n\t");
+                fprintf(dest_fp, "\n    ");
 
             /*
              * Output the text as hexadecimal.
@@ -248,7 +248,7 @@ void dump_shader(const char *const file_name, FILE *dest_fp) {
          * Newline and indent after reading 10 characters.
          */
         if(i % 10 == 0)
-            fprintf(dest_fp, "\n\t");
+            fprintf(dest_fp, "\n    ");
 
         /*
          * NULL terminate the array.
