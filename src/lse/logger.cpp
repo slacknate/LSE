@@ -145,7 +145,7 @@ void Logger::info(const char *format, ...) {
     va_list args;
     va_start(args, format);
     
-    this->log_event(LOG_LEVEL_INFO, std::cout, format, args);
+    this->log_event(LOG_LEVEL_INFO, std::cerr, format, args);
     
     va_end(args);
 }
@@ -159,7 +159,7 @@ void Logger::debug(const char *format, ...) {
     va_list args;
     va_start(args, format);
     
-    this->log_event(LOG_LEVEL_DEBUG, std::cout, format, args);
+    this->log_event(LOG_LEVEL_DEBUG, std::cerr, format, args);
     
     va_end(args);
 }
@@ -198,7 +198,7 @@ void Logger::verbose(const char *format, ...) {
     va_list args;
     va_start(args, format);
     
-    this->log_event(LOG_LEVEL_VERBOSE, std::cout, format, args);
+    this->log_event(LOG_LEVEL_VERBOSE, std::cerr, format, args);
     
     va_end(args);
 }
@@ -213,7 +213,7 @@ void Logger::raw(const char *format, ...) {
     va_list args;
     va_start(args, format);
     
-    this->log_event(LOG_LEVEL_RAW, std::cout, format, args);
+    this->log_event(LOG_LEVEL_RAW, std::cerr, format, args);
     
     va_end(args);
 }
