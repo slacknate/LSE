@@ -21,8 +21,8 @@ class Engine : public Thread {
         int status; // exit status
         
         void log_banner(const char *const title);
-        void create_logs();
-        void close_logs();
+        void create_log();
+        void close_log();
 
         void* execute();
 

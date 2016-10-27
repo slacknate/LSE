@@ -16,7 +16,7 @@ Engine::Engine(int argc, char *argv[]) : handler(this) {
     this->window = NULL;
     this->status = OK;
 
-    this->create_logs();
+    this->create_log();
 
     LSE::InitSignals(this);
 }
@@ -27,7 +27,7 @@ Engine::Engine(int argc, char *argv[]) : handler(this) {
 */
 Engine::~Engine() {
     
-    this->close_logs();
+    this->close_log();
 
     for(EventHandlersMap::iterator it = Object::event_map.begin(); it != Object::event_map.end(); ++it) {
 
@@ -60,16 +60,12 @@ void Engine::attach_window(GLWindow *w) {
 */
 void Engine::log_banner(const char *const title) {
     
-    std::cout << "\n--------------------";
     std::cerr << "\n--------------------";
     
     char *time_str = LSE::CALLOC(char, TIME_STR_LENGTH);
     LSE::get_local_time(time_str);
     
-    std::cout << " Log " << title << ": [" << time_str << "] ";
     std::cerr << " Log " << title << ": [" << time_str << "] ";
-    
-    std::cout << "--------------------\n\n";
     std::cerr << "--------------------\n\n";
     
     delete[] time_str;
@@ -77,26 +73,16 @@ void Engine::log_banner(const char *const title) {
 
 
 /*
-Open a file on disk for logging std::cout and std::cerr.
-Preserve the original stream buffer for both streams.
+Open a file on disk for logging std::cerr.
+Preserve the original stream buffer for it.
 */
-void Engine::create_logs() {
+void Engine::create_log() {
 
     logger.start();
-    
+
     char *date_and_day_str = LSE::CALLOC(char, DAY_DATE_STR_LENGTH);
     LSE::get_day_and_date(date_and_day_str);
-    
-    char *message_log_name = LSE::CALLOC(char, DAY_DATE_STR_LENGTH + 9);
-    strncpy(message_log_name, date_and_day_str, DAY_DATE_STR_LENGTH);
-    strncat(message_log_name, "_cout.log", 9);
-    
-    for(unsigned int i = 0; i < DAY_DATE_STR_LENGTH + 9; ++i) {
-        
-        if(message_log_name[i] == ' ')
-            message_log_name[i] = '_';
-    }
-        
+
     //this->message_log.open(message_log_name, std::fstream::out | std::fstream::app);
     //this->cout_buff = std::cout.rdbuf(&this->message_log);
     
@@ -115,7 +101,6 @@ void Engine::create_logs() {
     
     this->log_banner("Open");
     
-    delete[] message_log_name;
     delete[] error_log_name;
     delete[] date_and_day_str;
 }
@@ -125,13 +110,12 @@ void Engine::create_logs() {
 Close the log files, reassociate std::cout and std::cerr to
 their original stream buffers.
 */
-void Engine::close_logs() {
+void Engine::close_log() {
     
     this->log_banner("Close");
 
     logger.join();
     
-    //std::cout.rdbuf(this->cout_buff);
     //std::cerr.rdbuf(this->cerr_buff);
     
     //this->message_log.close();
