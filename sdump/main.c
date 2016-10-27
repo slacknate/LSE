@@ -67,7 +67,7 @@ const char *const HEADER_FMT_TOP = "#ifndef LSE_%s_%s_SHADER_H\n"
                                    " * Auto generated with sdump on %s.\n"
                                    " */\n\n"
                                    "namespace LSE {\n\n\n"
-                                   "const char %s_%s_SHADER[] = {\n\n";
+                                   "const char %s_%s_SHADER[] = {\n";
 
 
 const char *const HEADER_FMT_BOT = "\n\n};\n\n\n"
