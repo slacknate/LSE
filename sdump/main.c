@@ -67,7 +67,7 @@ const char *const HEADER_FMT_TOP = "#ifndef LSE_%s_%s_SHADER_H\n"
                                    " * Auto generated with sdump on %s.\n"
                                    " */\n\n"
                                    "namespace LSE {\n\n\n"
-                                   "const char %s_SHADER[] = {\n\n";
+                                   "const char %s_%s_SHADER[] = {\n\n";
 
 
 const char *const HEADER_FMT_BOT = "\n\n};\n\n\n"
@@ -362,7 +362,7 @@ int main(int argc, char *argv[]) {
                                 const char *const shader_type_name = SHADER_NAMES_UPPER[shader_type];
 
                                 fprintf(header_fp, HEADER_FMT_TOP, obj_name, shader_type_name,
-                                        obj_name, shader_type_name, time_str, shader_type_name);
+                                        obj_name, shader_type_name, time_str, obj_name, shader_type_name);
 
                                 dump_shader(full_path, header_fp);
 
