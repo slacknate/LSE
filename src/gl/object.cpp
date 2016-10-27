@@ -18,8 +18,8 @@ GLObject::GLObject(float x, float y, float z) : PHObject(x, y, z) {
 
     this->init_translation_matrix();
 
-    program.add_shader(VERT_SHADER, SHADER_VERT);
-    program.add_shader(FRAG_SHADER, SHADER_FRAG);
+    program.add_shader(OBJ_VERT_SHADER, SHADER_VERT);
+    program.add_shader(OBJ_FRAG_SHADER, SHADER_FRAG);
 
     program.bind_attrib(VERT_POSITION, "VERT_POSITION");
     program.bind_attrib(VERT_NORMAL, "VERT_NORMAL");
