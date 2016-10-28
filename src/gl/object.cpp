@@ -12,11 +12,18 @@
 using namespace LSE;
 
 /*
-Initialize our object to a position.
-*/
-GLObject::GLObject(float x, float y, float z) : PHObject(x, y, z) {
+ * Initialize our object to a position.
+ * Also initialize our translation matrix
+ * to match this position.
+ * Note that the translation starts as an
+ * identity matrix and then we insert our
+ * translation data into it from there,
+ */
+GLObject::GLObject(float x, float y, float z) : PHObject(x, y, z), translation(4, true) {
 
-    this->init_translation_matrix();
+    *this->translation[3][0] = this->pos.x;
+    *this->translation[3][1] = this->pos.y;
+    *this->translation[3][2] = this->pos.z;
 
     program.add_shader(OBJ_VERT_SHADER, SHADER_VERT);
     program.add_shader(OBJ_FRAG_SHADER, SHADER_FRAG);
@@ -44,26 +51,6 @@ GLProgram* GLObject::GetProgram() {
     return &program;
 }
 
-void GLObject::init_translation_matrix() {
-
-    this->translation[0] = 1.0;
-    this->translation[1] = 0.0;
-    this->translation[2] = 0.0;
-    this->translation[3] = 0.0;
-    this->translation[4] = 0.0;
-    this->translation[5] = 1.0;
-    this->translation[6] = 0.0;
-    this->translation[7] = 0.0;
-    this->translation[8] = 0.0;
-    this->translation[9] = 0.0;
-    this->translation[10] = 1.0;
-    this->translation[11] = 0.0;
-    this->translation[12] = this->pos.x;
-    this->translation[13] = this->pos.y;
-    this->translation[14] = this->pos.z;
-    this->translation[15] = 1.0;
-}
-
 /*
 
 */
@@ -73,9 +60,9 @@ void GLObject::translate(Vector& v) {
     this->pos.y += v.j();
     this->pos.z += v.k();
 
-    this->translation[12] += v.i();
-    this->translation[13] += v.j();
-    this->translation[14] += v.k();
+    *this->translation[3][0] += v.i();
+    *this->translation[3][1] += v.j();
+    *this->translation[3][2] += v.k();
 }
 
 /*
@@ -101,7 +88,7 @@ void GLObject::Render() {
     program.bind();
 
     //  update our transformation matrices
-    program.uniform(MAT4, "TRANS_MAT", 1, GL_FALSE, this->translation);
+    program.uniform(MAT4, "TRANS_MAT", 1, GL_FALSE, this->translation.get_matrix());
     program.uniform(MAT4, "ROT_MAT", 1, GL_FALSE, this->rotation.get_matrix());
 
     //  draw our object

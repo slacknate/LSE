@@ -1,9 +1,9 @@
 #ifndef LSE_PHY_OBJ_H
 #define LSE_PHY_OBJ_H
 
+#include "gl/vertex.h"
 #include "lse/object.h"
 #include "util/math/vector.h"
-#include "util/math/quaternion.h"
 
 namespace LSE {
 

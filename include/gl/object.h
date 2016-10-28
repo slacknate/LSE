@@ -4,6 +4,8 @@
 #include "phy/object.h"
 #include "gl/program.h"
 #include "gl/material.h"
+#include "util/math/matrix.h"
+#include "util/math/quaternion.h"
 
 namespace LSE {
 
@@ -17,12 +19,10 @@ class GLObject : public PHObject {
         
         GLProgram program; // shader program
         Quaternion rotation; // object orientation
-        float translation[16];
+        Matrix translation;
 
         virtual void CalcNormals() {} // calculate normal vectors to all surfaces
 
-        void init_translation_matrix();
-        
     public:
         
         GLObject(float x, float y, float z);
