@@ -19,7 +19,7 @@ class GLObject : public PHObject {
         
         GLProgram program; // shader program
         Quaternion rotation; // object orientation
-        Matrix translation;
+        Matrix translation; // object translation
 
         virtual void CalcNormals() {} // calculate normal vectors to all surfaces
 
