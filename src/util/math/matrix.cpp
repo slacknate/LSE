@@ -21,19 +21,19 @@ void MatrixColumn::set_column(float *col_ptr) {
 }
 
 /*
- * Return a pointer to the specified row of our column pointer.
+ * Return a reference to the specified row of our column pointer.
  *
  * This is our second dimension indexing into our matrix.
  *
  * If the specified row is greater than the number of rows we
  * throw an exception so we do not do nasty stuff to memory!
  */
-float* MatrixColumn::operator[](const int& row) {
+float& MatrixColumn::operator[](const int& row) {
 
     if(row >= this->rows)
         throw EXCEPTION("Matrix only has %u rows, cannot index into row %u.", this->rows, row);
 
-    return &this->column[row];
+    return this->column[row];
 }
 
 

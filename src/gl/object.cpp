@@ -19,9 +19,9 @@ using namespace LSE;
  */
 GLObject::GLObject(float x, float y, float z) : PHObject(x, y, z), translation(4, true) {
 
-    *this->translation[3][0] = this->pos.x;
-    *this->translation[3][1] = this->pos.y;
-    *this->translation[3][2] = this->pos.z;
+    this->translation[3][0] = this->pos.x;
+    this->translation[3][1] = this->pos.y;
+    this->translation[3][2] = this->pos.z;
 
     program.add_shader(OBJ_VERT_SHADER, SHADER_VERT);
     program.add_shader(OBJ_FRAG_SHADER, SHADER_FRAG);
@@ -58,9 +58,9 @@ void GLObject::translate(Vector& v) {
     this->pos.y += v.j();
     this->pos.z += v.k();
 
-    *this->translation[3][0] += v.i();
-    *this->translation[3][1] += v.j();
-    *this->translation[3][2] += v.k();
+    this->translation[3][0] += v.i();
+    this->translation[3][1] += v.j();
+    this->translation[3][2] += v.k();
 }
 
 /*

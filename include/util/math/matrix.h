@@ -22,7 +22,7 @@ class MatrixColumn {
 
         void set_column(float *col_ptr);
 
-        float* operator[](const int& row);
+        float& operator[](const int& row);
 };
 
 /*
