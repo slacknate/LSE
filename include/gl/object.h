@@ -21,8 +21,6 @@ class GLObject : public PHObject {
         Quaternion rotation; // object orientation
         Matrix translation; // object translation
 
-        virtual void CalcNormals() {} // calculate normal vectors to all surfaces
-
     public:
         
         GLObject(float x, float y, float z);
@@ -33,7 +31,16 @@ class GLObject : public PHObject {
         void rotate(Quaternion& q);
         
         void Render();
-        
+
+        /*
+         * Method to create all OpenGL relevant data
+         * in memory prior to being drawn.
+         */
+        virtual void create()=0;
+
+        /*
+         * FIXME: should these be pure virtual?
+         */
         virtual void Draw() {} // object specific render method
         virtual void RenderNormals() {} // object specific normal render method
         virtual bool Hit(float, float, float) { return false; } // collision detection method

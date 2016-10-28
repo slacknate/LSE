@@ -57,7 +57,7 @@ class GLWindowBase : public Thread {
         void setup_gl();
         void teardown_gl();
 
-        void push_gl(GLObject *o);
+        void push_gl(GLObject *obj);
         void pop_gl();
         void clear_gl();
         

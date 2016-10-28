@@ -94,11 +94,14 @@ void GLWindowBase::teardown_gl(){
 
 
 /*
-Add an object to the graphics object list.
-*/
-void GLWindowBase::push_gl(GLObject *o) {
-    
-    draw_list.PushBack(o);
+ * Add an object to the graphics object list.
+ * Create the OpenGL data for this object in
+ * memory before appending
+ */
+void GLWindowBase::push_gl(GLObject *obj) {
+
+    obj->create();
+    draw_list.PushBack(obj);
 }
 
 
@@ -238,7 +241,7 @@ void GLWindowBase::render() {
         
         GLObject *gl_object = (GLObject *) draw_list[i]->GetData();
         gl_object->Render();
-        
+
         if(1 == 2) // FIXME: real condition
             gl_object->RenderNormals();
     }

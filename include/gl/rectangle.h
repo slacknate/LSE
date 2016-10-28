@@ -19,10 +19,13 @@ class GLRectangle : public GLPrimitive {
         
         float width, height; // quad attributes
         
-        void CalcVertices();
-        void CalcIndices();
-        void CalcTexCoords();
-        
+        void calc_vertices();
+        void calc_indices();
+        void calc_tex_coords();
+        // FIXME
+        void calc_normals() {}
+        void calc_color() {}
+
     public:
         
         GLRectangle(float x, float y, float z, float w, float h);

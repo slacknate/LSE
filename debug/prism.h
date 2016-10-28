@@ -13,6 +13,8 @@ class TestPrism : public GLRectPrism {
         
         GLWindow *window; // system provided opengl context
         bool grabbed;
+
+        void calc_colors();
     
     public:
         

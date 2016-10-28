@@ -4,8 +4,7 @@ using namespace LSE;
 
 
 /*
-
-*/
+ */
 TestPrism::TestPrism(GLWindow *win, float x, float y, float z, float w, float h, float d) : GLRectPrism(x, y, z, w, h, d) {
 
     window = win;
@@ -16,8 +15,16 @@ TestPrism::TestPrism(GLWindow *win, float x, float y, float z, float w, float h,
 }
 
 /*
+ * Initialize colors of all vertices to white.
+ */
+void TestPrism::calc_colors() {
 
-*/
+    for(int i = 0; i < 4*numVertices; ++i)
+        colors[i] = 1.0;
+}
+
+/*
+ */
 void TestPrism::OnMouseMotion(Event *ev) {
     
     MouseEvent *event = (MouseEvent *)ev;
@@ -41,8 +48,7 @@ void TestPrism::OnMouseMotion(Event *ev) {
 }
 
 /*
-
-*/
+ */
 void TestPrism::OnKey(Event *ev) {
     
     KeyEvent *event = (KeyEvent *)ev;
@@ -67,21 +73,4 @@ void TestPrism::OnKey(Event *ev) {
         Vector v(-0.5f, 0.0f, 0.0f);
         this->translate(v);
     }
-            
-//    if(event->key == 'i') {
-//
-//        foc.z += 0.1;
-//    }
-//    else if(event->key == 'j') {
-//
-//        foc.x -= 0.1;
-//    }
-//    else if(event->key == 'k') {
-//
-//        foc.z -= 0.1;
-//    }
-//    else if(event->key == 'l') {
-//
-//        foc.x += 0.1;
-//    }
 }

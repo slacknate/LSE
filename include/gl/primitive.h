@@ -24,25 +24,25 @@ class GLPrimitive : public GLObject {
         float *vertices;
         float *normals;
         float *colors;
-        int *texCoords;
+        int *tex_coords;
         int *indices;
-        bool initialized; // true when memory allocation has succeeded and all vertices and normals have been calculated
-        
+
         bool SameSide(Vertex &vertA, Vertex &vertB, Vertex &vertC, Vertex &vertD);
         bool InTriangle(Vertex &vertA, Vertex &vertB, Vertex &vertC, Vertex &ref, float x, float y, float z);
-        void CalcNormals();
-        void MemAllocate(int nv, int ne);
-        
-        virtual void CalcColors(); // primitive specific color initialization method
-        virtual void CalcVertices() {} // primitive specific vertex creation method
-        virtual void CalcIndices() {} // primitive specific index creation method
-        virtual void CalcTexCoords() {} // primitive specific texture coordinate creation method
+
+        virtual void calc_normals()=0; // calculate normal vectors to all surfaces
+        virtual void calc_colors()=0; // primitive specific color initialization method
+        virtual void calc_vertices()=0; // primitive specific vertex creation method
+        virtual void calc_indices()=0; // primitive specific index creation method
+        virtual void calc_tex_coords()=0; // primitive specific texture coordinate creation method
         
     public:
         
-        GLPrimitive(float x, float y, float z);
+        GLPrimitive(unsigned int nv, unsigned int ne, float x, float y, float z);
         ~GLPrimitive();
-        
+
+        void create();
+
         void Draw();
         void RenderNormals();
         bool Hit(float x, float y, float z);
