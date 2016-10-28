@@ -9,8 +9,11 @@ using namespace LSE;
  */
 void ready_func(GLWindow *window) {
 
-    TestPrism *prism = new TestPrism(window, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0);
-    window->push_gl(prism);
+    TestPrism *prism1 = new TestPrism(window, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+    window->push_gl(prism1);
+
+    TestPrism *prism2 = new TestPrism(window, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+    window->push_gl(prism2);
 }
 
 
