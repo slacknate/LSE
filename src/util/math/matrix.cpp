@@ -147,7 +147,7 @@ float Matrix::determinant() {
 MatrixColumn& Matrix::operator[](const int& column) {
 
     if(column >= this->columns)
-        throw EXCEPTION("Matrix only has %u rows, cannot index into row %u.", this->columns, column);
+        throw EXCEPTION("Matrix only has %u columns, cannot index into column %u.", this->columns, column);
 
     float *col_ptr = &this->matrix[column * this->rows];
     this->mat_col.set_column(col_ptr);
