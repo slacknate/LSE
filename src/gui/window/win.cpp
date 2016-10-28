@@ -57,9 +57,6 @@ void* GLWindow::execute() {
     if(hdc == NULL)
         throw EXCEPTION("Failed to obtain an OpenGL device context");
     
-    // Set up all out IO for this window
-    //io.Setup(hwnd);
-    
     PIXELFORMATDESCRIPTOR pfd = {
         
         sizeof(PIXELFORMATDESCRIPTOR),
