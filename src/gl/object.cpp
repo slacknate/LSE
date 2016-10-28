@@ -1,11 +1,9 @@
 #include <cstdio>
 #include "gl/object.h"
-/*
- * The following two headers are
- * auto-generated at build time.
- */
+/* auto-generated headers */
 #include "gl/shaders/objfrag.h"
 #include "gl/shaders/objvert.h"
+/* end auto-generated headers */
 #include "lse/globals.h"
 #include "lse/exception.h"
 #include "util/file.h"
