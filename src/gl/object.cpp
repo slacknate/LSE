@@ -3,6 +3,8 @@
 /* auto-generated headers */
 #include "gl/shaders/objfrag.h"
 #include "gl/shaders/objvert.h"
+#include "gl/shaders/normfrag.h"
+#include "gl/shaders/normvert.h"
 /* end auto-generated headers */
 #include "lse/globals.h"
 #include "lse/exception.h"
@@ -39,6 +41,20 @@ GLObject::GLObject(float x, float y, float z) : PHObject(x, y, z), translation(4
      */
     program.uniform(MAT4, "VIEW_MAT", 1, GL_FALSE, &VIEW_MATRIX[0]);
     program.uniform(MAT4, "PROJ_MAT", 1, GL_FALSE, &PROJ_MATRIX[0]);
+
+    norm_program.add_shader(NORM_VERT_SHADER, SHADER_VERT);
+    norm_program.add_shader(NORM_FRAG_SHADER, SHADER_FRAG);
+
+    norm_program.bind_attrib(VERT_POSITION, "VERT_POSITION");
+
+    if(!norm_program.finalize())
+        throw EXCEPTION("OpenGL shader program failed to verify");
+
+    /*
+     * FIXME: these need to be updated sometimes...
+     */
+    norm_program.uniform(MAT4, "VIEW_MAT", 1, GL_FALSE, &VIEW_MATRIX[0]);
+    norm_program.uniform(MAT4, "PROJ_MAT", 1, GL_FALSE, &PROJ_MATRIX[0]);
 }
 
 /*
@@ -77,7 +93,7 @@ Draw our object on an OpenGL canvas.
 Make sure to only attempt to draw the
 object when we have valid coordinates.
 */
-void GLObject::Render() {
+void GLObject::render(bool show_normals) {
     
     //  isolate this object from the rest 
     glPushMatrix();
@@ -90,11 +106,24 @@ void GLObject::Render() {
     program.uniform(MAT4, "ROT_MAT", 1, GL_FALSE, this->rotation.get_matrix());
 
     //  draw our object
-    Draw();
-    
+    draw();
+
     //  unbind the shader
     program.unbind();
-    
+
+    if(show_normals) {
+
+        norm_program.bind();
+
+        //  update our transformation matrices
+        norm_program.uniform(MAT4, "TRANS_MAT", 1, GL_FALSE, this->translation.get_matrix());
+        norm_program.uniform(MAT4, "ROT_MAT", 1, GL_FALSE, this->rotation.get_matrix());
+
+        draw_normals();
+
+        norm_program.bind();
+    }
+
     //  go back to the last frame of reference 
     glPopMatrix();
 }

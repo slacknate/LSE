@@ -13,6 +13,7 @@ class GLRectangle : public GLPrimitive {
     private:
         
         static const int QUAD_VERT_COUNT = 4;
+        static const int QUAD_NORM_COUNT = 8;
         static const int QUAD_ELEM_COUNT = 2;
     
     protected:
@@ -20,7 +21,6 @@ class GLRectangle : public GLPrimitive {
         float width, height; // quad attributes
         
         void calc_vertices();
-        void calc_indices();
         void calc_tex_coords();
         // FIXME
         void calc_normals() {}

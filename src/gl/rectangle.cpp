@@ -6,7 +6,7 @@ Initialize our quad. Store size attributes
 and allocate all necessary memory.
 */
 GLRectangle::GLRectangle(float x, float y, float z, float w, float h) :
-        GLPrimitive(QUAD_VERT_COUNT, QUAD_ELEM_COUNT, x, y, z) {
+        GLPrimitive(QUAD_VERT_COUNT, QUAD_NORM_COUNT, QUAD_ELEM_COUNT, x, y, z) {
     
     width = w;
     height = h;
@@ -36,20 +36,13 @@ void GLRectangle::calc_vertices(){
     vertices[9] = -width/2.0;
     vertices[10] = height/2.0;
     vertices[11] = this->pos.z;
-}
 
-/*
-Tell OpenGL which vertices to use,
-and where.
-*/
-void GLRectangle::calc_indices() {
-    
-    indices[0] = 0;
-    indices[1] = 1;
-    indices[2] = 2;
-    indices[3] = 0;
-    indices[4] = 2;
-    indices[5] = 3;
+    vert_indices[0] = 0;
+    vert_indices[1] = 1;
+    vert_indices[2] = 2;
+    vert_indices[3] = 0;
+    vert_indices[4] = 2;
+    vert_indices[5] = 3;
 }
 
 /*

@@ -4,11 +4,10 @@
 using namespace LSE;
 
 /*
-Initialize our prism. Store size attributes
-and allocate all necessary memory.
-*/
+ * Initialize our prism.
+ */
 GLRectPrism::GLRectPrism(float x, float y, float z, float w, float h, float d) :
-        GLPrimitive(RECTP_VERT_COUNT, RECTP_ELEM_COUNT, x, y, z) {
+        GLPrimitive(RECTP_VERT_COUNT, RECTP_NORM_COUNT, RECTP_ELEM_COUNT, x, y, z) {
     
     width = w;
     height = h;
@@ -16,51 +15,101 @@ GLRectPrism::GLRectPrism(float x, float y, float z, float w, float h, float d) :
 }
 
 /*
-Predefined rectangular prism vertices.
-*/
-void GLRectPrism::calc_vertices(){
+ * Predefined rectangular prism vertices.
+ * FIXME: comments don't actually match vertex positions...
+ */
+void GLRectPrism::calc_vertices() {
     
-    // v0
+    /* v0 - back bottom right */
     vertices[0] = -width/2.0f;
     vertices[1] = -height/2.0f;
     vertices[2] = -depth/2.0f;
-    
-    // v1
+
+    /* v1 - back bottom right */
     vertices[3] = width/2.0f;
     vertices[4] = -height/2.0f;
     vertices[5] = -depth/2.0f;
-    
-    // v2
+
+    /* v2 - back top left */
     vertices[6] = width/2.0f;
     vertices[7] = height/2.0f;
     vertices[8] = -depth/2.0f;
-    
-    // v3
+
+    /* v3 - back top left */
     vertices[9] = -width/2.0f;
     vertices[10] = height/2.0f;
     vertices[11] = -depth/2.0f;
 
-    // v4
+    /* v4 - front bottom right */
     vertices[12] = width/2.0f;
     vertices[13] = -height/2.0f;
     vertices[14] = depth/2.0f;
 
-    // v5
+    /* v5 - front top right */
     vertices[15] = -width/2.0f;
     vertices[16] = -height/2.0f;
     vertices[17] = depth/2.0f;
 
-    // v6
+    /* v6 - front top left */
     vertices[18] = -width/2.0f;
     vertices[19] = height/2.0f;
     vertices[20] = depth/2.0f;
 
-    // v7
+    /* v7 - front bottom left */
     vertices[21] = width/2.0f;
     vertices[22] = height/2.0f;
     vertices[23] = depth/2.0f;
+
+    /* front - v0, v1, v2, v3 */
+    vert_indices[0] = 0;
+    vert_indices[1] = 1;
+    vert_indices[2] = 2;
+    vert_indices[3] = 0;
+    vert_indices[4] = 2;
+    vert_indices[5] = 3;
+
+    /* right - v2, v3, v4, v5 */
+    vert_indices[6] = 1;
+    vert_indices[7] = 4;
+    vert_indices[8] = 7;
+    vert_indices[9] = 1;
+    vert_indices[10] = 7;
+    vert_indices[11] = 2;
+
+    /* top - v2, v3, v5, v6 */
+    vert_indices[12] = 6;
+    vert_indices[13] = 3;
+    vert_indices[14] = 2;
+    vert_indices[15] = 7;
+    vert_indices[16] = 6;
+    vert_indices[17] = 2;
+
+    /* left - v0, v1, v6, v7 */
+    vert_indices[18] = 0;
+    vert_indices[19] = 5;
+    vert_indices[20] = 6;
+    vert_indices[21] = 0;
+    vert_indices[22] = 3;
+    vert_indices[23] = 6;
+
+    /* bottom - v0, v3, v4, v7 */
+    vert_indices[24] = 0;
+    vert_indices[25] = 1;
+    vert_indices[26] = 4;
+    vert_indices[27] = 0;
+    vert_indices[28] = 4;
+    vert_indices[29] = 5;
+
+    /* back - v4, v5, v6, v7 */
+    vert_indices[30] = 4;
+    vert_indices[31] = 5;
+    vert_indices[32] = 6;
+    vert_indices[33] = 4;
+    vert_indices[34] = 6;
+    vert_indices[35] = 7;
 }
 
+#include <cstdio>
 /*
 Calculate the normal to every surface
 of this primitive.
@@ -68,93 +117,69 @@ fix me -> this is causing some serious errors....
 */
 void GLRectPrism::calc_normals(){
 
-    // loop through each strip
-    for(int i = 0; i < numElements; ++i) {
+    /* Front face */
 
-        // calculate vertex array indices
-        int vert_one = indices[(3*i)];
-        int vert_two = indices[(3*i)+1];
-        int vert_three = indices[(3*i)+2];
+    // create two vectors using the vertex coordinates
+    Vector vec1(vertices[3] - vertices[0], vertices[4] - vertices[1], vertices[5] - vertices[2]);
+    Vector vec2(vertices[3] - vertices[6], vertices[4] - vertices[7], vertices[5] - vertices[8]);
 
-        // get each vertex for this triangle
-        Vertex vert1(vertices[(3*vert_one)], vertices[(3*vert_one)+1], vertices[(3*vert_one)+2]);
-        Vertex vert2(vertices[(3*vert_two)], vertices[(3*vert_two)+1], vertices[(3*vert_two)+2]);
-        Vertex vert3(vertices[(3*vert_three)], vertices[(3*vert_three)+1], vertices[(3*vert_three)+2]);
+    // calculate the cross product, and normalize it
+    Vector front_norm = vec1 % vec2;
+    front_norm.normalize();
 
-        // create two vectors using the vertex coordinates
-        Vector vec1(vert2.x - vert1.x, vert2.y - vert1.y, vert2.z - vert1.z);
-        Vector vec2(vert2.x - vert3.x, vert2.y - vert3.y, vert2.z - vert3.z);
+    // n0-v0
+    normals[0] = vertices[0];
+    normals[1] = vertices[1];
+    normals[2] = vertices[2];
 
-        // calculate the cross product, and normalize it
-        Vector normal = vec1 % vec2;
-        normal.normalize();
+    // n0-v1
+    normals[3] = vertices[0] + front_norm.i();
+    normals[4] = vertices[1] + front_norm.j();
+    normals[5] = vertices[2] + front_norm.k();
 
-        // store our result in the normal array (note: need a normal per vertex)
-        normals[(3*vert_one)] = normal.i();
-        normals[(3*vert_one)+1] = normal.j();
-        normals[(3*vert_one)+2] = normal.k();
+    // n0-i
+    norm_indices[0] = 0;
+    norm_indices[1] = 1;
 
-        normals[(3*vert_two)+3] = normal.i();
-        normals[(3*vert_two)+4] = normal.j();
-        normals[(3*vert_two)+5] = normal.k();
+    // n1-v0
+    normals[6] = vertices[3];
+    normals[7] = vertices[4];
+    normals[8] = vertices[5];
 
-        normals[(3*vert_three)+6] = normal.i();
-        normals[(3*vert_three)+7] = normal.j();
-        normals[(3*vert_three)+8] = normal.k();
-    }
-}
+    // n1-v1
+    normals[9] = vertices[3] + front_norm.i();
+    normals[10] = vertices[4] + front_norm.j();
+    normals[11] = vertices[5] + front_norm.k();
 
-/*
-Tell OpenGL which vertices to use,
-and where.
-*/
-void GLRectPrism::calc_indices() {
-    
-    // front
-    indices[0] = 0;
-    indices[1] = 1;
-    indices[2] = 2;
-    indices[3] = 0;
-    indices[4] = 2;
-    indices[5] = 3;
-    
-    // right
-    indices[6] = 1;
-    indices[7] = 4;
-    indices[8] = 7;
-    indices[9] = 1;
-    indices[10] = 7;
-    indices[11] = 2;
-    
-    // top
-    indices[12] = 6;
-    indices[13] = 3;
-    indices[14] = 2;
-    indices[15] = 7;
-    indices[16] = 6;
-    indices[17] = 2;
-    
-    // left
-    indices[18] = 0;
-    indices[19] = 5;
-    indices[20] = 6;
-    indices[21] = 0;
-    indices[22] = 3;
-    indices[23] = 6;
-    
-    // bottom
-    indices[24] = 0;
-    indices[25] = 1;
-    indices[26] = 4;
-    indices[27] = 0;
-    indices[28] = 4;
-    indices[29] = 5;
-    
-    // back
-    indices[30] = 4;
-    indices[31] = 5;
-    indices[32] = 6;
-    indices[33] = 4;
-    indices[34] = 6;
-    indices[35] = 7;
+    // n1-i
+    norm_indices[2] = 2;
+    norm_indices[3] = 3;
+
+    // n2-v0
+    normals[12] = vertices[6];
+    normals[13] = vertices[7];
+    normals[14] = vertices[8];
+
+    // n2-v1
+    normals[15] = vertices[6] + front_norm.i();
+    normals[16] = vertices[7] + front_norm.j();
+    normals[17] = vertices[8] + front_norm.k();
+
+    // n2-i
+    norm_indices[4] = 4;
+    norm_indices[5] = 5;
+
+    // n3-v0
+    normals[18] = vertices[9];
+    normals[19] = vertices[10];
+    normals[20] = vertices[11];
+
+    // n3-v1
+    normals[21] = vertices[9] + front_norm.i();
+    normals[22] = vertices[10] + front_norm.j();
+    normals[23] = vertices[11] + front_norm.k();
+
+    // n3-i
+    norm_indices[6] = 6;
+    norm_indices[7] = 7;
 }

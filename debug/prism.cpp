@@ -19,7 +19,7 @@ TestPrism::TestPrism(GLWindow *win, float x, float y, float z, float w, float h,
  */
 void TestPrism::calc_colors() {
 
-    for(int i = 0; i < 4*numVertices; ++i)
+    for(int i = 0; i < 4*num_vertices; ++i)
         colors[i] = 1.0;
 }
 

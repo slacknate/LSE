@@ -18,8 +18,12 @@ class GLObject : public PHObject {
     protected:
         
         GLProgram program; // shader program
+        GLProgram norm_program; // shader program
         Quaternion rotation; // object orientation
         Matrix translation; // object translation
+
+        virtual void draw()=0; // object specific render method
+        virtual void draw_normals()=0; // object specific normal render method
 
     public:
         
@@ -30,7 +34,7 @@ class GLObject : public PHObject {
         void translate(Vector& v);
         void rotate(Quaternion& q);
         
-        void Render();
+        void render(bool show_normals=false);
 
         /*
          * Method to create all OpenGL relevant data
@@ -38,13 +42,8 @@ class GLObject : public PHObject {
          */
         virtual void create()=0;
 
-        /*
-         * FIXME: should these be pure virtual?
-         */
-        virtual void Draw() {} // object specific render method
-        virtual void RenderNormals() {} // object specific normal render method
-        virtual bool Hit(float, float, float) { return false; } // collision detection method
-        virtual Vector GetNormalAt(float, float, float) { return Vector(); } // object specific surface normal algorithm
+        virtual bool Hit(float, float, float)=0; // object specific collision detection
+        virtual Vector GetNormalAt(float, float, float)=0; // object specific surface normal algorithm
 };
 
 }

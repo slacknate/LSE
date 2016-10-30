@@ -9,14 +9,18 @@ using namespace LSE;
 Initialize a primitive. We have a positon, but no
 vertices by default.
 */
-GLPrimitive::GLPrimitive(unsigned int nv, unsigned int ne, float x, float y, float z) :
-        GLObject(x, y, z), numVertices(nv), numElements(ne) {
+GLPrimitive::GLPrimitive(unsigned int nv, unsigned int nn, unsigned int ne, float x, float y, float z) :
+        GLObject(x, y, z), num_vertices(nv), num_normals(nn), num_elements(ne) {
 
-    vertices = LSE::MALLOC(float, 3u*numVertices);
-    normals = LSE::MALLOC(float, 3u*numVertices);
-    colors = LSE::MALLOC(float, 4u*numVertices);
-    tex_coords = LSE::MALLOC(int, 2u*numVertices);
-    indices = LSE::MALLOC(int, 3u*numElements);
+    // FIXME: how do we clean up when one of these fails?
+    vertices = LSE::MALLOC(float, 3u*num_vertices);
+    vert_indices = LSE::MALLOC(int, 3u*num_elements);
+
+    normals = LSE::MALLOC(float, 6u*num_normals);
+    norm_indices = LSE::MALLOC(int, 2u*num_normals);
+
+    colors = LSE::MALLOC(float, 4u*num_vertices);
+    tex_coords = LSE::MALLOC(int, 2u*num_vertices);
 }
 
 /*
@@ -25,20 +29,20 @@ Free all allocated memory.
 GLPrimitive::~GLPrimitive() {
 
     delete[] vertices;
+    delete[] vert_indices;
     delete[] normals;
+    delete[] norm_indices;
     delete[] colors;
     delete[] tex_coords;
-    delete[] indices;
 }
 
 /*
  */
 void GLPrimitive::create() {
 
-    this->calc_colors();
     this->calc_vertices();
-    this->calc_indices();
     this->calc_normals();
+    this->calc_colors();
     this->calc_tex_coords();
 }
 
@@ -76,7 +80,7 @@ fix me -> add textures
 use shaders... lighting/color/textures wont work without it
 gldrawelements documentation doesnt specify where the vertex data is stored. this may cause hardware incompatibility
 */
-void GLPrimitive::Draw() {
+void GLPrimitive::draw() {
 
     glEnableVertexAttribArray(VERT_POSITION);
     glEnableVertexAttribArray(VERT_NORMAL);
@@ -88,7 +92,7 @@ void GLPrimitive::Draw() {
     glVertexAttribPointer(VERT_COLOR, 4, GL_FLOAT, GL_FALSE, 0, colors);
     glVertexAttribPointer(VERT_TEX_COORD, 2, GL_INT, GL_FALSE, 0, tex_coords);
 
-    glDrawElements(GL_TRIANGLES, 3*numElements, GL_UNSIGNED_INT, indices);
+    glDrawElements(GL_TRIANGLES, 3*num_elements, GL_UNSIGNED_INT, vert_indices);
 
     glDisableVertexAttribArray(VERT_TEX_COORD);
     glDisableVertexAttribArray(VERT_COLOR);
@@ -100,52 +104,15 @@ void GLPrimitive::Draw() {
 Draw the normals to all surfaces of this object
 fix me -> normals blink when rotating surface (problem is in InTriangle())
 */
-void GLPrimitive::RenderNormals() {
+void GLPrimitive::draw_normals() {
 
-    // loop through each strip
-    for(int i = 0; i < numElements; ++i) {
+    glEnableVertexAttribArray(VERT_POSITION);
 
-        // calculate vertex array indices
-        int vertOne = indices[(3*i)];
-        int vertTwo = indices[(3*i)+1];
-        int vertThree = indices[(3*i)+2];
+    glVertexAttribPointer(VERT_POSITION, 3, GL_FLOAT, GL_FALSE, 0, normals);
 
-        // get each vertex for this triangle
-        Vertex vert1(vertices[(3*vertOne)], vertices[(3*vertOne)+1], vertices[(3*vertOne)+2]);
-        Vertex vert2(vertices[(3*vertTwo)], vertices[(3*vertTwo)+1], vertices[(3*vertTwo)+2]);
-        Vertex vert3(vertices[(3*vertThree)], vertices[(3*vertThree)+1], vertices[(3*vertThree)+2]);
+    glDrawElements(GL_LINES, 2*num_normals, GL_UNSIGNED_INT, norm_indices);
 
-        // get the midpoint between vertex 1 and 2
-        Vertex mid12((vert1.x + vert2.x)/2, (vert1.y + vert2.y)/2, (vert1.z + vert2.z)/2);
-
-        // create a vector from the calculated midpoint to vertex 3
-        Vector v(vert3.x - mid12.x, vert3.y - mid12.y, vert3.z - mid12.z);
-        // the produced vector scaled down by three gives us the barycenter from the midpoint
-        v = v / 3;
-
-        // calculate the barycenter of the triangle
-        Vertex barycenter(mid12.x + v.i(), mid12.y + v.j(), mid12.z + v.k());
-
-        // get normal of the current surface
-        Vector normal = GetNormalAt(barycenter.x, barycenter.y, barycenter.z);
-
-        // isolate each normal from the others
-        glPushMatrix();
-
-        // translate the normal to the barycenter of the triangle
-        glTranslatef(barycenter.x, barycenter.y, barycenter.z);
-
-        // draw the normal, starting from our object position
-        glColor4f(1.0, 0.0, 0.0, 0.0);
-        glBegin(GL_LINES);
-            glVertex3f(this->pos.x, this->pos.y, this->pos.x);
-            glVertex3f(this->pos.x + normal.i(), this->pos.y + normal.j(), this->pos.z + normal.k());
-        glEnd();
-        glColor4f(1.0, 1.0, 1.0, 1.0);
-
-        // go to the previous frame of reference
-        glPopMatrix();
-    }
+    glDisableVertexAttribArray(VERT_POSITION);
 }
 
 /*
@@ -164,12 +131,12 @@ zero vector.
 Vector GLPrimitive::GetNormalAt(float x, float y, float z) {
 
     // loop through each strip
-    for(int i = 0; i < numElements; ++i) {
+    for(int i = 0; i < num_elements; ++i) {
 
         // calculate vertex array indices
-        int vertOne = indices[(3*i)];
-        int vertTwo = indices[(3*i)+1];
-        int vertThree = indices[(3*i)+2];
+        int vertOne = vert_indices[(3*i)];
+        int vertTwo = vert_indices[(3*i)+1];
+        int vertThree = vert_indices[(3*i)+2];
 
         // get each vertex for this triangle
         Vertex vert1(vertices[(3*vertOne)], vertices[(3*vertOne)+1], vertices[(3*vertOne)+2]);

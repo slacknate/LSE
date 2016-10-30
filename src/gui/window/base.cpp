@@ -239,17 +239,13 @@ void GLWindowBase::render() {
     
     for(int i = 0; i < draw_list.Size(); ++i) {
         
-        GLObject *gl_object = (GLObject *) draw_list[i]->GetData();
-        gl_object->Render();
-
-        if(1 == 2) // FIXME: real condition
-            gl_object->RenderNormals();
+        GLObject *gl_object = (GLObject *)draw_list[i]->GetData();
+        gl_object->render();
     }
     
     screen->unbind_fbo();
     
     glClear(mask);
-    
     screen->render();
 
     this->swap_gl_buffers();

@@ -19,13 +19,21 @@ class GLPrimitive : public GLObject {
     
     protected:        
         
-        int numVertices; // number of vertices that make up this primitive
-        int numElements; // number of elements that make up this primitive
+        int num_vertices; // number of vertices that make up this primitive
+        int num_normals; // number of normal vectors that make up this primitive
+        int num_elements; // number of elements that make up this primitive
+
         float *vertices;
+        int *vert_indices;
+
         float *normals;
+        int *norm_indices;
+
         float *colors;
         int *tex_coords;
-        int *indices;
+
+        void draw();
+        void draw_normals();
 
         bool SameSide(Vertex &vertA, Vertex &vertB, Vertex &vertC, Vertex &vertD);
         bool InTriangle(Vertex &vertA, Vertex &vertB, Vertex &vertC, Vertex &ref, float x, float y, float z);
@@ -33,18 +41,15 @@ class GLPrimitive : public GLObject {
         virtual void calc_normals()=0; // calculate normal vectors to all surfaces
         virtual void calc_colors()=0; // primitive specific color initialization method
         virtual void calc_vertices()=0; // primitive specific vertex creation method
-        virtual void calc_indices()=0; // primitive specific index creation method
         virtual void calc_tex_coords()=0; // primitive specific texture coordinate creation method
-        
+
     public:
-        
-        GLPrimitive(unsigned int nv, unsigned int ne, float x, float y, float z);
+
+        GLPrimitive(unsigned int nv, unsigned int nn, unsigned int ne, float x, float y, float z);
         ~GLPrimitive();
 
         void create();
 
-        void Draw();
-        void RenderNormals();
         bool Hit(float x, float y, float z);
         Vector GetNormalAt(float x, float y, float z);
 };
